@@ -7,3 +7,13 @@ D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\Debug\CalenderWi
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\Debug\CalenderWinForm.csproj.GenerateResource.Cache
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\Debug\CalenderWinForm.exe
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\Debug\CalenderWinForm.pdb
+C:\Users\user\Desktop\temp\CalenderWinForm\bin\Debug\CalenderWinForm.exe.config
+C:\Users\user\Desktop\temp\CalenderWinForm\bin\Debug\CalenderWinForm.exe
+C:\Users\user\Desktop\temp\CalenderWinForm\bin\Debug\CalenderWinForm.pdb
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.csprojAssemblyReference.cache
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.Form_Calender_main.resources
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.Properties.Resources.resources
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.csproj.GenerateResource.cache
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.exe
+C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.pdb

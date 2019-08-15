@@ -13,7 +13,6 @@ namespace CalenderWinForm
         private int selectDay;
         private bool refreshCheck;
 
-
         // main method. 
         public Form_Calender_main() {
             InitializeComponent();
@@ -31,6 +30,7 @@ namespace CalenderWinForm
 
             for (int row = 1, count = 0; row <= 6; row++)
                 for (int col = 0; col < 7; col++) { panel_MonthList.Controls.Add(gbox[count], col, row); count++; }
+
         }
 
 
@@ -129,8 +129,18 @@ namespace CalenderWinForm
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
         }
 
+        // click location check Event. (main calender click)
+        private void panel_MonthList_MouseDown(object sender, MouseEventArgs e) {
+            for(int count = 0; count < gbox.Length; count++) {
+                if (gbox[count].Location.X <= e.X &&
+                    gbox[count].Location.Y <= e.Y &&
+                    gbox[count].Location.X + gbox[count].Size.Width > e.X &&
+                    gbox[count].Location.Y + gbox[count].Size.Height > e.Y)
+                        MessageBox.Show("location index number : " + count.ToString());
+            }
+        }
 
-        // program close. 
+        // program close Event. 
         private void Form_Calender_main_FormClosed(object sender, FormClosedEventArgs e) {
             try {
                 tManager.setThreadEnable(false);
@@ -141,9 +151,10 @@ namespace CalenderWinForm
         }
 
 
-
     }
 }
+
+
 
 // Background Image : 
 // https://pixabay.com/ko/photos/%EB%B2%BD%EC%A7%80-%EA%B3%B5%EA%B0%84-%EB%B0%94%ED%83%95-%ED%99%94%EB%A9%B4-%EC%9A%B0%EC%A3%BC-3584226/

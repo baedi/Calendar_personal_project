@@ -10,7 +10,8 @@
  - 일정 리스트 및 버튼 추가 (Add calendar lists and buttons)
  - 토, 일, 현재 날짜, 선택 날짜용 컬러 추가 (Add color for Saturday, day, current date and selection date)
  - 배경 추가 (Add background)
-
+ 
+ - 메인 캘린더 클릭 범위 설정 (준비중)
 
 ---------------------------------------
 
@@ -19,6 +20,7 @@
  - https://docs.microsoft.com/ko-kr/dotnet/api/system.datetime.tostring?view=netframework-4.8#System_DateTime_ToString_System_String_
  - https://docs.microsoft.com/ko-kr/dotnet/framework/winforms/controls/how-to-anchor-and-dock-child-controls-in-a-tablelayoutpanel-control
  - https://mirwebma.tistory.com/140
+ - https://github.com/baedi/Calender_personal_project
 
 ---------------------------------------
 

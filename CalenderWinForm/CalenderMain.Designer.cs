@@ -85,6 +85,7 @@
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
             this.panel_MonthList.Size = new System.Drawing.Size(803, 535);
             this.panel_MonthList.TabIndex = 1;
+            this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_MonthList_MouseDown);
             // 
             // label1
             // 
