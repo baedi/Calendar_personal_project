@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Data.SQLite;
+using System.IO;
 
 namespace CalenderWinForm
 {
@@ -12,16 +14,18 @@ namespace CalenderWinForm
         private int selectMonth;
         private int selectDay;
         private bool refreshCheck;
+        private DataAddForm addForm;
+
 
         // main method. 
         public Form_Calender_main() {
             InitializeComponent();
             gbox = new ListBox[42];
             tManager = new ThreadManager(label_Time);
+            addForm = new DataAddForm();
 
             // Panel setting. 
             for(int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
-
 
             // Current date setting. 
             selectDay = int.Parse(DateTime.Now.ToString("dd"));
@@ -30,7 +34,7 @@ namespace CalenderWinForm
 
             for (int row = 1, count = 0; row <= 6; row++)
                 for (int col = 0; col < 7; col++) { panel_MonthList.Controls.Add(gbox[count], col, row); count++; }
-
+            
         }
 
 
@@ -62,6 +66,7 @@ namespace CalenderWinForm
 
                     if (blankCount > 0 || dayCount > maxDays) {
                         gbox[boxCount].BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+                        gbox[boxCount].TabStop = false;
                         blankCount = blankCount - 1;
                     }
 
@@ -80,8 +85,8 @@ namespace CalenderWinForm
                         else gbox[boxCount].BackColor = System.Drawing.SystemColors.Window;
 
                         gbox[boxCount].Items.Insert(0, dayCount);
+                        gbox[boxCount].TabStop = true;
                         dayCount = dayCount + 1;
-                        //MessageBox.Show(dOfMonth.DayOfWeek.ToString() + " " + dOfMonth.Date.ToString());
                         dOfMonth = dOfMonth.AddDays(1);
                     }
 
@@ -94,19 +99,6 @@ namespace CalenderWinForm
         }
 
 
-        // ***** Event Method.  ***** 
-        private void numericUpDown_Year_ValueChanged(object sender, EventArgs e) {
-            changeCalender();
-            DateTime temp = new DateTime();
-            monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(selectDay - 1));
-        }
-
-        private void numericUpDown_Month_ValueChanged(object sender, EventArgs e) {
-            changeCalender();
-            DateTime temp = new DateTime();
-            monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(selectDay - 1));
-        }
-
         private void changeCalender()
         {
             for (int count = 0; count < gbox.Length; count++) gbox[count].Items.Clear();
@@ -117,7 +109,24 @@ namespace CalenderWinForm
         }
 
 
-        // calender widget Event. 
+
+        // ***** Event Method.  ***** 
+        // Year setting (numericUpDown)     
+        private void numericUpDown_Year_ValueChanged(object sender, EventArgs e) {
+            changeCalender();
+            DateTime temp = new DateTime();
+            monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(selectDay - 1));
+        }
+
+        // Month setting (numericUpDown)    
+        private void numericUpDown_Month_ValueChanged(object sender, EventArgs e) {
+            changeCalender();
+            DateTime temp = new DateTime();
+            monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(selectDay - 1));
+        }
+
+
+        // calender widget Event.           
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) {
 
             selectDay = int.Parse(e.End.ToString("dd"));
@@ -129,18 +138,29 @@ namespace CalenderWinForm
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
         }
 
-        // click location check Event. (main calender click)
+        // click location check Event. (main calender click)    
         private void panel_MonthList_MouseDown(object sender, MouseEventArgs e) {
             for(int count = 0; count < gbox.Length; count++) {
                 if (gbox[count].Location.X <= e.X &&
                     gbox[count].Location.Y <= e.Y &&
                     gbox[count].Location.X + gbox[count].Size.Width > e.X &&
-                    gbox[count].Location.Y + gbox[count].Size.Height > e.Y)
-                        MessageBox.Show("location index number : " + count.ToString());
+                    gbox[count].Location.Y + gbox[count].Size.Height > e.Y &&
+                    gbox[count].TabStop == true) {
+
+                    DateTime temp = new DateTime();
+                    monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
+                    break;
+                }
             }
         }
 
-        // program close Event. 
+        // "ADD" button click Event.        
+        private void button_addSch_Click(object sender, EventArgs e) {
+            try { addForm.Show(); }
+            catch(ObjectDisposedException exc) { addForm = new DataAddForm(); addForm.Show(); }
+        }
+
+        // program close Event.             
         private void Form_Calender_main_FormClosed(object sender, FormClosedEventArgs e) {
             try {
                 tManager.setThreadEnable(false);

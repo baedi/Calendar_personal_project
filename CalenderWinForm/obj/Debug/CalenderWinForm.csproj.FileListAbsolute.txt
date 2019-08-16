@@ -17,3 +17,6 @@ C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.csproj.Gene
 C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.csproj.CoreCompileInputs.cache
 C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.exe
 C:\Users\user\Desktop\temp\CalenderWinForm\obj\Debug\CalenderWinForm.pdb
+D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\bin\Debug\System.Data.SQLite.dll
+D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\bin\Debug\System.Data.SQLite.pdb
+D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\Debug\CalenderWinForm.DataAddForm.resources

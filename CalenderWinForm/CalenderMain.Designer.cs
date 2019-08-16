@@ -310,6 +310,7 @@
             this.button_addSch.TabIndex = 10;
             this.button_addSch.Text = "Add";
             this.button_addSch.UseVisualStyleBackColor = false;
+            this.button_addSch.Click += new System.EventHandler(this.button_addSch_Click);
             // 
             // button_modifySch
             // 

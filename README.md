@@ -1,7 +1,7 @@
-# Calender_personal_project
+# Calendar_personal_project
  Using C# WinForm to Implement a Calendar Program
 
-## Calender program
+## Calendar program
  
  - 캘린더 기본 틀 구현 (Implementing the Calendar framework)
  - 현재시간 기능 구현 (Implement current time display)
@@ -10,8 +10,10 @@
  - 일정 리스트 및 버튼 추가 (Add calendar lists and buttons)
  - 토, 일, 현재 날짜, 선택 날짜용 컬러 추가 (Add color for Saturday, day, current date and selection date)
  - 배경 추가 (Add background)
- 
- - 메인 캘린더 클릭 범위 설정 (준비중)
+
+ - 메인 캘린더 선택 기능 추가 (Added main calendar selection)
+ - 일정 추가 Form 디자인 완료 (Completed "Add Schedule" form design)
+ - SQLite 준비중
 
 ---------------------------------------
 
@@ -21,7 +23,12 @@
  - https://docs.microsoft.com/ko-kr/dotnet/framework/winforms/controls/how-to-anchor-and-dock-child-controls-in-a-tablelayoutpanel-control
  - https://mirwebma.tistory.com/140
  - https://github.com/baedi/Calender_personal_project
-
+ - (SQLite) http://www.gisdeveloper.co.kr/?p=2290
+ - (SQLite) http://www.csharpstudy.com/Practical/Prac-sqlite.aspx
+ - (SQLite) https://swconsulting.tistory.com/83
+ - (SQLite) https://www.codeproject.com/Articles/22165/Using-SQLite-in-your-C-Application
+ - (BadImageFormatException 해결) https://bigenergy.tistory.com/673
+ 
 ---------------------------------------
 
 ## Etc.
