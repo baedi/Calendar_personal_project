@@ -13,7 +13,9 @@
 
  - 메인 캘린더 선택 기능 추가 (Added main calendar selection)
  - 일정 추가 Form 디자인 완료 (Completed "Add Schedule" form design)
- - SQLite 준비중
+
+ - 일정 추가 기능 구현 (Implement "Add Schedule" functionality)
+ - 일정 타이머 중복 방지 (Prevent scheduling overlap.)
 
 ---------------------------------------
 
@@ -28,10 +30,14 @@
  - (SQLite) https://swconsulting.tistory.com/83
  - (SQLite) https://www.codeproject.com/Articles/22165/Using-SQLite-in-your-C-Application
  - (BadImageFormatException 해결) https://bigenergy.tistory.com/673
+ - (string byte 크기 구하기) https://happytomorrow.net/201
+ - (SQLite db 파일 읽기) https://happyryu.tistory.com/76
  
 ---------------------------------------
 
 ## Etc.
 
  - Background : https://pixabay.com/ko/photos/%EB%B2%BD%EC%A7%80-%EA%B3%B5%EA%B0%84-%EB%B0%94%ED%83%95-%ED%99%94%EB%A9%B4-%EC%9A%B0%EC%A3%BC-3584226/
+ - Database : SQLite
+ - Database Path : C:\Users\(YourUserName)\Documents\baedi_calendar
 

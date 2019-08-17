@@ -16,16 +16,41 @@ namespace CalenderWinForm
         private bool refreshCheck;
         private DataAddForm addForm;
 
+        private SQLiteConnection dbConnect;
+        private SQLiteCommand dbCommand;
+
+        private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
+        private string dbFileName = @"\calender.db";
+        private string table = "create table calendarlist (year INT, month INT, day INT, sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN)";
+
 
         // main method. 
         public Form_Calender_main() {
             InitializeComponent();
             gbox = new ListBox[42];
             tManager = new ThreadManager(label_Time);
-            addForm = new DataAddForm();
+            addForm = new DataAddForm(label_DateTemp);
+            
+            // Database setting. 
+            dbConnect = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
+            dbCommand = new SQLiteCommand(table, dbConnect);
+            addForm.setDbConnect(dbConnect);
+
+            if (!File.Exists(path + dbFileName)) {
+                Directory.CreateDirectory(path);
+                SQLiteConnection.CreateFile(path + dbFileName);
+                MessageBox.Show("new calender db created...");
+                dbConnect.Open();
+                dbCommand.ExecuteNonQuery();
+                dbConnect.Close();
+            }
+
+            try { dbConnect.Open(); dbConnect.Close();}
+            catch(Exception exc) { MessageBox.Show(exc.Message); Close(); }
 
             // Panel setting. 
             for(int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
+
 
             // Current date setting. 
             selectDay = int.Parse(DateTime.Now.ToString("dd"));
@@ -34,7 +59,7 @@ namespace CalenderWinForm
 
             for (int row = 1, count = 0; row <= 6; row++)
                 for (int col = 0; col < 7; col++) { panel_MonthList.Controls.Add(gbox[count], col, row); count++; }
-            
+
         }
 
 
@@ -136,6 +161,9 @@ namespace CalenderWinForm
             if (!refreshCheck) changeCalender(); refreshCheck = false;
 
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
+
+            // DB 표시구간
+
         }
 
         // click location check Event. (main calender click)    
@@ -157,7 +185,11 @@ namespace CalenderWinForm
         // "ADD" button click Event.        
         private void button_addSch_Click(object sender, EventArgs e) {
             try { addForm.Show(); }
-            catch(ObjectDisposedException exc) { addForm = new DataAddForm(); addForm.Show(); }
+            catch(ObjectDisposedException exc) {
+                addForm = new DataAddForm(label_DateTemp);
+                addForm.setDbConnect(dbConnect);
+                addForm.Show();
+            }
         }
 
         // program close Event.             
@@ -169,7 +201,6 @@ namespace CalenderWinForm
             }
             catch (NullReferenceException exc) { }
         }
-
 
     }
 }
