@@ -10,3 +10,18 @@ D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\x64\Debug\Calend
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\x64\Debug\CalenderWinForm.csproj.GenerateResource.Cache
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\x64\Debug\CalenderWinForm.exe
 D:\백업\Projects (문서)\CalenderWinForm\CalenderWinForm\obj\x64\Debug\CalenderWinForm.pdb
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\CalenderWinForm.exe.config
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\CalenderWinForm.exe
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\CalenderWinForm.pdb
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\System.Data.SQLite.dll
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\System.Data.SQLite.pdb
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\bin\x64\Debug\System.Data.SQLite.dll.config
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.csprojAssemblyReference.cache
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.Form_Calender_main.resources
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.DataAddForm.resources
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.Properties.Resources.resources
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.csproj.GenerateResource.cache
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.csproj.CopyComplete
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.exe
+C:\Users\user\Desktop\CalenderTemp\CalenderWinForm\obj\x64\Debug\CalenderWinForm.pdb

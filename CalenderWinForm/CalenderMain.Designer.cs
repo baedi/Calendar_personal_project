@@ -199,7 +199,6 @@
             0,
             0,
             0});
-            this.numericUpDown_Year.ValueChanged += new System.EventHandler(this.numericUpDown_Year_ValueChanged);
             // 
             // label_Year
             // 
@@ -277,6 +276,7 @@
             this.label_DateTemp.Size = new System.Drawing.Size(98, 16);
             this.label_DateTemp.TabIndex = 8;
             this.label_DateTemp.Text = "0000-00-00";
+            this.label_DateTemp.TextChanged += new System.EventHandler(this.label_DateTemp_TextChanged);
             // 
             // listView_Schedule
             // 
@@ -290,6 +290,7 @@
             this.listView_Schedule.TabIndex = 9;
             this.listView_Schedule.UseCompatibleStateImageBehavior = false;
             this.listView_Schedule.View = System.Windows.Forms.View.Details;
+            this.listView_Schedule.DoubleClick += new System.EventHandler(this.listView_Schedule_DoubleClick);
             // 
             // columnHeader_time
             // 

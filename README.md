@@ -17,6 +17,14 @@
  - 일정 추가 기능 구현 (Implement "Add Schedule" functionality)
  - 일정 타이머 중복 방지 (Prevent scheduling overlap.)
 
+ - 날짜를 선택할 때 데이터베이스에 저장된 데이터 가져오기 기능 추가 (Adding data import features stored in the database when you select a date)
+
+
+
+(남은 구현 목록들)
+ - 수정, 삭제 기능
+ - 알람 기능 (사운드 포함)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
