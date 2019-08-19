@@ -1,5 +1,7 @@
-# Calendar_personal_project
- Using C# WinForm to Implement a Calendar Program
+# Calendar_personal_project 
+
+Using C# WinForm to Implement a Calendar Program
+---------------------------------------
 
 ## Calendar program
  
@@ -16,13 +18,14 @@
 
  - 일정 추가 기능 구현 (Implement "Add Schedule" functionality)
  - 일정 타이머 중복 방지 (Prevent scheduling overlap.)
-
  - 날짜를 선택할 때 데이터베이스에 저장된 데이터 가져오기 기능 추가 (Adding data import features stored in the database when you select a date)
 
+ - 데이터 선택 후 수정 시 원본 데이터 가져옴 (Import source data on modification after data selection)
+ - 목록에서 알람 활성화 여부 추가 (Add alarm activation status from list)
 
 
-(남은 구현 목록들)
- - 수정, 삭제 기능
+### 남은 구현 목록들
+ - 수정 기능
  - 알람 기능 (사운드 포함)
 
 ---------------------------------------
@@ -40,6 +43,8 @@
  - (BadImageFormatException 해결) https://bigenergy.tistory.com/673
  - (string byte 크기 구하기) https://happytomorrow.net/201
  - (SQLite db 파일 읽기) https://happyryu.tistory.com/76
+ - (MessageBox YESNO) https://onlyican.tistory.com/152
+ - (DB Update) https://spaghetti-code.tistory.com/9
  
 ---------------------------------------
 
@@ -48,4 +53,4 @@
  - Background : https://pixabay.com/ko/photos/%EB%B2%BD%EC%A7%80-%EA%B3%B5%EA%B0%84-%EB%B0%94%ED%83%95-%ED%99%94%EB%A9%B4-%EC%9A%B0%EC%A3%BC-3584226/
  - Database : SQLite
  - Database Path : C:\Users\(YourUserName)\Documents\baedi_calendar
-
+ - SQLite version : sqlite-netFx451-setup-bundle-x64-2013-1.0.111.0
