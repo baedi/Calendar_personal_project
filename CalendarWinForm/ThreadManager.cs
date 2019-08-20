@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace CalenderWinForm
 {
@@ -11,6 +12,9 @@ namespace CalenderWinForm
         // private DateTime current;
         private Label timeLabel;
         private bool threadEnable;
+
+        private SQLiteConnection dbconnect;
+        private string sql;
 
 
         // Constructor. 
@@ -26,6 +30,11 @@ namespace CalenderWinForm
         public void WorkingThread() {
             while (threadEnable){
                 timeLabel.Text = DateTime.Now.ToString();
+
+                try {
+
+
+                }catch(Exception exc) { }
             }
         }
 

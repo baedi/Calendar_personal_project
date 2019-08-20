@@ -12,6 +12,7 @@ namespace CalenderWinForm
         private Label date;
         private Form_Calendar_main calendar;
         private bool modifyMode;
+        private string[] dateStr;
 
         private int original_hour;
         private int original_minute;
@@ -26,6 +27,9 @@ namespace CalenderWinForm
 
             if (mode) this.Text = "Modify schedule";
             else this.Text = "Add schedule";
+
+            dateStr = new string[3];
+            dateStr = date.Text.Split('.');
         }
 
 
@@ -39,33 +43,42 @@ namespace CalenderWinForm
 
 
             if (length <= 20 && length > 0) {
+                try {
 
-                // add schedule mode. 
-                if (!modifyMode) {
+                    sql = $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
 
-                    string[] dateStr = new string[3];
-                    dateStr = date.Text.Split('.');
+                    // add schedule mode. 
+                    if (!modifyMode) {
 
-                    try {
                         // overlap alarm check. 
-                        sql = $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
-                        if (!overlapCheck(sql)) return;
+                        if (!overlapCheck(sql, false)) return;
 
                         // insert data. 
-                        sql = $"insert into calendarlist values ({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, {numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
-                        inputData(sql);
+                        sql = $"insert into calendarlist values " + 
+                              $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " + 
+                              $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+
+                        queryActive(sql);
                     }
 
-                    catch (Exception exc) {
-                        MessageBox.Show("Error : " + exc.Message);
-                        if (dbConnect.State.ToString() == "Open")
-                            dbConnect.Close();
+
+                    // modify schedule mode. 
+                    else {
+
+                        // overlap alarm check. 
+                        if (!overlapCheck(sql, true)) return;
+
+                        sql = "update calendarlist set (sethour, setminute, text, active) = " + 
+                            $"({numericUpDown_setHour.Value},{numericUpDown_setMinute.Value},'{textBox_calendarText.Text}',{checkBox_checkAlarm.Checked}) " +
+                            $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} AND sethour = {original_hour} AND setminute = {original_minute}";
+                        
+                        queryActive(sql);
                     }
                 }
-
-                // modify schedule mode. 
-                else {
-
+                catch (Exception exc) {
+                    MessageBox.Show("Error : " + exc.Message);
+                    if (dbConnect.State.ToString() == "Open")
+                        dbConnect.Close();
                 }
             }
 
@@ -75,7 +88,7 @@ namespace CalenderWinForm
 
 
         // overlap alarm check Method. 
-        private bool overlapCheck(string sql) {
+        private bool overlapCheck(string sql, bool modifyMode) {
             SQLiteCommand command;
 
             dbConnect.Open();
@@ -85,8 +98,11 @@ namespace CalenderWinForm
             while (reader.Read())
             {
                 if (int.Parse(reader["sethour"].ToString()) == numericUpDown_setHour.Value &&
-                     int.Parse(reader["setminute"].ToString()) == numericUpDown_setMinute.Value)
-                {
+                     int.Parse(reader["setminute"].ToString()) == numericUpDown_setMinute.Value) {
+
+                    if (numericUpDown_setHour.Value == original_hour && numericUpDown_setMinute.Value == original_minute && modifyMode)
+                        continue;
+
                     MessageBox.Show("Duplicate alarm time.");
                     reader.Close();
                     dbConnect.Close();
@@ -100,7 +116,7 @@ namespace CalenderWinForm
 
 
         // insert data Method. 
-        private void inputData(string sql) {
+        private void queryActive(string sql) {
             SQLiteCommand command;
 
             dbConnect.Open();

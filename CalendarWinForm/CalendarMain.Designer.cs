@@ -204,6 +204,7 @@
             0,
             0,
             0});
+            this.numericUpDown_Year.ValueChanged += new System.EventHandler(this.numericUpDown_Year_ValueChanged);
             // 
             // label_Year
             // 

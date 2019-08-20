@@ -23,10 +23,12 @@ Using C# WinForm to Implement a Calendar Program
  - 데이터 선택 후 수정 시 원본 데이터 가져옴 (Import source data on modification after data selection)
  - 목록에서 알람 활성화 여부 추가 (Add alarm activation status from list)
 
+ - 수정 기능 구현 완료 (Complete implement modify function.)
+
 
 ### 남은 구현 목록들
- - 수정 기능
  - 알람 기능 (사운드 포함)
+ - 최적화
 
 ---------------------------------------
 

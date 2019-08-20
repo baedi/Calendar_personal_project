@@ -15,6 +15,7 @@ namespace CalenderWinForm
         private int selectMonth;
         private int selectDay;
         private DataAddForm addForm;
+        /* private ArrayList dManager; */
 
         private SQLiteConnection dbConnect;
         private SQLiteCommand dbCommand;
@@ -28,13 +29,15 @@ namespace CalenderWinForm
         private int calendar_index;
 
 
+
         // main method. 
         public Form_Calendar_main() {
             InitializeComponent();
             gbox = new ListBox[42];
             tManager = new ThreadManager(label_Time);
             addForm = new DataAddForm(label_DateTemp, this, false);
-            
+            /* dManager = new DataManage(); */
+
             // Database setting. 
             dbConnect = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
             dbCommand = new SQLiteCommand(table, dbConnect);
@@ -43,18 +46,19 @@ namespace CalenderWinForm
             if (!File.Exists(path + dbFileName)) {
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
-                MessageBox.Show("new calender db created...");
+                MessageBox.Show("new calendar db created...");
                 dbConnect.Open();
                 dbCommand.ExecuteNonQuery();
                 dbConnect.Close();
             }
 
-            try { dbConnect.Open(); dbConnect.Close();}
+            /*
+             try { databaseImport(); } 
             catch(Exception exc) { MessageBox.Show(exc.Message); Close(); }
+            */
 
             // Panel setting. 
             for(int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
-
 
             // Current date setting. 
             selectDay = int.Parse(DateTime.Now.ToString("dd"));
@@ -69,7 +73,7 @@ namespace CalenderWinForm
 
 
 
-        // calender diary set Method. 
+        // calendar diary set Method. 
         private void settingCalendar() {
             int maxDays = int.Parse(DateTime.DaysInMonth(selectYear, selectMonth).ToString());
             int blankCount, tempCt;
@@ -100,7 +104,6 @@ namespace CalenderWinForm
                     }
 
                     else {
-                        //MessageBox.Show(dOfMonth.ToString("yyyy-MM-dd"));
                         string[] dateStr = new string[3];
                         string sql;
 
@@ -187,9 +190,50 @@ namespace CalenderWinForm
                 }));
             }
 
+            reader.Close();
             dbConnect.Close();
         }
 
+
+        // database import Method. 
+        /*
+        public void databaseImport() {
+            try {
+                string sql = $"select * from calendarlist order by year, month, day, sethour, setminute ASC";
+                dbConnect.Open();
+                dbCommand = new SQLiteCommand(sql, dbConnect);
+                SQLiteDataReader reader = dbCommand.ExecuteReader();
+                dManager = new DataManage();
+
+                while (reader.Read())
+                {
+                    dManager.Add(new DataManage(
+                        (int)reader["year"],
+                        (int)reader["month"],
+                        (int)reader["day"],
+                        (int)reader["sethour"],
+                        (int)reader["setminute"],
+                        reader["text"].ToString(),
+                        (bool)reader["active"]));
+                }
+                reader.Close();
+                dbConnect.Close();
+                
+                for(int count = 0; count < dManager.Count; count++) {
+                    DataManage temp = (DataManage)dManager[count];
+                    MessageBox.Show(temp.Year.ToString() + "\n" + 
+                                    temp.Month.ToString() + "\n" + 
+                                    temp.Day.ToString() + "\n" + 
+                                    temp.Sethour.ToString() + "\n" +
+                                    temp.Setminute.ToString() + "\n" +
+                                    temp.Text.ToString() + "\n" +
+                                    temp.Active.ToString() + "\n");
+                }
+                
+
+            }catch(Exception exc) { MessageBox.Show("Error : " + exc.Message); }
+        }
+*/
 
         // delete select database. 
         private void deleteDBdata() {
@@ -213,6 +257,14 @@ namespace CalenderWinForm
         }
 
 
+        // Year setting (numericUpDown)     
+        private void numericUpDown_Year_ValueChanged(object sender, EventArgs e) {
+            // MessageBox.Show("numericUpDown_Year active");
+            changeCalendar();
+            DateTime temp = new DateTime();
+            monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(selectDay - 1));
+        }
+
 
         // Month setting (numericUpDown)    
         private void numericUpDown_Month_ValueChanged(object sender, EventArgs e) {
@@ -224,6 +276,7 @@ namespace CalenderWinForm
 
         // calendar widget Event.           
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) {
+            // MessageBox.Show("monthCalendar1 active");
             selectDay = int.Parse(e.End.ToString("dd"));
             numericUpDown_Year.Value = selectYear = int.Parse(e.End.ToString("yyyy"));
             numericUpDown_Month.Value = selectMonth = int.Parse(e.End.ToString("MM"));
@@ -315,8 +368,6 @@ namespace CalenderWinForm
             }
             catch (NullReferenceException exc) { }
         }
-
-
     }
 }
 
