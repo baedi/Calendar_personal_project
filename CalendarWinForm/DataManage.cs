@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
 
-namespace CalenderWinForm {
+namespace CalendarWinForm {
+
     class DataManage : ArrayList {
         private int year;
         private int month;

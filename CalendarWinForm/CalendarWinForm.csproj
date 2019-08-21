@@ -59,6 +59,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlarmMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlarmMessage.Designer.cs">
+      <DependentUpon>AlarmMessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="CalendarMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadManager.cs" />
+    <EmbeddedResource Include="AlarmMessage.resx">
+      <DependentUpon>AlarmMessage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CalendarMain.resx">
       <DependentUpon>CalendarMain.cs</DependentUpon>
     </EmbeddedResource>

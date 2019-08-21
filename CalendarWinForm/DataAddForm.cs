@@ -3,7 +3,7 @@ using System.Data.SQLite;
 using System.Text;
 using System.Windows.Forms;
 
-namespace CalenderWinForm
+namespace CalendarWinForm
 {
     public partial class DataAddForm : Form
     {
@@ -115,7 +115,7 @@ namespace CalenderWinForm
         }
 
 
-        // insert data Method. 
+        // insert, modify data Method. 
         private void queryActive(string sql) {
             SQLiteCommand command;
 
@@ -126,6 +126,8 @@ namespace CalenderWinForm
             calendar.changeCalendar();
             calendar.calendarListRefresh();
             Close();
+
+            calendar.refreshAlarm();
         }
 
 
@@ -136,7 +138,6 @@ namespace CalenderWinForm
             original_minute = int.Parse(temp[1]);
             original_text = text;
 
-            //MessageBox.Show(original_hour.ToString() + " " + original_minute.ToString() + " " + original_text.ToString());
             numericUpDown_setHour.Value = original_hour;
             numericUpDown_setMinute.Value = original_minute;
             textBox_calendarText.Text = original_text;

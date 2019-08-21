@@ -25,10 +25,14 @@ Using C# WinForm to Implement a Calendar Program
 
  - 수정 기능 구현 완료 (Complete implement modify function.)
 
+ - 기존 년도, 월 조절 NumericUpDown 제거 (Removed "NumericUpDown" year, month regulator.)
+ - 알람 기능 구현 완료 (Completed implementation of alarm function)
+
 
 ### 남은 구현 목록들
- - 알람 기능 (사운드 포함)
- - 최적화
+ - 사운드 추가 (Add alarm sounds)
+ - 최적화 (Optimization)
+ - 스킨 변경 기능(?) (Skin change function)
 
 ---------------------------------------
 
@@ -47,6 +51,10 @@ Using C# WinForm to Implement a Calendar Program
  - (SQLite db 파일 읽기) https://happyryu.tistory.com/76
  - (MessageBox YESNO) https://onlyican.tistory.com/152
  - (DB Update) https://spaghetti-code.tistory.com/9
+ - (폼 닫기 취소) https://guyaga.tistory.com/56
+ - (폼 최소,최대,닫기 없애기) https://terrorjang.tistory.com/40
+ - (폼 더블버퍼링) https://cowvoice.tistory.com/8
+ - (폼 중앙 띄우기) https://mainia.tistory.com/352
  
 ---------------------------------------
 

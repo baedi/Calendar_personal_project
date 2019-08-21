@@ -1,4 +1,4 @@
-﻿namespace CalenderWinForm
+﻿namespace CalendarWinForm
 {
     partial class Form_Calendar_main
     {
@@ -41,11 +41,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDown_Year = new System.Windows.Forms.NumericUpDown();
-            this.label_Year = new System.Windows.Forms.Label();
-            this.label_Month = new System.Windows.Forms.Label();
             this.label_Time = new System.Windows.Forms.Label();
-            this.numericUpDown_Month = new System.Windows.Forms.NumericUpDown();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.label_DateTemp = new System.Windows.Forms.Label();
             this.listView_Schedule = new System.Windows.Forms.ListView();
@@ -55,9 +51,8 @@
             this.button_addSch = new System.Windows.Forms.Button();
             this.button_modifySch = new System.Windows.Forms.Button();
             this.button_deleteSch = new System.Windows.Forms.Button();
+            this.label_YearMonth = new System.Windows.Forms.Label();
             this.panel_MonthList.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Year)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Month)).BeginInit();
             this.SuspendLayout();
             // 
             // panel_MonthList
@@ -183,51 +178,6 @@
             this.label7.TabIndex = 6;
             this.label7.Text = "SAT";
             // 
-            // numericUpDown_Year
-            // 
-            this.numericUpDown_Year.Location = new System.Drawing.Point(12, 11);
-            this.numericUpDown_Year.Maximum = new decimal(new int[] {
-            9998,
-            0,
-            0,
-            0});
-            this.numericUpDown_Year.Minimum = new decimal(new int[] {
-            1753,
-            0,
-            0,
-            0});
-            this.numericUpDown_Year.Name = "numericUpDown_Year";
-            this.numericUpDown_Year.Size = new System.Drawing.Size(57, 21);
-            this.numericUpDown_Year.TabIndex = 2;
-            this.numericUpDown_Year.Value = new decimal(new int[] {
-            2018,
-            0,
-            0,
-            0});
-            this.numericUpDown_Year.ValueChanged += new System.EventHandler(this.numericUpDown_Year_ValueChanged);
-            // 
-            // label_Year
-            // 
-            this.label_Year.AutoSize = true;
-            this.label_Year.BackColor = System.Drawing.Color.Transparent;
-            this.label_Year.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_Year.Location = new System.Drawing.Point(72, 17);
-            this.label_Year.Name = "label_Year";
-            this.label_Year.Size = new System.Drawing.Size(17, 12);
-            this.label_Year.TabIndex = 3;
-            this.label_Year.Text = "년";
-            // 
-            // label_Month
-            // 
-            this.label_Month.AutoSize = true;
-            this.label_Month.BackColor = System.Drawing.Color.Transparent;
-            this.label_Month.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_Month.Location = new System.Drawing.Point(145, 17);
-            this.label_Month.Name = "label_Month";
-            this.label_Month.Size = new System.Drawing.Size(17, 12);
-            this.label_Month.TabIndex = 5;
-            this.label_Month.Text = "월";
-            // 
             // label_Time
             // 
             this.label_Time.AutoSize = true;
@@ -239,29 +189,6 @@
             this.label_Time.Size = new System.Drawing.Size(188, 16);
             this.label_Time.TabIndex = 6;
             this.label_Time.Text = "0000-00-00 오전 00:00:00";
-            // 
-            // numericUpDown_Month
-            // 
-            this.numericUpDown_Month.Location = new System.Drawing.Point(99, 10);
-            this.numericUpDown_Month.Maximum = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.numericUpDown_Month.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown_Month.Name = "numericUpDown_Month";
-            this.numericUpDown_Month.Size = new System.Drawing.Size(44, 21);
-            this.numericUpDown_Month.TabIndex = 7;
-            this.numericUpDown_Month.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDown_Month.ValueChanged += new System.EventHandler(this.numericUpDown_Month_ValueChanged);
             // 
             // monthCalendar1
             // 
@@ -350,6 +277,18 @@
             this.button_deleteSch.UseVisualStyleBackColor = false;
             this.button_deleteSch.Click += new System.EventHandler(this.button_deleteSch_Click);
             // 
+            // label_YearMonth
+            // 
+            this.label_YearMonth.AutoSize = true;
+            this.label_YearMonth.BackColor = System.Drawing.Color.Transparent;
+            this.label_YearMonth.Font = new System.Drawing.Font("굴림", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label_YearMonth.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label_YearMonth.Location = new System.Drawing.Point(7, 9);
+            this.label_YearMonth.Name = "label_YearMonth";
+            this.label_YearMonth.Size = new System.Drawing.Size(162, 37);
+            this.label_YearMonth.TabIndex = 13;
+            this.label_YearMonth.Text = "0000.00";
+            // 
             // Form_Calendar_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -359,16 +298,13 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1081, 607);
+            this.Controls.Add(this.label_YearMonth);
             this.Controls.Add(this.button_deleteSch);
             this.Controls.Add(this.button_modifySch);
             this.Controls.Add(this.button_addSch);
             this.Controls.Add(this.listView_Schedule);
             this.Controls.Add(this.label_DateTemp);
-            this.Controls.Add(this.numericUpDown_Month);
             this.Controls.Add(this.label_Time);
-            this.Controls.Add(this.label_Month);
-            this.Controls.Add(this.label_Year);
-            this.Controls.Add(this.numericUpDown_Year);
             this.Controls.Add(this.panel_MonthList);
             this.Controls.Add(this.monthCalendar1);
             this.MaximizeBox = false;
@@ -377,8 +313,6 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_Calender_main_FormClosed);
             this.panel_MonthList.ResumeLayout(false);
             this.panel_MonthList.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Year)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Month)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -387,9 +321,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel panel_MonthList;
-        private System.Windows.Forms.NumericUpDown numericUpDown_Year;
-        private System.Windows.Forms.Label label_Year;
-        private System.Windows.Forms.Label label_Month;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
@@ -398,7 +329,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label_Time;
-        private System.Windows.Forms.NumericUpDown numericUpDown_Month;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.Label label_DateTemp;
         private System.Windows.Forms.ListView listView_Schedule;
@@ -408,6 +338,7 @@
         private System.Windows.Forms.Button button_modifySch;
         private System.Windows.Forms.Button button_deleteSch;
         private System.Windows.Forms.ColumnHeader columnHeader_active;
+        private System.Windows.Forms.Label label_YearMonth;
     }
 }
 

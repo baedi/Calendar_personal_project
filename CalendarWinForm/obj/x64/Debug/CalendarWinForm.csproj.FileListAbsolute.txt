@@ -4,9 +4,10 @@ D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\Calend
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\System.Data.SQLite.dll
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\System.Data.SQLite.pdb
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csprojResolveAssemblyReference.cache
-D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalenderWinForm.Form_Calendar_main.resources
-D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalenderWinForm.DataAddForm.resources
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalenderWinForm.Properties.Resources.resources
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csproj.GenerateResource.Cache
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalenderWinForm.exe
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalenderWinForm.pdb
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.Form_Calendar_main.resources
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.DataAddForm.resources
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.AlarmMessage.resources

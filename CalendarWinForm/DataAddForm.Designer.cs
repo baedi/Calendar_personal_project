@@ -1,4 +1,4 @@
-﻿namespace CalenderWinForm
+﻿namespace CalendarWinForm
 {
     partial class DataAddForm
     {
