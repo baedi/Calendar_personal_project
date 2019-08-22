@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataAddForm));
             this.numericUpDown_setHour = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown_setMinute = new System.Windows.Forms.NumericUpDown();
             this.label_AlarmTime = new System.Windows.Forms.Label();
@@ -144,6 +145,7 @@
             this.Controls.Add(this.label_AlarmTime);
             this.Controls.Add(this.numericUpDown_setMinute);
             this.Controls.Add(this.numericUpDown_setHour);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DataAddForm";
             this.Text = "DataAddModify";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_setHour)).EndInit();

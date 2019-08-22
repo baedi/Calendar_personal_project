@@ -218,6 +218,7 @@
             this.columnHeader_time,
             this.columnHeader_data,
             this.columnHeader_active});
+            this.listView_Schedule.HideSelection = false;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.listView_Schedule.Location = new System.Drawing.Point(843, 209);
@@ -295,7 +296,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImage = global::CalendarWinForm.Properties.Resources.wallpaper_3584226_1280;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1081, 607);
             this.Controls.Add(this.label_YearMonth);
@@ -307,6 +308,7 @@
             this.Controls.Add(this.label_Time);
             this.Controls.Add(this.panel_MonthList);
             this.Controls.Add(this.monthCalendar1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form_Calendar_main";
             this.Text = "Calendar";

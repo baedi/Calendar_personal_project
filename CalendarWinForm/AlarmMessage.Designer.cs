@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AlarmMessage));
             this.label_date = new System.Windows.Forms.Label();
             this.groupBox_text = new System.Windows.Forms.GroupBox();
             this.label_textscreen = new System.Windows.Forms.Label();
@@ -84,6 +85,7 @@
             this.Controls.Add(this.button_OK);
             this.Controls.Add(this.groupBox_text);
             this.Controls.Add(this.label_date);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AlarmMessage";

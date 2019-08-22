@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
@@ -20,6 +19,7 @@ namespace CalendarWinForm
         private DateTime alarm;
         private string alarm_text;
         private AlarmMessage alarm_form;
+        private bool isAlarmExist;
 
 
         // Constructor. 
@@ -42,6 +42,8 @@ namespace CalendarWinForm
         // time refresh. 
         public void nextAlarmReadyRefresh() {
             try {
+                isAlarmExist = false;
+
                 sql = $"select * from calendarlist where year >= {int.Parse(DateTime.Now.ToString("yyyy"))} AND " +
                       $"month >= {int.Parse(DateTime.Now.ToString("MM"))} AND " +
                       $"day >= {int.Parse(DateTime.Now.ToString("dd"))} " +
@@ -63,10 +65,16 @@ namespace CalendarWinForm
                                       AddMinutes((int)reader["setminute"]);
                         
                         if (alarm < DateTime.Now) continue;
+                        isAlarmExist = true;
                         alarm_text = reader["text"].ToString();
                         break;
-
                     }
+                }
+
+                if (!isAlarmExist) {
+                    alarm = new DateTime();
+                    alarm = alarm.AddYears(9997);
+                    alarm_text = "alarm disable.";
                 }
 
                 reader.Close();
@@ -84,10 +92,9 @@ namespace CalendarWinForm
                     alarm_form.setAlarmText(alarm.ToString(), alarm_text);
                     alarm_form.Visible = true;
                     alarm_form.doubleBuffer();
-                    alarm = new DateTime();
+                    alarm_form.soundPlay();
+                    nextAlarmReadyRefresh();
                 }
-         
-                if (alarm == new DateTime()) { nextAlarmReadyRefresh(); }
 
             }
         }

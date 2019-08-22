@@ -27,12 +27,12 @@ Using C# WinForm to Implement a Calendar Program
 
  - 기존 년도, 월 조절 NumericUpDown 제거 (Removed "NumericUpDown" year, month regulator.)
  - 알람 기능 구현 완료 (Completed implementation of alarm function)
+ - 사운드 추가 완료 (Completed add alarm sound)
 
 
 ### 남은 구현 목록들
- - 사운드 추가 (Add alarm sounds)
  - 최적화 (Optimization)
- - 스킨 변경 기능(?) (Skin change function)
+ - 배포 형태로 구현
 
 ---------------------------------------
 
@@ -55,7 +55,15 @@ Using C# WinForm to Implement a Calendar Program
  - (폼 최소,최대,닫기 없애기) https://terrorjang.tistory.com/40
  - (폼 더블버퍼링) https://cowvoice.tistory.com/8
  - (폼 중앙 띄우기) https://mainia.tistory.com/352
- 
+ - (dll exe에 포함시키기 관련 Nuget) https://onlycroco.tistory.com/14
+ - (배포 관련 1) https://hunit.tistory.com/330
+ - (배포 관련 2) https://blog.naver.com/goldrushing/130166294554
+ - (저장된 리소스 가져오기) https://liesm.tistory.com/entry/C-Exe-%ED%8C%8C%EC%9D%BC%EC%97%90-DllOcx-%ED%8C%8C%EC%9D%BC-%ED%8F%AC%ED%95%A8%ED%95%98%EC%97%AC-%EC%BB%B4%ED%8C%8C%EC%9D%BC%ED%95%98%EA%B8%B0
+ - (ico 삽입) https://yongtech.tistory.com/55
+ - (사운드 재생 관련) https://blog.powerumc.kr/35
+ - (사운드 재생 관련 리소스) http://blog.naver.com/PostView.nhn?blogId=hamstery&logNo=110089837046
+ - (리소스 이미지 로드) https://akinokaze.tistory.com/201
+ - (png -> ico) https://www.hipdf.com/kr/png-to-ico
 ---------------------------------------
 
 ## Etc.
@@ -64,3 +72,4 @@ Using C# WinForm to Implement a Calendar Program
  - Database : SQLite
  - Database Path : C:\Users\(YourUserName)\Documents\baedi_calendar
  - SQLite version : sqlite-netFx451-setup-bundle-x64-2013-1.0.111.0
+ - Alarm Sound source : https://freesound.org/people/LittleT1D/sounds/323019/

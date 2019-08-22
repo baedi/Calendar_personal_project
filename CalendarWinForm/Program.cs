@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace CalendarWinForm {
@@ -10,9 +14,30 @@ namespace CalendarWinForm {
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form_Calendar_main());
+            try {
+                // ass_SQLite_dll
+                /*
+                string strJsonPath = Application.ExecutablePath.Replace("/", "\\");
+                int intPos = strJsonPath.LastIndexOf("\\");
+                if (intPos >= 1) strJsonPath = strJsonPath.Substring(0, intPos).Trim('\\');
+                strJsonPath += "\\System.Data.SQLite.dll";
+
+                FileInfo fileInfo = new FileInfo(strJsonPath);
+                if(fileInfo.Exists == false) {
+                    byte[] aryData = CalendarWinForm.Properties.Resources.System_Data_SQLite;
+                    FileStream fileStream = new FileStream(fileInfo.FullName, FileMode.CreateNew);
+                    fileStream.Write(aryData, 0, aryData.Length);
+                    fileStream.Close();
+                }
+                */
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form_Calendar_main());
+            } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
+
+
     }
+
+
 }

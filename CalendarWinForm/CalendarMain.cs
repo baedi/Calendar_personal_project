@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
 using System.Collections;
-using System.Threading;
+using System.Media;
 
 namespace CalendarWinForm {
     public partial class Form_Calendar_main : Form
@@ -22,7 +22,6 @@ namespace CalendarWinForm {
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
         private int calendar_index;
-
 
 
         // main method.                                         
