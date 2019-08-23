@@ -25,3 +25,8 @@ D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\Calend
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.Properties.Resources.resources
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\System.Data.SQLite.dll
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.dllResource.resources
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\CalendarWinForm.exe.manifest
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\CalendarWinForm.application
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.TrustInfo.xml
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe.manifest
+D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.application

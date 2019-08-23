@@ -2,8 +2,6 @@
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
-using System.Collections;
-using System.Media;
 
 namespace CalendarWinForm {
     public partial class Form_Calendar_main : Form
@@ -12,32 +10,30 @@ namespace CalendarWinForm {
         // variable.                                            
         private ThreadManager tManager;
         private ListBox[] gbox;
+        private DataAddForm addForm;
+        private SQLiteConnection dbConnect;
+        private SQLiteCommand dbCommand;
         private int selectYear;
         private int selectMonth;
         private int selectDay;
-        private DataAddForm addForm;
-        private ArrayList dManager;
-        private SQLiteConnection dbConnect;
-        private SQLiteCommand dbCommand;
+        private int calendar_index;
+        private int gbox_index;
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
-        private int calendar_index;
 
 
         // main method.                                         
-        public Form_Calendar_main()
-        {
+        public Form_Calendar_main() {
             InitializeComponent();
             gbox = new ListBox[42];
             addForm = new DataAddForm(label_DateTemp, this, false);
-            // dManager = new DataManage(); 
+
 
             // Database setting. 
             dbConnect = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
             addForm.setDbConnect(dbConnect);
 
-            if (!File.Exists(path + dbFileName))
-            {
+            if (!File.Exists(path + dbFileName)) {
                 string table = "create table calendarlist (year INT, month INT, day INT, sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN)";
                 dbCommand = new SQLiteCommand(table, dbConnect);
                 Directory.CreateDirectory(path);
@@ -48,8 +44,6 @@ namespace CalendarWinForm {
                 dbConnect.Close();
             }
 
-            try { databaseImport(); }
-            catch (Exception exc) { MessageBox.Show(exc.Message); Close(); }
 
             // Thread setting. 
             tManager = new ThreadManager(label_Time, dbConnect);
@@ -57,6 +51,7 @@ namespace CalendarWinForm {
 
             // Panel setting.                                   
             for (int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
+
 
             // Current date setting. 
             selectDay = int.Parse(DateTime.Now.ToString("dd"));
@@ -158,19 +153,16 @@ namespace CalendarWinForm {
                 }
 
             dbConnect.Close();
-            gbox[selectDay + tempCt].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
 
+            gbox_index = selectDay + tempCt;
+            gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
+            //MessageBox.Show("Refresh Database");
         }
 
 
-        public void changeCalendar()
-        {
+        public void changeCalendar() {
             for (int count = 0; count < gbox.Length; count++) gbox[count].Items.Clear();
-
-            //selectYear = int.Parse(numericUpDown_Year.Value.ToString());
-            //selectMonth = int.Parse(numericUpDown_Month.Value.ToString());
             settingCalendar();
-
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
         }
@@ -181,15 +173,12 @@ namespace CalendarWinForm {
         {
             string sql = $"select sethour, setminute, text, active from calendarlist where year = {selectYear} AND month = {selectMonth} AND day = {selectDay} order by sethour, setminute ASC;";
             dbConnect.Open();
+            listView_Schedule.Items.Clear();
 
             dbCommand = new SQLiteCommand(sql, dbConnect);
             SQLiteDataReader reader = dbCommand.ExecuteReader();
 
-            listView_Schedule.Items.Clear();
-
-
-            while (reader.Read())
-            {
+            while (reader.Read()) {
                 bool active = (bool)reader["active"];
 
                 listView_Schedule.Items.Add(new ListViewItem(new string[] {
@@ -204,47 +193,30 @@ namespace CalendarWinForm {
         }
 
 
-        // database import Method. 
+        // select box data refresh. 
+        public void selectBoxDataRefresh(ListBox selectBox, string[] dateStr) {
+            int dayItem = (int)selectBox.Items[0];
+            selectBox.Items.Clear();
+            selectBox.Items.Insert(0, dayItem);
 
-        public void databaseImport()
-        {
-            try
+            string sql = "select text from calendarlist " +
+                         $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} " +
+                         "order by sethour, setminute ASC";
+
+            dbConnect.Open();
+            SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            int moreCount = 0;
+            for (int count = 1; reader.Read(); count = count + 1)
             {
-                string sql = $"select * from calendarlist order by year, month, day, sethour, setminute ASC";
-                dbConnect.Open();
-                dbCommand = new SQLiteCommand(sql, dbConnect);
-                SQLiteDataReader reader = dbCommand.ExecuteReader();
-                dManager = new DataManage();
-
-                while (reader.Read())
-                {
-                    dManager.Add(new DataManage(
-                        (int)reader["year"],
-                        (int)reader["month"],
-                        (int)reader["day"],
-                        (int)reader["sethour"],
-                        (int)reader["setminute"],
-                        reader["text"].ToString(),
-                        (bool)reader["active"]));
-                }
-                reader.Close();
-                dbConnect.Close();
-
-                /*
-                for(int count = 0; count < dManager.Count; count++) {
-                    DataManage temp = (DataManage)dManager[count];
-                    MessageBox.Show(temp.Year.ToString() + "\n" + 
-                                    temp.Month.ToString() + "\n" + 
-                                    temp.Day.ToString() + "\n" + 
-                                    temp.Sethour.ToString() + "\n" +
-                                    temp.Setminute.ToString() + "\n" +
-                                    temp.Text.ToString() + "\n" +
-                                    temp.Active.ToString() + "\n");
-                }
-                */
-
+                if (count >= 4) moreCount = moreCount + 1;
+                else selectBox.Items.Insert(count, reader["text"].ToString());
             }
-            catch (Exception exc) { MessageBox.Show("Error : " + exc.Message); }
+
+            if (moreCount > 0) selectBox.Items.Insert(4, "(...more " + moreCount + ")");
+            reader.Close();
+            dbConnect.Close();
         }
 
 
@@ -266,24 +238,82 @@ namespace CalendarWinForm {
             dbCommand.ExecuteNonQuery();
             dbConnect.Close();
 
-            changeCalendar();
+            //changeCalendar();
+            // gbox[gbox_index].Items.RemoveAt(calendar_index + 1);
+            string[] tempStr = new string[3];
+            tempStr[0] = selectYear.ToString();
+            tempStr[1] = selectMonth.ToString();
+            tempStr[2] = selectDay.ToString();
+            selectBoxDataRefresh(gbox[gbox_index], tempStr);
+
+
             calendarListRefresh();
         }
+
+
+
 
 
         // calendar widget Event.                               
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            //MessageBox.Show("monthCalendar1 active");
-
+            int cval = selectDay;
+            int temp = selectDay;
             selectDay = int.Parse(e.End.ToString("dd"));
-            selectYear = int.Parse(e.End.ToString("yyyy"));
-            selectMonth = int.Parse(e.End.ToString("MM"));
 
-            changeCalendar();
-            calendar_index = -1;
+            cval = selectDay - cval;
+            if (cval == 0) return;
+
+            if (int.Parse(e.Start.Year.ToString()) == selectYear &&
+                int.Parse(e.Start.Month.ToString()) == selectMonth) {
+                int[] sat_index = { 13, 20, 27, 34, 41 };
+                int[] sun_index = { 7, 14, 21, 28, 35, 42 };
+                bool correct_sat_sun_index = false;
+
+                // (blue) 192 192 255 
+                foreach (int index in sat_index)
+                    if (gbox_index == index)
+                    {
+                        gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(192, 192, 255);
+                        correct_sat_sun_index = true;
+                        break;
+                    };
+
+                // (red) 255 192 192 
+                if (!correct_sat_sun_index)
+                    foreach (int index in sun_index)
+                        if (gbox_index == index)
+                        {
+                            gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 192, 192);
+                            correct_sat_sun_index = true;
+                            break;
+                        };
+
+                // (white) window. 
+                if (!correct_sat_sun_index)
+                    gbox[gbox_index].BackColor = System.Drawing.SystemColors.Window;
+
+
+                // current date color ... skycolor (192 255 255)
+                if (DateTime.Now.ToString("yyyy-MM-dd") == (selectYear.ToString() + "-" + selectMonth.ToString("00") + "-" + temp.ToString("00")))
+                    gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
+
+
+                // selected 
+                gbox_index = gbox_index + cval;
+                gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
+            }
+
+
+            else {
+                selectYear = int.Parse(e.End.ToString("yyyy"));
+                selectMonth = int.Parse(e.End.ToString("MM"));
+                changeCalendar();
+            }
+
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
             label_YearMonth.Text = e.End.ToString("yyyy") + "." + (int.Parse(e.End.ToString("MM")).ToString("00"));
+            calendar_index = -1;        // index reset. 
         }
 
 
@@ -330,6 +360,7 @@ namespace CalendarWinForm {
         private void button_addSch_Click(object sender, EventArgs e)
         {
             addForm = new DataAddForm(label_DateTemp, this, false);
+            addForm.gboxSetting(gbox[gbox_index]);
             addForm.setDbConnect(dbConnect);
             addForm.Show();
         }
@@ -345,6 +376,7 @@ namespace CalendarWinForm {
             datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
 
             addForm = new DataAddForm(label_DateTemp, this, true);
+            addForm.gboxSetting(gbox[gbox_index]);
             addForm.setDbConnect(dbConnect);
             addForm.setSelectData(datalist, text, actCheck);
             addForm.Show();
@@ -379,8 +411,3 @@ namespace CalendarWinForm {
 
     }
 }
-
-
-
-// Background Image : 
-// https://pixabay.com/ko/photos/%EB%B2%BD%EC%A7%80-%EA%B3%B5%EA%B0%84-%EB%B0%94%ED%83%95-%ED%99%94%EB%A9%B4-%EC%9A%B0%EC%A3%BC-3584226/

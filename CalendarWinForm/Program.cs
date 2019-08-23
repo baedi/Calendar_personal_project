@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+//using System.IO;
 using System.Windows.Forms;
 
 namespace CalendarWinForm {
@@ -15,8 +12,8 @@ namespace CalendarWinForm {
         static void Main()
         {
             try {
-                // ass_SQLite_dll
                 /*
+                // ass_SQLite_DLL
                 string strJsonPath = Application.ExecutablePath.Replace("/", "\\");
                 int intPos = strJsonPath.LastIndexOf("\\");
                 if (intPos >= 1) strJsonPath = strJsonPath.Substring(0, intPos).Trim('\\');
@@ -24,18 +21,18 @@ namespace CalendarWinForm {
 
                 FileInfo fileInfo = new FileInfo(strJsonPath);
                 if(fileInfo.Exists == false) {
-                    byte[] aryData = CalendarWinForm.Properties.Resources.System_Data_SQLite;
+                    byte[] aryData = CalendarWinForm.Properties.Resources.ass_SQLite_dll;
                     FileStream fileStream = new FileStream(fileInfo.FullName, FileMode.CreateNew);
                     fileStream.Write(aryData, 0, aryData.Length);
                     fileStream.Close();
                 }
                 */
+
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Form_Calendar_main());
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
-
 
     }
 

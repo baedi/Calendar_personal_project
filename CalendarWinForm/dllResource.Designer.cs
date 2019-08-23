@@ -59,15 +59,5 @@ namespace CalendarWinForm {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static byte[] ass_SQLite_dll {
-            get {
-                object obj = ResourceManager.GetObject("ass_SQLite_dll", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
     }
 }

@@ -18,6 +18,8 @@ namespace CalendarWinForm
         private int original_minute;
         private string original_text;
 
+        private ListBox selectBox;
+
         // Constructor.             
         public DataAddForm(Label date, Form_Calendar_main calendar, bool mode) {
             InitializeComponent();
@@ -31,6 +33,9 @@ namespace CalendarWinForm
             dateStr = new string[3];
             dateStr = date.Text.Split('.');
         }
+
+        // gbox Setting. 
+        public void gboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
 
 
         // button Event.            
@@ -123,11 +128,11 @@ namespace CalendarWinForm
             command = new SQLiteCommand(sql, dbConnect);
             command.ExecuteNonQuery();
             dbConnect.Close();
-            calendar.changeCalendar();
-            calendar.calendarListRefresh();
-            Close();
 
+            calendar.selectBoxDataRefresh(selectBox, dateStr);
+            calendar.calendarListRefresh();
             calendar.refreshAlarm();
+            Close();
         }
 
 

@@ -29,10 +29,12 @@ Using C# WinForm to Implement a Calendar Program
  - 알람 기능 구현 완료 (Completed implementation of alarm function)
  - 사운드 추가 완료 (Completed add alarm sound)
 
+ - DB 불러오기 최적화 (DB Load Optimization)
 
-### 남은 구현 목록들
- - 최적화 (Optimization)
- - 배포 형태로 구현
+
+### 확장할 기능들 목록
+ + 일정 한꺼번에 정하기 (특정 날짜 범위 설정 기능)
+ + 데이터 입력 창 폼 조절 비활성화시키기
 
 ---------------------------------------
 
