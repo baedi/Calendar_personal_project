@@ -206,9 +206,9 @@
             this.label_DateTemp.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.label_DateTemp.Location = new System.Drawing.Point(844, 191);
             this.label_DateTemp.Name = "label_DateTemp";
-            this.label_DateTemp.Size = new System.Drawing.Size(98, 16);
+            this.label_DateTemp.Size = new System.Drawing.Size(92, 16);
             this.label_DateTemp.TabIndex = 8;
-            this.label_DateTemp.Text = "0000-00-00";
+            this.label_DateTemp.Text = "2019.01.01";
             this.label_DateTemp.TextChanged += new System.EventHandler(this.label_DateTemp_TextChanged);
             // 
             // listView_Schedule

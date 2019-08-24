@@ -5,31 +5,43 @@ Using C# WinForm to Implement a Calendar Program
 
 ## Calendar program
  
+ #### 1
  - 캘린더 기본 틀 구현 (Implementing the Calendar framework)
  - 현재시간 기능 구현 (Implement current time display)
 
+ #### 2
  - 미니 캘린더 추가 및 연동 작업 (Add and link mini calendars)
  - 일정 리스트 및 버튼 추가 (Add calendar lists and buttons)
  - 토, 일, 현재 날짜, 선택 날짜용 컬러 추가 (Add color for Saturday, day, current date and selection date)
  - 배경 추가 (Add background)
 
+ #### 3
  - 메인 캘린더 선택 기능 추가 (Added main calendar selection)
  - 일정 추가 Form 디자인 완료 (Completed "Add Schedule" form design)
 
+ #### 4
  - 일정 추가 기능 구현 (Implement "Add Schedule" functionality)
  - 일정 타이머 중복 방지 (Prevent scheduling overlap.)
  - 날짜를 선택할 때 데이터베이스에 저장된 데이터 가져오기 기능 추가 (Adding data import features stored in the database when you select a date)
 
+ #### 5
  - 데이터 선택 후 수정 시 원본 데이터 가져옴 (Import source data on modification after data selection)
  - 목록에서 알람 활성화 여부 추가 (Add alarm activation status from list)
 
+ #### 6
  - 수정 기능 구현 완료 (Complete implement modify function.)
 
+ #### 7
  - 기존 년도, 월 조절 NumericUpDown 제거 (Removed "NumericUpDown" year, month regulator.)
  - 알람 기능 구현 완료 (Completed implementation of alarm function)
  - 사운드 추가 완료 (Completed add alarm sound)
 
+ #### 8
  - DB 불러오기 최적화 (DB Load Optimization)
+
+ #### 9
+ - 다중 알람 설정 폼 구현 완료 (Completed implementation of multi-alarm setup form)
+ - 데이터 추가, 변경 관련 몇 가지 오류 수정 (Fix errors related to adding and changing data)
 
 
 ### 확장할 기능들 목록

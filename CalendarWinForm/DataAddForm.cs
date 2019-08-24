@@ -30,12 +30,24 @@ namespace CalendarWinForm
             if (mode) this.Text = "Modify schedule";
             else this.Text = "Add schedule";
 
-            dateStr = new string[3];
-            dateStr = date.Text.Split('.');
+            dateStrSetting();
+
+            //DateTime startDateTemp = new DateTime();
+            DateTime endDateTemp = new DateTime();
+
+            //startDateTemp = startDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) - 1);
+            endDateTemp = endDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) + 50);
+
+            dateTimePicker_end.Value = endDateTemp;
+            groupBox_curdatecheck.Text = dateStr[0] + "." + dateStr[1] + "." + dateStr[2];
+
+            //TimeSpan temp = DateTime.Parse(endDateTemp.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
+            //int day_temp = temp.Days;
         }
 
-        // gbox Setting. 
+        // Setting Method            
         public void gboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
+        public void dateStrSetting() { dateStr = new string[3]; dateStr = date.Text.Split('.'); }
 
 
         // button Event.            
@@ -52,27 +64,28 @@ namespace CalendarWinForm
 
                     sql = $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
 
-                    // add schedule mode. 
+                    // add schedule mode.
                     if (!modifyMode) {
 
                         // overlap alarm check. 
                         if (!overlapCheck(sql, false)) return;
 
-                        // insert data. 
-                        sql = $"insert into calendarlist values " + 
-                              $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " + 
+                        // insert data.
+                        sql = $"insert into calendarlist values " +
+                              $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " +
                               $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
 
                         queryActive(sql);
                     }
 
 
-                    // modify schedule mode. 
+                    // modify schedule mode. (normal)
                     else {
 
                         // overlap alarm check. 
                         if (!overlapCheck(sql, true)) return;
 
+                        // update data. 
                         sql = "update calendarlist set (sethour, setminute, text, active) = " + 
                             $"({numericUpDown_setHour.Value},{numericUpDown_setMinute.Value},'{textBox_calendarText.Text}',{checkBox_checkAlarm.Checked}) " +
                             $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} AND sethour = {original_hour} AND setminute = {original_minute}";
@@ -90,6 +103,14 @@ namespace CalendarWinForm
             else if (length <= 0) { MessageBox.Show("You didn't enter anything!");}
             else { MessageBox.Show("Character size must be no larger than 20."); }
         }
+
+
+        // multi range check Event. 
+        private void checkBox_multiMode_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_multiMode.Checked == false) dateTimePicker_end.Enabled = false;
+            else if(checkBox_multiMode.Checked == true) dateTimePicker_end.Enabled = true;
+        }
+
 
 
         // overlap alarm check Method. 
@@ -129,8 +150,19 @@ namespace CalendarWinForm
             command.ExecuteNonQuery();
             dbConnect.Close();
 
-            calendar.selectBoxDataRefresh(selectBox, dateStr);
-            calendar.calendarListRefresh();
+
+            // select calendar year, month change check 
+            int y_temp = int.Parse(dateStr[0]);
+            int m_temp = int.Parse(dateStr[1]);
+            dateStrSetting();
+
+            if (y_temp == int.Parse(dateStr[0]) && m_temp == int.Parse(dateStr[1])){
+                calendar.selectBoxDataRefresh(selectBox, dateStr);
+                calendar.calendarListRefresh();
+            }
+
+            else calendar.changeCalendar();
+
             calendar.refreshAlarm();
             Close();
         }
@@ -148,5 +180,7 @@ namespace CalendarWinForm
             textBox_calendarText.Text = original_text;
             checkBox_checkAlarm.Checked = act;
         }
+
+
     }
 }

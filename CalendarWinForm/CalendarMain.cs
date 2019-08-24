@@ -190,6 +190,9 @@ namespace CalendarWinForm {
 
             reader.Close();
             dbConnect.Close();
+
+            button_modifySch.Enabled = false;
+            button_deleteSch.Enabled = false;
         }
 
 
@@ -302,6 +305,9 @@ namespace CalendarWinForm {
                 // selected 
                 gbox_index = gbox_index + cval;
                 gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
+
+                button_modifySch.Enabled = false;
+                button_deleteSch.Enabled = false;
             }
 
 
