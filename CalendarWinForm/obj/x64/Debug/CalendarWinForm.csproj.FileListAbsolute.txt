@@ -30,3 +30,9 @@ D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\bin\x64\Debug\Calend
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.TrustInfo.xml
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe.manifest
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.application
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\bin\x64\Debug\CalendarWinForm.exe.manifest
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\bin\x64\Debug\CalendarWinForm.application
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinForm.dllResource.resources
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinForm.TrustInfo.xml
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe.manifest
+C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinForm.application

@@ -18,6 +18,7 @@ namespace CalendarWinForm {
         private int selectDay;
         private int calendar_index;
         private int gbox_index;
+        private bool alarm_onCheck;
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
 
@@ -25,6 +26,7 @@ namespace CalendarWinForm {
         // main method.                                         
         public Form_Calendar_main() {
             InitializeComponent();
+            alarm_onCheck = true;
             gbox = new ListBox[42];
             addForm = new DataAddForm(label_DateTemp, this, false);
 
@@ -396,6 +398,21 @@ namespace CalendarWinForm {
                 deleteDBdata();
                 refreshAlarm();
             }
+        }
+
+
+        // "Alarm ON button click Event.                        
+        private void button_alarmon_Click(object sender, EventArgs e) {
+            if (alarm_onCheck) {
+                tManager.alarmOnOff_check(alarm_onCheck = false);
+                button_alarmon.Text = "OFF";
+            }
+
+            else if (!alarm_onCheck) {
+                tManager.alarmOnOff_check(alarm_onCheck = true);
+                button_alarmon.Text = "ON";
+            }
+            
         }
 
 

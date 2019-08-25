@@ -52,6 +52,8 @@
             this.button_modifySch = new System.Windows.Forms.Button();
             this.button_deleteSch = new System.Windows.Forms.Button();
             this.label_YearMonth = new System.Windows.Forms.Label();
+            this.button_alarmon = new System.Windows.Forms.Button();
+            this.label_alarmon = new System.Windows.Forms.Label();
             this.panel_MonthList.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,7 +75,8 @@
             this.panel_MonthList.Controls.Add(this.label5, 4, 0);
             this.panel_MonthList.Controls.Add(this.label6, 5, 0);
             this.panel_MonthList.Controls.Add(this.label7, 6, 0);
-            this.panel_MonthList.Location = new System.Drawing.Point(12, 60);
+            this.panel_MonthList.Location = new System.Drawing.Point(14, 75);
+            this.panel_MonthList.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel_MonthList.Name = "panel_MonthList";
             this.panel_MonthList.RowCount = 7;
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.675474F));
@@ -83,7 +86,7 @@
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
-            this.panel_MonthList.Size = new System.Drawing.Size(803, 535);
+            this.panel_MonthList.Size = new System.Drawing.Size(918, 669);
             this.panel_MonthList.TabIndex = 1;
             this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_MonthList_MouseDown);
             // 
@@ -96,7 +99,7 @@
             this.label1.ForeColor = System.Drawing.Color.Red;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 16);
+            this.label1.Size = new System.Drawing.Size(50, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "SUN";
             // 
@@ -107,9 +110,9 @@
             this.label2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label2.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(117, 0);
+            this.label2.Location = new System.Drawing.Point(134, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 16);
+            this.label2.Size = new System.Drawing.Size(54, 20);
             this.label2.TabIndex = 1;
             this.label2.Text = "MON";
             // 
@@ -120,9 +123,9 @@
             this.label3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label3.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(231, 0);
+            this.label3.Location = new System.Drawing.Point(265, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 16);
+            this.label3.Size = new System.Drawing.Size(49, 20);
             this.label3.TabIndex = 2;
             this.label3.Text = "TUE";
             // 
@@ -133,9 +136,9 @@
             this.label4.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label4.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label4.Location = new System.Drawing.Point(345, 0);
+            this.label4.Location = new System.Drawing.Point(396, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 16);
+            this.label4.Size = new System.Drawing.Size(54, 20);
             this.label4.TabIndex = 3;
             this.label4.Text = "WED";
             // 
@@ -146,9 +149,9 @@
             this.label5.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label5.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label5.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label5.Location = new System.Drawing.Point(459, 0);
+            this.label5.Location = new System.Drawing.Point(527, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 16);
+            this.label5.Size = new System.Drawing.Size(49, 20);
             this.label5.TabIndex = 4;
             this.label5.Text = "THU";
             // 
@@ -159,9 +162,9 @@
             this.label6.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label6.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label6.Location = new System.Drawing.Point(573, 0);
+            this.label6.Location = new System.Drawing.Point(658, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(33, 16);
+            this.label6.Size = new System.Drawing.Size(37, 20);
             this.label6.TabIndex = 5;
             this.label6.Text = "FRI";
             // 
@@ -172,9 +175,9 @@
             this.label7.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.label7.Font = new System.Drawing.Font("굴림", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label7.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label7.Location = new System.Drawing.Point(687, 0);
+            this.label7.Location = new System.Drawing.Point(789, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 16);
+            this.label7.Size = new System.Drawing.Size(49, 20);
             this.label7.TabIndex = 6;
             this.label7.Text = "SAT";
             // 
@@ -184,16 +187,17 @@
             this.label_Time.BackColor = System.Drawing.Color.Transparent;
             this.label_Time.Font = new System.Drawing.Font("굴림", 12F);
             this.label_Time.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_Time.Location = new System.Drawing.Point(627, 9);
+            this.label_Time.Location = new System.Drawing.Point(717, 11);
             this.label_Time.Name = "label_Time";
-            this.label_Time.Size = new System.Drawing.Size(188, 16);
+            this.label_Time.Size = new System.Drawing.Size(253, 20);
             this.label_Time.TabIndex = 6;
             this.label_Time.Text = "0000-00-00 오전 00:00:00";
             // 
             // monthCalendar1
             // 
             this.monthCalendar1.BackColor = System.Drawing.SystemColors.Window;
-            this.monthCalendar1.Location = new System.Drawing.Point(843, 17);
+            this.monthCalendar1.Location = new System.Drawing.Point(963, 21);
+            this.monthCalendar1.Margin = new System.Windows.Forms.Padding(10, 11, 10, 11);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 7;
             this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
@@ -204,9 +208,9 @@
             this.label_DateTemp.BackColor = System.Drawing.Color.Transparent;
             this.label_DateTemp.Font = new System.Drawing.Font("굴림", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label_DateTemp.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_DateTemp.Location = new System.Drawing.Point(844, 191);
+            this.label_DateTemp.Location = new System.Drawing.Point(965, 239);
             this.label_DateTemp.Name = "label_DateTemp";
-            this.label_DateTemp.Size = new System.Drawing.Size(92, 16);
+            this.label_DateTemp.Size = new System.Drawing.Size(121, 20);
             this.label_DateTemp.TabIndex = 8;
             this.label_DateTemp.Text = "2019.01.01";
             this.label_DateTemp.TextChanged += new System.EventHandler(this.label_DateTemp_TextChanged);
@@ -221,9 +225,10 @@
             this.listView_Schedule.HideSelection = false;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-            this.listView_Schedule.Location = new System.Drawing.Point(843, 209);
+            this.listView_Schedule.Location = new System.Drawing.Point(963, 261);
+            this.listView_Schedule.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Schedule.Name = "listView_Schedule";
-            this.listView_Schedule.Size = new System.Drawing.Size(220, 357);
+            this.listView_Schedule.Size = new System.Drawing.Size(251, 445);
             this.listView_Schedule.TabIndex = 9;
             this.listView_Schedule.UseCompatibleStateImageBehavior = false;
             this.listView_Schedule.View = System.Windows.Forms.View.Details;
@@ -248,9 +253,10 @@
             // button_addSch
             // 
             this.button_addSch.BackColor = System.Drawing.SystemColors.Control;
-            this.button_addSch.Location = new System.Drawing.Point(843, 572);
+            this.button_addSch.Location = new System.Drawing.Point(963, 715);
+            this.button_addSch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_addSch.Name = "button_addSch";
-            this.button_addSch.Size = new System.Drawing.Size(72, 23);
+            this.button_addSch.Size = new System.Drawing.Size(82, 29);
             this.button_addSch.TabIndex = 10;
             this.button_addSch.Text = "Add";
             this.button_addSch.UseVisualStyleBackColor = false;
@@ -259,9 +265,10 @@
             // button_modifySch
             // 
             this.button_modifySch.BackColor = System.Drawing.SystemColors.Control;
-            this.button_modifySch.Location = new System.Drawing.Point(917, 572);
+            this.button_modifySch.Location = new System.Drawing.Point(1048, 715);
+            this.button_modifySch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_modifySch.Name = "button_modifySch";
-            this.button_modifySch.Size = new System.Drawing.Size(72, 23);
+            this.button_modifySch.Size = new System.Drawing.Size(82, 29);
             this.button_modifySch.TabIndex = 11;
             this.button_modifySch.Text = "Modify";
             this.button_modifySch.UseVisualStyleBackColor = false;
@@ -270,9 +277,10 @@
             // button_deleteSch
             // 
             this.button_deleteSch.BackColor = System.Drawing.SystemColors.Control;
-            this.button_deleteSch.Location = new System.Drawing.Point(991, 572);
+            this.button_deleteSch.Location = new System.Drawing.Point(1133, 715);
+            this.button_deleteSch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_deleteSch.Name = "button_deleteSch";
-            this.button_deleteSch.Size = new System.Drawing.Size(72, 23);
+            this.button_deleteSch.Size = new System.Drawing.Size(82, 29);
             this.button_deleteSch.TabIndex = 12;
             this.button_deleteSch.Text = "Delete";
             this.button_deleteSch.UseVisualStyleBackColor = false;
@@ -284,21 +292,45 @@
             this.label_YearMonth.BackColor = System.Drawing.Color.Transparent;
             this.label_YearMonth.Font = new System.Drawing.Font("굴림", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label_YearMonth.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_YearMonth.Location = new System.Drawing.Point(7, 9);
+            this.label_YearMonth.Location = new System.Drawing.Point(8, 11);
             this.label_YearMonth.Name = "label_YearMonth";
-            this.label_YearMonth.Size = new System.Drawing.Size(162, 37);
+            this.label_YearMonth.Size = new System.Drawing.Size(205, 47);
             this.label_YearMonth.TabIndex = 13;
             this.label_YearMonth.Text = "0000.00";
             // 
+            // button_alarmon
+            // 
+            this.button_alarmon.Location = new System.Drawing.Point(874, 45);
+            this.button_alarmon.Name = "button_alarmon";
+            this.button_alarmon.Size = new System.Drawing.Size(58, 23);
+            this.button_alarmon.TabIndex = 14;
+            this.button_alarmon.Text = "ON";
+            this.button_alarmon.UseVisualStyleBackColor = true;
+            this.button_alarmon.Click += new System.EventHandler(this.button_alarmon_Click);
+            // 
+            // label_alarmon
+            // 
+            this.label_alarmon.AutoSize = true;
+            this.label_alarmon.BackColor = System.Drawing.Color.Transparent;
+            this.label_alarmon.Font = new System.Drawing.Font("굴림", 10F);
+            this.label_alarmon.ForeColor = System.Drawing.Color.White;
+            this.label_alarmon.Location = new System.Drawing.Point(754, 47);
+            this.label_alarmon.Name = "label_alarmon";
+            this.label_alarmon.Size = new System.Drawing.Size(114, 17);
+            this.label_alarmon.TabIndex = 15;
+            this.label_alarmon.Text = "Alarm sound : ";
+            // 
             // Form_Calendar_main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::CalendarWinForm.Properties.Resources.wallpaper_3584226_1280;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1081, 607);
+            this.ClientSize = new System.Drawing.Size(1235, 759);
+            this.Controls.Add(this.label_alarmon);
+            this.Controls.Add(this.button_alarmon);
             this.Controls.Add(this.label_YearMonth);
             this.Controls.Add(this.button_deleteSch);
             this.Controls.Add(this.button_modifySch);
@@ -309,6 +341,7 @@
             this.Controls.Add(this.panel_MonthList);
             this.Controls.Add(this.monthCalendar1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "Form_Calendar_main";
             this.Text = "Calendar";
@@ -341,6 +374,8 @@
         private System.Windows.Forms.Button button_deleteSch;
         private System.Windows.Forms.ColumnHeader columnHeader_active;
         private System.Windows.Forms.Label label_YearMonth;
+        private System.Windows.Forms.Button button_alarmon;
+        private System.Windows.Forms.Label label_alarmon;
     }
 }
 

@@ -100,9 +100,10 @@ namespace CalendarWinForm
         }
 
 
+        public void alarmOnOff_check(bool temp){ alarm_form.setSoundOnOff(temp); }
+
         // get, set Method. 
         public Thread getThreadManager() { return manage; }
         public void setThreadEnable(bool tf) { threadEnable = tf; }
-
     }
 }

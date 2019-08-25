@@ -43,6 +43,9 @@ Using C# WinForm to Implement a Calendar Program
  - 다중 알람 설정 폼 구현 완료 (Completed implementation of multi-alarm setup form)
  - 데이터 추가, 변경 관련 몇 가지 오류 수정 (Fix errors related to adding and changing data)
 
+ #### 10
+ - 알람 사운드 켜기,끄기 기능 추가 (Add alarm sound on and off functions)
+ - 알람을 "닫기"로 닫을 시 알람 오류 현상 수정 (Fixed alarm error when closing the alarm with "Close")
 
 ### 확장할 기능들 목록
  + 일정 한꺼번에 정하기 (특정 날짜 범위 설정 기능)
@@ -78,6 +81,7 @@ Using C# WinForm to Implement a Calendar Program
  - (사운드 재생 관련 리소스) http://blog.naver.com/PostView.nhn?blogId=hamstery&logNo=110089837046
  - (리소스 이미지 로드) https://akinokaze.tistory.com/201
  - (png -> ico) https://www.hipdf.com/kr/png-to-ico
+ - (두 DateTime '일'수 차이 구하기) https://nicebury.tistory.com/60
 ---------------------------------------
 
 ## Etc.
