@@ -96,6 +96,7 @@ namespace CalendarWinForm
                     nextAlarmReadyRefresh();
                 }
 
+                Thread.Sleep(100);
             }
         }
 

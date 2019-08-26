@@ -19,6 +19,8 @@ namespace CalendarWinForm
         private string original_text;
 
         private ListBox selectBox;
+        private DateTime startDateTemp;
+        private DateTime endDateTemp;
 
         // Constructor.             
         public DataAddForm(Label date, Form_Calendar_main calendar, bool mode) {
@@ -32,11 +34,11 @@ namespace CalendarWinForm
 
             dateStrSetting();
 
-            //DateTime startDateTemp = new DateTime();
-            DateTime endDateTemp = new DateTime();
+            startDateTemp = new DateTime();
+            endDateTemp = new DateTime();
 
-            //startDateTemp = startDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) - 1);
-            endDateTemp = endDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) + 50);
+            startDateTemp = startDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) - 1);
+            endDateTemp = endDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) + 3);
 
             dateTimePicker_end.Value = endDateTemp;
             groupBox_curdatecheck.Text = dateStr[0] + "." + dateStr[1] + "." + dateStr[2];
@@ -70,12 +72,66 @@ namespace CalendarWinForm
                         // overlap alarm check. 
                         if (!overlapCheck(sql, false)) return;
 
-                        // insert data.
-                        sql = $"insert into calendarlist values " +
-                              $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " +
-                              $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+                        // insert data. (normal)        
+                        if (!checkBox_multiMode.Checked) {
+                            sql = $"insert into calendarlist values " +
+                                  $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " +
+                                  $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+                            queryActive(sql);
+                        }
 
-                        queryActive(sql);
+                        // insert data. (multi)         
+                        else {
+                            DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
+                            TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
+                            int dayTemp = temp.Days;
+                            bool oncemessage = true;
+
+                            if(dayTemp > 0) {
+                                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
+
+                                    // DB Check 
+                                    string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
+                                    sql = "select text, active from calendarlist where " +
+                                          $"year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
+                                          $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+
+                                    dbConnect.Open();
+                                    SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+                                    SQLiteDataReader reader = command.ExecuteReader();
+
+                                    // data is already exist. 
+                                    if (reader.Read()) {
+                                        reader.Close();
+                                        dbConnect.Close();
+                                        if(oncemessage) MessageBox.Show("Existing data was maintained due to overlapping schedules.");
+                                        oncemessage = false;
+                                    }
+
+                                    // data is not already exist. 
+                                    else {
+                                        
+                                        reader.Close();
+                                        dbConnect.Close();
+                                        
+                                        sql = $"insert into calendarlist values " +
+                                                $"({curDateStr[0]}, {curDateStr[1]}, {curDateStr[2]}, " +
+                                                $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+
+                                        dbConnect.Open();
+                                        command = new SQLiteCommand(sql, dbConnect);
+                                        command.ExecuteNonQuery();
+                                        dbConnect.Close();
+                                    }
+                                }
+                                calendar.changeCalendar();
+                                calendar.refreshAlarm();
+                                Close();
+                                return;
+                            }
+
+                            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
+                        }
                     }
 
 
@@ -85,12 +141,62 @@ namespace CalendarWinForm
                         // overlap alarm check. 
                         if (!overlapCheck(sql, true)) return;
 
-                        // update data. 
-                        sql = "update calendarlist set (sethour, setminute, text, active) = " + 
-                            $"({numericUpDown_setHour.Value},{numericUpDown_setMinute.Value},'{textBox_calendarText.Text}',{checkBox_checkAlarm.Checked}) " +
-                            $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} AND sethour = {original_hour} AND setminute = {original_minute}";
-                        
-                        queryActive(sql);
+                        // update data. (normal)        
+                        if (!checkBox_multiMode.Checked) {
+                            sql = "update calendarlist set (sethour, setminute, text, active) = " +
+                                $"({numericUpDown_setHour.Value},{numericUpDown_setMinute.Value},'{textBox_calendarText.Text}',{checkBox_checkAlarm.Checked}) " +
+                                $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} AND sethour = {original_hour} AND setminute = {original_minute}";
+                            queryActive(sql);
+                        }
+
+                        // update data. (multi)         
+                        else {
+                            DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
+                            TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
+                            int dayTemp = temp.Days;
+
+                            if(dayTemp > 0) {
+                                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
+
+                                    // DB Check
+                                    string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
+                                    sql = "select text, active from calendarlist where " +
+                                            $"year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
+                                            $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+
+                                    dbConnect.Open();
+                                    SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+                                    SQLiteDataReader reader = command.ExecuteReader();
+
+                                    // data is already exist. 
+                                    if (reader.Read()) {
+                                        reader.Close();
+                                        dbConnect.Close();
+
+                                        sql = "update calendarlist set (text, active) = " +
+                                            $"('{textBox_calendarText.Text}', {checkBox_checkAlarm.Checked}) " +
+                                            $"where year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
+                                            $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+
+                                        dbConnect.Open();
+                                        command = new SQLiteCommand(sql, dbConnect);
+                                        command.ExecuteNonQuery();
+                                        dbConnect.Close();
+                                    }
+
+
+                                    // data is not already exist. 
+                                    else { reader.Close(); dbConnect.Close();}
+
+                                }
+                            }
+                            calendar.changeCalendar();
+                            calendar.refreshAlarm();
+                            Close();
+                            return;
+                        }
+
+
                     }
                 }
                 catch (Exception exc) {

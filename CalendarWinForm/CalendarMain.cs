@@ -266,11 +266,11 @@ namespace CalendarWinForm {
             int temp = selectDay;
             selectDay = int.Parse(e.End.ToString("dd"));
 
-            cval = selectDay - cval;
-            if (cval == 0) return;
-
             if (int.Parse(e.Start.Year.ToString()) == selectYear &&
                 int.Parse(e.Start.Month.ToString()) == selectMonth) {
+                cval = selectDay - cval;
+                if (cval == 0) return;
+
                 int[] sat_index = { 13, 20, 27, 34, 41 };
                 int[] sun_index = { 7, 14, 21, 28, 35, 42 };
                 bool correct_sat_sun_index = false;

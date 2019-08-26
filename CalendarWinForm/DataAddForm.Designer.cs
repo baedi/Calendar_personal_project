@@ -140,7 +140,6 @@
             // checkBox_multiMode
             // 
             this.checkBox_multiMode.AutoSize = true;
-            this.checkBox_multiMode.Enabled = false;
             this.checkBox_multiMode.Location = new System.Drawing.Point(17, 77);
             this.checkBox_multiMode.Name = "checkBox_multiMode";
             this.checkBox_multiMode.Size = new System.Drawing.Size(109, 16);
