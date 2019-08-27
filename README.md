@@ -1,6 +1,5 @@
 # Calendar_personal_project 
-
-Using C# WinForm to Implement a Calendar Program
+ - Using C# WinForm to Implement a Calendar Program
 ---------------------------------------
 
 ## Calendar program
@@ -50,10 +49,9 @@ Using C# WinForm to Implement a Calendar Program
  #### 11 
  - 일정 다중 추가, 수정 기능 구현 완료 (Complete implementation to add or modify schedules at once)
 
-
-### 확장할 기능들 목록
- + 일정 한꺼번에 정하기 (특정 날짜 범위 설정 기능)
- + 데이터 입력 창 폼 조절 비활성화시키기
+ #### 12
+ - 다중 삭제 기능 추가 (Add multiple deletions)
+ - 쿼리문 관련 코드 정리 (Clean up the code :: all sql query -> QueryList class)
 
 ---------------------------------------
 
@@ -86,6 +84,7 @@ Using C# WinForm to Implement a Calendar Program
  - (리소스 이미지 로드) https://akinokaze.tistory.com/201
  - (png -> ico) https://www.hipdf.com/kr/png-to-ico
  - (두 DateTime '일'수 차이 구하기) https://nicebury.tistory.com/60
+ - (ListView 항목 복수 선택) https://wwwi.tistory.com/324
 ---------------------------------------
 
 ## Etc.

@@ -44,10 +44,7 @@ namespace CalendarWinForm
             try {
                 isAlarmExist = false;
 
-                sql = $"select * from calendarlist where year >= {int.Parse(DateTime.Now.ToString("yyyy"))} AND " +
-                      $"month >= {int.Parse(DateTime.Now.ToString("MM"))} AND " +
-                      $"day >= {int.Parse(DateTime.Now.ToString("dd"))} " +
-                      "order by year, month, day, sethour, setminute ASC";
+                sql = QueryList.nextAlarmImport(DateTime.Now.ToString("yyyy"), DateTime.Now.ToString("MM"), DateTime.Now.ToString("dd"));
 
                 dbconnect.Open();
                 dbcommand = new SQLiteCommand(sql, dbconnect);

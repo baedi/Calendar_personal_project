@@ -4,8 +4,7 @@ using System.Data.SQLite;
 using System.IO;
 
 namespace CalendarWinForm {
-    public partial class Form_Calendar_main : Form
-    {
+    public partial class Form_Calendar_main : Form {
 
         // variable.                                            
         private ThreadManager tManager;
@@ -36,7 +35,7 @@ namespace CalendarWinForm {
             addForm.setDbConnect(dbConnect);
 
             if (!File.Exists(path + dbFileName)) {
-                string table = "create table calendarlist (year INT, month INT, day INT, sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN)";
+                string table = QueryList.createTableSQL();
                 dbCommand = new SQLiteCommand(table, dbConnect);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
@@ -53,7 +52,6 @@ namespace CalendarWinForm {
 
             // Panel setting.                                   
             for (int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
-
 
             // Current date setting. 
             selectDay = int.Parse(DateTime.Now.ToString("dd"));
@@ -94,18 +92,15 @@ namespace CalendarWinForm {
             dbConnect.Open();
 
             for (int row = 1, boxCount = 0, dayCount = 1; row <= 6; row = row + 1)
-                for (int col = 0; col < 7; col = col + 1)
-                {
+                for (int col = 0; col < 7; col = col + 1) {
 
-                    if (blankCount > 0 || dayCount > maxDays)
-                    {
+                    if (blankCount > 0 || dayCount > maxDays) {
                         gbox[boxCount].BackColor = System.Drawing.SystemColors.InactiveCaptionText;
                         gbox[boxCount].TabStop = false;
                         blankCount = blankCount - 1;
                     }
 
-                    else
-                    {
+                    else {
                         string[] dateStr = new string[3];
                         string sql;
 
@@ -134,8 +129,7 @@ namespace CalendarWinForm {
                         gbox[boxCount].Items.Insert(0, dayCount);
 
                         int moreCount = 0;
-                        for (int count = 1; reader.Read(); count = count + 1)
-                        {
+                        for (int count = 1; reader.Read(); count = count + 1) {
                             if (count >= 4) moreCount = moreCount + 1;
                             else gbox[boxCount].Items.Insert(count, reader["text"].ToString());
                         }
@@ -171,9 +165,8 @@ namespace CalendarWinForm {
 
 
         // database current day calendar import.                
-        public void calendarListRefresh()
-        {
-            string sql = $"select sethour, setminute, text, active from calendarlist where year = {selectYear} AND month = {selectMonth} AND day = {selectDay} order by sethour, setminute ASC;";
+        public void calendarListRefresh() {
+            string sql = QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay);
             dbConnect.Open();
             listView_Schedule.Items.Clear();
 
@@ -204,9 +197,7 @@ namespace CalendarWinForm {
             selectBox.Items.Clear();
             selectBox.Items.Insert(0, dayItem);
 
-            string sql = "select text from calendarlist " +
-                         $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} " +
-                         "order by sethour, setminute ASC";
+            string sql = QueryList.listBoxRefreshSQL(dateStr);
 
             dbConnect.Open();
             SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
@@ -226,33 +217,21 @@ namespace CalendarWinForm {
 
 
         // delete select database.                              
-        private void deleteDBdata()
-        {
+        private void deleteDBdata(int index) {
             string[] splitstr = new string[2];
             int[] datetemp = new int[2];
-            splitstr = listView_Schedule.SelectedItems[0].Text.Split(':');
+            splitstr = listView_Schedule.Items[index].Text.Split(':');
             datetemp[0] = int.Parse(splitstr[0]);
             datetemp[1] = int.Parse(splitstr[1]);
 
             // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
 
-            string sql = $"delete from calendarlist where year = {selectYear} AND month = {selectMonth} AND day = {selectDay} AND sethour = {datetemp[0]} AND setminute = {datetemp[1]}";
+            string sql = QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp);
             dbConnect.Open();
 
             dbCommand = new SQLiteCommand(sql, dbConnect);
             dbCommand.ExecuteNonQuery();
             dbConnect.Close();
-
-            //changeCalendar();
-            // gbox[gbox_index].Items.RemoveAt(calendar_index + 1);
-            string[] tempStr = new string[3];
-            tempStr[0] = selectYear.ToString();
-            tempStr[1] = selectMonth.ToString();
-            tempStr[2] = selectDay.ToString();
-            selectBoxDataRefresh(gbox[gbox_index], tempStr);
-
-
-            calendarListRefresh();
         }
 
 
@@ -260,8 +239,7 @@ namespace CalendarWinForm {
 
 
         // calendar widget Event.                               
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
-        {
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) {
             int cval = selectDay;
             int temp = selectDay;
             selectDay = int.Parse(e.End.ToString("dd"));
@@ -326,16 +304,13 @@ namespace CalendarWinForm {
 
 
         // click location check Event. (main calender click)    
-        private void panel_MonthList_MouseDown(object sender, MouseEventArgs e)
-        {
-            for (int count = 0; count < gbox.Length; count++)
-            {
+        private void panel_MonthList_MouseDown(object sender, MouseEventArgs e) {
+            for (int count = 0; count < gbox.Length; count++) {
                 if (gbox[count].Location.X <= e.X &&
                     gbox[count].Location.Y <= e.Y &&
                     gbox[count].Location.X + gbox[count].Size.Width > e.X &&
                     gbox[count].Location.Y + gbox[count].Size.Height > e.Y &&
-                    gbox[count].TabStop == true)
-                {
+                    gbox[count].TabStop == true) {
 
                     DateTime temp = new DateTime();
                     monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
@@ -350,23 +325,20 @@ namespace CalendarWinForm {
 
 
         // schedule click Event.                                
-        private void listView_Schedule_Click(object sender, EventArgs e)
-        {
+        private void listView_Schedule_Click(object sender, EventArgs e) {
             foreach (int getIndex in listView_Schedule.SelectedIndices) calendar_index = getIndex;
             button_modifySch.Enabled = true;
             button_deleteSch.Enabled = true;
         }
 
-        private void listView_Schedule_DoubleClick(object sender, EventArgs e)
-        {
+        private void listView_Schedule_DoubleClick(object sender, EventArgs e) {
             foreach (int getIndex in listView_Schedule.SelectedIndices)
                 MessageBox.Show(getIndex.ToString());
         }
 
 
         // "ADD" button click Event.                            
-        private void button_addSch_Click(object sender, EventArgs e)
-        {
+        private void button_addSch_Click(object sender, EventArgs e) {
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm.gboxSetting(gbox[gbox_index]);
             addForm.setDbConnect(dbConnect);
@@ -375,8 +347,7 @@ namespace CalendarWinForm {
 
 
         // "Modify" button click Event.                         
-        private void button_modifySch_Click(object sender, EventArgs e)
-        {
+        private void button_modifySch_Click(object sender, EventArgs e) {
             string[] datalist = new string[2];
             string text = listView_Schedule.SelectedItems[0].SubItems[1].Text.ToString();
             bool actCheck = listView_Schedule.SelectedItems[0].SubItems[2].Text == "Y" ? true : false;
@@ -392,10 +363,18 @@ namespace CalendarWinForm {
 
 
         // "Delete" button click Event.                         
-        private void button_deleteSch_Click(object sender, EventArgs e)
-        {
+        private void button_deleteSch_Click(object sender, EventArgs e) {
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                deleteDBdata();
+                for(int count = listView_Schedule.Items.Count - 1; count >= 0 ; count = count - 1) 
+                    if (listView_Schedule.Items[count].Selected == true) deleteDBdata(count);   
+                
+                string[] tempStr = new string[3];
+                tempStr[0] = selectYear.ToString();
+                tempStr[1] = selectMonth.ToString();
+                tempStr[2] = selectDay.ToString();
+                selectBoxDataRefresh(gbox[gbox_index], tempStr);
+                calendarListRefresh();
+
                 refreshAlarm();
             }
         }
@@ -403,27 +382,16 @@ namespace CalendarWinForm {
 
         // "Alarm ON button click Event.                        
         private void button_alarmon_Click(object sender, EventArgs e) {
-            if (alarm_onCheck) {
-                tManager.alarmOnOff_check(alarm_onCheck = false);
-                button_alarmon.Text = "OFF";
-            }
-
-            else if (!alarm_onCheck) {
-                tManager.alarmOnOff_check(alarm_onCheck = true);
-                button_alarmon.Text = "ON";
-            }
-            
+            if (alarm_onCheck) { tManager.alarmOnOff_check(alarm_onCheck = false); button_alarmon.Text = "OFF"; }
+            else if (!alarm_onCheck) { tManager.alarmOnOff_check(alarm_onCheck = true); button_alarmon.Text = "ON"; }
         }
 
 
         // program close Event.                                 
-        private void Form_Calender_main_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
+        private void Form_Calender_main_FormClosed(object sender, FormClosedEventArgs e) {
+            try {
                 tManager.setThreadEnable(false);
-                if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped)
-                    tManager.getThreadManager().Join();
+                if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
             }
             catch (NullReferenceException exc) { }
         }
@@ -431,6 +399,5 @@ namespace CalendarWinForm {
 
         // get, set Method. 
         public void refreshAlarm() { tManager.nextAlarmReadyRefresh(); }
-
     }
 }

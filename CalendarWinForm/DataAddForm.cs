@@ -64,7 +64,7 @@ namespace CalendarWinForm
             if (length <= 20 && length > 0) {
                 try {
 
-                    sql = $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
+                    sql = QueryList.overlapCheckSQL(dateStr);
 
                     // add schedule mode.
                     if (!modifyMode) {
@@ -74,9 +74,7 @@ namespace CalendarWinForm
 
                         // insert data. (normal)        
                         if (!checkBox_multiMode.Checked) {
-                            sql = $"insert into calendarlist values " +
-                                  $"({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, " +
-                                  $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+                            sql = QueryList.insertSQL(dateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                             queryActive(sql);
                         }
 
@@ -92,9 +90,7 @@ namespace CalendarWinForm
 
                                     // DB Check 
                                     string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    sql = "select text, active from calendarlist where " +
-                                          $"year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
-                                          $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+                                    sql = QueryList.overlapMultiCheckSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value);
 
                                     dbConnect.Open();
                                     SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
@@ -114,9 +110,7 @@ namespace CalendarWinForm
                                         reader.Close();
                                         dbConnect.Close();
                                         
-                                        sql = $"insert into calendarlist values " +
-                                                $"({curDateStr[0]}, {curDateStr[1]}, {curDateStr[2]}, " +
-                                                $"{numericUpDown_setHour.Value}, {numericUpDown_setMinute.Value}, \"{textBox_calendarText.Text}\", {checkBox_checkAlarm.Checked})";
+                                        sql = QueryList.insertSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
 
                                         dbConnect.Open();
                                         command = new SQLiteCommand(sql, dbConnect);
@@ -125,6 +119,7 @@ namespace CalendarWinForm
                                     }
                                 }
                                 calendar.changeCalendar();
+                                calendar.calendarListRefresh();
                                 calendar.refreshAlarm();
                                 Close();
                                 return;
@@ -143,9 +138,7 @@ namespace CalendarWinForm
 
                         // update data. (normal)        
                         if (!checkBox_multiMode.Checked) {
-                            sql = "update calendarlist set (sethour, setminute, text, active) = " +
-                                $"({numericUpDown_setHour.Value},{numericUpDown_setMinute.Value},'{textBox_calendarText.Text}',{checkBox_checkAlarm.Checked}) " +
-                                $"where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} AND sethour = {original_hour} AND setminute = {original_minute}";
+                            sql = QueryList.updateSQL(dateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked, original_hour, original_minute);
                             queryActive(sql);
                         }
 
@@ -160,9 +153,7 @@ namespace CalendarWinForm
 
                                     // DB Check
                                     string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    sql = "select text, active from calendarlist where " +
-                                            $"year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
-                                            $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+                                    sql = QueryList.overlapMultiCheckSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value);
 
                                     dbConnect.Open();
                                     SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
@@ -173,10 +164,7 @@ namespace CalendarWinForm
                                         reader.Close();
                                         dbConnect.Close();
 
-                                        sql = "update calendarlist set (text, active) = " +
-                                            $"('{textBox_calendarText.Text}', {checkBox_checkAlarm.Checked}) " +
-                                            $"where year = {int.Parse(curDateStr[0])} AND month = {int.Parse(curDateStr[1])} AND day = {int.Parse(curDateStr[2])} " +
-                                            $"AND sethour = {numericUpDown_setHour.Value} AND setminute = {numericUpDown_setMinute.Value}";
+                                        sql = QueryList.updateMultiSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
 
                                         dbConnect.Open();
                                         command = new SQLiteCommand(sql, dbConnect);
@@ -191,6 +179,7 @@ namespace CalendarWinForm
                                 }
                             }
                             calendar.changeCalendar();
+                            calendar.calendarListRefresh();
                             calendar.refreshAlarm();
                             Close();
                             return;

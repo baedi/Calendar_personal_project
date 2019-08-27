@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryList.cs" />
     <Compile Include="ThreadManager.cs" />
     <EmbeddedResource Include="AlarmMessage.resx">
       <DependentUpon>AlarmMessage.cs</DependentUpon>
