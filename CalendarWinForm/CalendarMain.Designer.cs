@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
@@ -54,7 +55,11 @@
             this.label_YearMonth = new System.Windows.Forms.Label();
             this.button_alarmon = new System.Windows.Forms.Button();
             this.label_alarmon = new System.Windows.Forms.Label();
+            this.trayicon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_MonthList.SuspendLayout();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel_MonthList
@@ -221,9 +226,9 @@
             this.columnHeader_data,
             this.columnHeader_active});
             this.listView_Schedule.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem3});
             this.listView_Schedule.Location = new System.Drawing.Point(843, 209);
             this.listView_Schedule.Name = "listView_Schedule";
             this.listView_Schedule.Size = new System.Drawing.Size(220, 357);
@@ -316,6 +321,30 @@
             this.label_alarmon.TabIndex = 15;
             this.label_alarmon.Text = "Alarm sound : ";
             // 
+            // trayicon
+            // 
+            this.trayicon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.trayicon.ContextMenuStrip = this.contextMenuStrip;
+            this.trayicon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayicon.Icon")));
+            this.trayicon.Text = "baedi_calendar";
+            this.trayicon.Visible = true;
+            this.trayicon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayicon_MouseDoubleClick);
+            // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            this.contextMenuStrip.ShowCheckMargin = true;
+            this.contextMenuStrip.Size = new System.Drawing.Size(116, 26);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // Form_Calendar_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -340,9 +369,10 @@
             this.MaximizeBox = false;
             this.Name = "Form_Calendar_main";
             this.Text = "Calendar";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_Calender_main_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Calendar_main_FormClosing);
             this.panel_MonthList.ResumeLayout(false);
             this.panel_MonthList.PerformLayout();
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -371,6 +401,9 @@
         private System.Windows.Forms.Label label_YearMonth;
         private System.Windows.Forms.Button button_alarmon;
         private System.Windows.Forms.Label label_alarmon;
+        private System.Windows.Forms.NotifyIcon trayicon;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

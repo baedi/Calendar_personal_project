@@ -20,6 +20,7 @@ namespace CalendarWinForm {
         private bool alarm_onCheck;
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
+        private bool real_exit;
 
 
         // main method.                                         
@@ -388,16 +389,29 @@ namespace CalendarWinForm {
 
 
         // program close Event.                                 
-        private void Form_Calender_main_FormClosed(object sender, FormClosedEventArgs e) {
-            try {
-                tManager.setThreadEnable(false);
-                if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
+        private void Form_Calendar_main_FormClosing(object sender, FormClosingEventArgs e) {
+            if (real_exit) {
+                try {
+                    tManager.setThreadEnable(false);
+                    if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
+                } catch (NullReferenceException exc) { }
             }
-            catch (NullReferenceException exc) { }
+
+            else {
+                e.Cancel = true;
+                Visible = false;
+            }
         }
 
 
         // get, set Method. 
         public void refreshAlarm() { tManager.nextAlarmReadyRefresh(); }
+
+
+        // trayicon Event. 
+        private void trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
+
+
     }
 }

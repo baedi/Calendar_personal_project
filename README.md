@@ -53,6 +53,11 @@
  - 다중 삭제 기능 추가 (Add multiple deletions)
  - 쿼리문 관련 코드 정리 (Clean up the code :: all sql query -> QueryList class)
 
+ #### 13
+ - 트레이 아이콘 추가 (Add tray icon)
+  - 앞으로 트레이 아이콘에서 마우스 우클릭 후 Exit를 클릭하면 완전히 끌 수 있다. (Forward, click on the tray icon and click Exit to turn it off completely.)
+  - 닫기를 누르면 창이 닫히지만 프로그램은 계속 동작함. (When you click Close, the window closes, but the program continues to work.)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
@@ -85,6 +90,7 @@
  - (png -> ico) https://www.hipdf.com/kr/png-to-ico
  - (두 DateTime '일'수 차이 구하기) https://nicebury.tistory.com/60
  - (ListView 항목 복수 선택) https://wwwi.tistory.com/324
+ - (트레이 아이콘) https://www.youtube.com/watch?v=TgDKcdC7X3E
 ---------------------------------------
 
 ## Etc.
