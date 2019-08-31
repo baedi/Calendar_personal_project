@@ -11,6 +11,11 @@
             return $"insert into calendarlist values ({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, {setH}, {setM}, \"{text}\", {alaEnable})";
         }
 
+        // all data check 
+        public static string allDataSQL() {
+            return "select * from calendarlist order by year, month, day, sethour, setminute ASC";
+        }
+
 
         // listview refresh sql. 
         public static string listviewRefreshSQL(int setY, int setM, int setD) {

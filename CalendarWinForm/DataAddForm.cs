@@ -10,7 +10,7 @@ namespace CalendarWinForm
         // Instance variable.       
         private SQLiteConnection dbConnect;
         private Label date;
-        private Form_Calendar_main calendar;
+        private CalendarMain calendar;
         private bool modifyMode;
         private string[] dateStr;
 
@@ -23,7 +23,7 @@ namespace CalendarWinForm
         private DateTime endDateTemp;
 
         // Constructor.             
-        public DataAddForm(Label date, Form_Calendar_main calendar, bool mode) {
+        public DataAddForm(Label date, CalendarMain calendar, bool mode) {
             InitializeComponent();
             this.date = date;
             this.calendar = calendar;

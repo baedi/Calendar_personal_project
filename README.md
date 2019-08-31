@@ -58,6 +58,10 @@
   - 앞으로 트레이 아이콘에서 마우스 우클릭 후 Exit를 클릭하면 완전히 끌 수 있다. (Forward, click on the tray icon and click Exit to turn it off completely.)
   - 닫기를 누르면 창이 닫히지만 프로그램은 계속 동작함. (When you click Close, the window closes, but the program continues to work.)
 
+ #### 14
+ - 모든 알람 리스트 뷰 추가 (삭제, 갱신 구현) (Add all alarm list views (Includes deletion and modification.))
+ 
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

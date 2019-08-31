@@ -125,6 +125,12 @@
       <DependentUpon>DataAddForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DataManage.cs" />
+    <Compile Include="DataView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataView.Designer.cs">
+      <DependentUpon>DataView.cs</DependentUpon>
+    </Compile>
     <Compile Include="dllResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DataAddForm.resx">
       <DependentUpon>DataAddForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataView.resx">
+      <DependentUpon>DataView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dllResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

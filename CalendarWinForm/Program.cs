@@ -30,7 +30,7 @@ namespace CalendarWinForm {
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Form_Calendar_main());
+                Application.Run(new CalendarMain());
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
 

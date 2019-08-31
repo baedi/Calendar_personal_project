@@ -4,7 +4,7 @@ using System.Data.SQLite;
 using System.IO;
 
 namespace CalendarWinForm {
-    public partial class Form_Calendar_main : Form {
+    public partial class CalendarMain : Form {
 
         // variable.                                            
         private ThreadManager tManager;
@@ -12,6 +12,7 @@ namespace CalendarWinForm {
         private DataAddForm addForm;
         private SQLiteConnection dbConnect;
         private SQLiteCommand dbCommand;
+        private DataView dataview;
         private int selectYear;
         private int selectMonth;
         private int selectDay;
@@ -24,7 +25,7 @@ namespace CalendarWinForm {
 
 
         // main method.                                         
-        public Form_Calendar_main() {
+        public CalendarMain() {
             InitializeComponent();
             alarm_onCheck = true;
             gbox = new ListBox[42];
@@ -36,8 +37,7 @@ namespace CalendarWinForm {
             addForm.setDbConnect(dbConnect);
 
             if (!File.Exists(path + dbFileName)) {
-                string table = QueryList.createTableSQL();
-                dbCommand = new SQLiteCommand(table, dbConnect);
+                dbCommand = new SQLiteCommand(QueryList.createTableSQL(), dbConnect);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
                 MessageBox.Show("New calendar db created.");
@@ -49,6 +49,9 @@ namespace CalendarWinForm {
 
             // Thread setting. 
             tManager = new ThreadManager(label_Time, dbConnect);
+
+            // DataView setting.
+            dataview = new DataView(dbConnect, this);
 
 
             // Panel setting.                                   
@@ -103,8 +106,6 @@ namespace CalendarWinForm {
 
                     else {
                         string[] dateStr = new string[3];
-                        string sql;
-
 
                         // Calender Panel color setting.
                         if (DateTime.Now.ToString("yyyy-MM") == (selectYear.ToString() + "-" + selectMonth.ToString("00")) && dayCount == int.Parse(DateTime.Now.ToString("dd")))
@@ -124,8 +125,7 @@ namespace CalendarWinForm {
                         dateStr[1] = int.Parse(dateStr[1]).ToString();
                         dateStr[2] = int.Parse(dateStr[2]).ToString();
 
-                        sql = $"select text from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} order by sethour, setminute ASC";
-                        dbCommand = new SQLiteCommand(sql, dbConnect);
+                        dbCommand = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), dbConnect);
                         SQLiteDataReader reader = dbCommand.ExecuteReader();
                         gbox[boxCount].Items.Insert(0, dayCount);
 
@@ -154,6 +154,7 @@ namespace CalendarWinForm {
             gbox_index = selectDay + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
             //MessageBox.Show("Refresh Database");
+            dataview.refreshData();
         }
 
 
@@ -167,11 +168,10 @@ namespace CalendarWinForm {
 
         // database current day calendar import.                
         public void calendarListRefresh() {
-            string sql = QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay);
             dbConnect.Open();
             listView_Schedule.Items.Clear();
 
-            dbCommand = new SQLiteCommand(sql, dbConnect);
+            dbCommand = new SQLiteCommand(QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay), dbConnect);
             SQLiteDataReader reader = dbCommand.ExecuteReader();
 
             while (reader.Read()) {
@@ -189,6 +189,8 @@ namespace CalendarWinForm {
 
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
+
+            dataview.refreshData();
         }
 
 
@@ -198,10 +200,8 @@ namespace CalendarWinForm {
             selectBox.Items.Clear();
             selectBox.Items.Insert(0, dayItem);
 
-            string sql = QueryList.listBoxRefreshSQL(dateStr);
-
             dbConnect.Open();
-            SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+            SQLiteCommand command = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), dbConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             int moreCount = 0;
@@ -226,11 +226,9 @@ namespace CalendarWinForm {
             datetemp[1] = int.Parse(splitstr[1]);
 
             // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
-
-            string sql = QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp);
             dbConnect.Open();
 
-            dbCommand = new SQLiteCommand(sql, dbConnect);
+            dbCommand = new SQLiteCommand(QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp), dbConnect);
             dbCommand.ExecuteNonQuery();
             dbConnect.Close();
         }
@@ -403,6 +401,11 @@ namespace CalendarWinForm {
             }
         }
 
+        // data view mode. 
+        private void button_dataview_Click(object sender, EventArgs e) {
+            try { dataview.Show(); }
+            catch (ObjectDisposedException exc) { dataview = new DataView(dbConnect,  this); dataview.Show(); }
+        }
 
         // get, set Method. 
         public void refreshAlarm() { tManager.nextAlarmReadyRefresh(); }
@@ -411,7 +414,5 @@ namespace CalendarWinForm {
         // trayicon Event. 
         private void trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
-
-
     }
 }

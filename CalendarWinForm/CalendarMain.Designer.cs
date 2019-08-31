@@ -1,6 +1,6 @@
 ﻿namespace CalendarWinForm
 {
-    partial class Form_Calendar_main
+    partial class CalendarMain
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Calendar_main));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalendarMain));
             this.panel_MonthList = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -58,6 +58,7 @@
             this.trayicon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.button_dataview = new System.Windows.Forms.Button();
             this.panel_MonthList.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -226,9 +227,9 @@
             this.columnHeader_data,
             this.columnHeader_active});
             this.listView_Schedule.HideSelection = false;
-            listViewItem3.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem2});
             this.listView_Schedule.Location = new System.Drawing.Point(843, 209);
             this.listView_Schedule.Name = "listView_Schedule";
             this.listView_Schedule.Size = new System.Drawing.Size(220, 357);
@@ -341,9 +342,19 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // button_dataview
+            // 
+            this.button_dataview.Location = new System.Drawing.Point(967, 184);
+            this.button_dataview.Name = "button_dataview";
+            this.button_dataview.Size = new System.Drawing.Size(96, 23);
+            this.button_dataview.TabIndex = 16;
+            this.button_dataview.Text = "Data view";
+            this.button_dataview.UseVisualStyleBackColor = true;
+            this.button_dataview.Click += new System.EventHandler(this.button_dataview_Click);
             // 
             // Form_Calendar_main
             // 
@@ -354,6 +365,7 @@
             this.BackgroundImage = global::CalendarWinForm.Properties.Resources.wallpaper_3584226_1280;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1081, 607);
+            this.Controls.Add(this.button_dataview);
             this.Controls.Add(this.label_alarmon);
             this.Controls.Add(this.button_alarmon);
             this.Controls.Add(this.label_YearMonth);
@@ -404,6 +416,7 @@
         private System.Windows.Forms.NotifyIcon trayicon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.Button button_dataview;
     }
 }
 
