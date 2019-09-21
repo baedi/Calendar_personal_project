@@ -20,20 +20,25 @@ namespace CalendarWinForm
         }
 
 
-        // Event. 
+        /*** Event. ***/
         private void button_refresh_Click(object sender, EventArgs e){ refreshData(); }
         private void button_add_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Add mode"; }
         private void button_modify_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Modify mode"; }
         private void button_delete_Click(object sender, EventArgs e) { deleteMessage(); }
         private void button_done_Click(object sender, EventArgs e) {  }
         private void DataView_Load(object sender, EventArgs e) { refreshData(); }
-        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) {
+        private void CheckBox_isMulti_CheckedChanged(object sender, EventArgs e) {
+            if (this.checkBox_isMulti.Checked == true) { this.dateTimePicker_start.Enabled = true; this.dateTimePicker_end.Enabled = true;  }
+            else { this.dateTimePicker_start.Enabled = false; this.dateTimePicker_end.Enabled = false;  }
+        }
+        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) { 
             //button_modify.Enabled = true;
             button_delete.Enabled = true;
         }
 
 
-        // Method List. 
+
+        /*** Method List. ***/
         public void refreshData() {
             listView_allDatalist.Items.Clear();
             groupBox_mode.Text = "Unselected";
@@ -59,11 +64,28 @@ namespace CalendarWinForm
 
             button_modify.Enabled = false;
             button_delete.Enabled = false;
+            buttonClickDisableChanged();
         }
 
 
+        // Edit enable method. 
         private void buttonClickEnableChanged() {
+            this.checkBox_isMulti.Enabled = true;
+            this.numericUpDown_hour.Enabled = true;
+            this.numericUpDown_minute.Enabled = true;
+            this.textBox_text.Enabled = true;
+            this.checkBox_alarm.Enabled = true;
+        }
 
+        // Edit disable method. 
+        private void buttonClickDisableChanged() {
+            this.checkBox_isMulti.Enabled = false;      this.checkBox_isMulti.Checked = false;
+            this.numericUpDown_hour.Enabled = false;    this.numericUpDown_hour.Value = 0;
+            this.numericUpDown_minute.Enabled = false;  this.numericUpDown_minute.Value = 0;
+            this.textBox_text.Enabled = false;          this.textBox_text.Text = "";
+            this.checkBox_alarm.Enabled = false;        this.checkBox_alarm.Checked = false;
+            this.dateTimePicker_start.Value = DateTime.Now;
+            this.dateTimePicker_end.Value = DateTime.Now.AddDays(3);
         }
 
 

@@ -60,6 +60,9 @@
 
  #### 14
  - 모든 알람 리스트 뷰 추가 (삭제, 갱신 구현) (Add all alarm list views (Includes deletion and modification.))
+
+ #### 15
+ - DataView 일부 기능 구현 (Implementing some features of DataView)
  
 
 ---------------------------------------

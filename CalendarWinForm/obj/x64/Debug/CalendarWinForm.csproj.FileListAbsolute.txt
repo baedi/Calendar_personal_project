@@ -37,3 +37,24 @@ C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinFo
 C:\Users\eniro\source\repos\Calendar\CalendarWinForm\obj\x64\Debug\CalendarWinForm.application
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.DataView.resources
 D:\백업\Projects (문서)\CalendarWinForm\CalendarWinForm\obj\x64\Debug\CalendarWinForm.CalendarMain.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\CalendarWinForm.exe.config
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\CalendarWinForm.exe.manifest
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\CalendarWinForm.application
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\CalendarWinForm.exe
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\CalendarWinForm.pdb
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\bin\x64\Debug\System.Data.SQLite.dll
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csprojAssemblyReference.cache
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.AlarmMessage.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.CalendarMain.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.DataAddForm.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.DataView.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.dllResource.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.Properties.Resources.resources
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csproj.GenerateResource.cache
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csproj.CoreCompileInputs.cache
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.TrustInfo.xml
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe.manifest
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.application
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csproj.CopyComplete
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.pdb
