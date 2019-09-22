@@ -414,5 +414,11 @@ namespace CalendarWinForm {
         // trayicon Event. 
         private void trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
+        private void DataViewToolStripMenuItem_Click(object sender, EventArgs e){ button_dataview_Click(null, null);  }
+        private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e){
+            if (alarmONToolStripMenuItem.Checked == false) { alarmONToolStripMenuItem.Checked = true; alarmONToolStripMenuItem.Text = "Alarm : ON"; }
+            else { alarmONToolStripMenuItem.Checked = false; alarmONToolStripMenuItem.Text = "Alarm : OFF"; }
+            button_alarmon_Click(null, null);
+        }
     }
 }

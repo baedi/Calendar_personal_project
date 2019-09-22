@@ -51,6 +51,12 @@
             return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
         }
 
+        // overlap check sql(test).
+        public static string overlapCheckSQL2(string[] dateStr, decimal setH, decimal setM){
+            return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]} " +
+                $"AND sethour = {setH} AND setminute = {setM}";
+        }
+
 
         // overlap check sql (multimode). 
         public static string overlapMultiCheckSQL(string[] curDateStr, decimal setH, decimal setM) {

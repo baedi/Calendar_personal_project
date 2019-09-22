@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.Windows.Forms;
+using System.Text;
 
 namespace CalendarWinForm
 {
@@ -25,20 +26,53 @@ namespace CalendarWinForm
         private void button_add_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Add mode"; }
         private void button_modify_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Modify mode"; }
         private void button_delete_Click(object sender, EventArgs e) { deleteMessage(); }
-        private void button_done_Click(object sender, EventArgs e) {  }
         private void DataView_Load(object sender, EventArgs e) { refreshData(); }
+
         private void CheckBox_isMulti_CheckedChanged(object sender, EventArgs e) {
-            if (this.checkBox_isMulti.Checked == true) { this.dateTimePicker_start.Enabled = true; this.dateTimePicker_end.Enabled = true;  }
-            else { this.dateTimePicker_start.Enabled = false; this.dateTimePicker_end.Enabled = false;  }
-        }
-        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) { 
-            //button_modify.Enabled = true;
-            button_delete.Enabled = true;
+            if (this.checkBox_isMulti.Checked == true)  this.dateTimePicker_end.Enabled = true;
+            else this.dateTimePicker_end.Enabled = false;
+            
         }
 
+        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) { /*button_modify.Enabled = true; */ button_delete.Enabled = true; }
+        private void button_done_Click(object sender, EventArgs e)
+        {
+            int length;
+
+            length = Encoding.Default.GetBytes(textBox_text.Text).Length;
+
+            if (length <= 20 && length > 0) {
+                if (label_date.Text == "Add mode") addMode();
+                else if (label_date.Text == "Modify mode") modifyMode();
+            }
+
+            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
+        }
+
+        private void DateTimePicker_start_ValueChanged(object sender, EventArgs e) {
+            this.dateTimePicker_end.Value = this.dateTimePicker_start.Value.AddDays(2);
+        }
+
+        private void DateTimePicker_end_ValueChanged(object sender, EventArgs e) {
+            if(this.dateTimePicker_start.Value >= this.dateTimePicker_end.Value) {
+                this.dateTimePicker_end.Value = this.dateTimePicker_start.Value.AddDays(2);
+            }
+        }
 
 
         /*** Method List. ***/
+
+        // select "Add mode"        
+        public void addMode(){
+
+        }
+
+        // select "Modift mode"     
+        public void modifyMode(){
+
+        }
+
+
         public void refreshData() {
             listView_allDatalist.Items.Clear();
             groupBox_mode.Text = "Unselected";
@@ -75,6 +109,8 @@ namespace CalendarWinForm
             this.numericUpDown_minute.Enabled = true;
             this.textBox_text.Enabled = true;
             this.checkBox_alarm.Enabled = true;
+            this.button_done.Enabled = true;
+            this.dateTimePicker_start.Enabled = true;
         }
 
         // Edit disable method. 
@@ -84,8 +120,10 @@ namespace CalendarWinForm
             this.numericUpDown_minute.Enabled = false;  this.numericUpDown_minute.Value = 0;
             this.textBox_text.Enabled = false;          this.textBox_text.Text = "";
             this.checkBox_alarm.Enabled = false;        this.checkBox_alarm.Checked = false;
+            this.button_done.Enabled = false;
+            this.dateTimePicker_start.Enabled = false;
             this.dateTimePicker_start.Value = DateTime.Now;
-            this.dateTimePicker_end.Value = DateTime.Now.AddDays(3);
+            this.dateTimePicker_end.Value = DateTime.Now.AddDays(2);
         }
 
 
@@ -116,7 +154,6 @@ namespace CalendarWinForm
                 cmain.refreshAlarm();
             }
         }
-
 
     }
 }

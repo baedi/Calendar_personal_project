@@ -162,6 +162,7 @@
             this.dateTimePicker_start.Name = "dateTimePicker_start";
             this.dateTimePicker_start.Size = new System.Drawing.Size(202, 25);
             this.dateTimePicker_start.TabIndex = 6;
+            this.dateTimePicker_start.ValueChanged += new System.EventHandler(this.DateTimePicker_start_ValueChanged);
             // 
             // label_time
             // 
@@ -235,6 +236,7 @@
             this.dateTimePicker_end.Name = "dateTimePicker_end";
             this.dateTimePicker_end.Size = new System.Drawing.Size(202, 25);
             this.dateTimePicker_end.TabIndex = 13;
+            this.dateTimePicker_end.ValueChanged += new System.EventHandler(this.DateTimePicker_end_ValueChanged);
             // 
             // checkBox_isMulti
             // 
