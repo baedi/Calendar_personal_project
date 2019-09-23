@@ -42,8 +42,8 @@ namespace CalendarWinForm
             length = Encoding.Default.GetBytes(textBox_text.Text).Length;
 
             if (length <= 20 && length > 0) {
-                if (label_date.Text == "Add mode") addMode();
-                else if (label_date.Text == "Modify mode") modifyMode();
+                if (groupBox_mode.Text.Equals("Add mode")) addMode();
+                else if (groupBox_mode.Text.Equals("Modify mode")) modifyMode();
             }
 
             else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
@@ -65,6 +65,47 @@ namespace CalendarWinForm
         // select "Add mode"        
         public void addMode(){
 
+            string sql;
+            string[] date;
+            SQLiteCommand command;
+
+            if (this.checkBox_isMulti.Checked == false) {
+
+                date = new string[3];
+                date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
+
+                // duplicate check.     
+                sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
+                connect.Open();
+                command = new SQLiteCommand(sql, connect);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                if (reader.Read()) {
+                    MessageBox.Show("Duplicate alarm time.");
+                    reader.Close(); connect.Close(); return;
+                }
+
+                reader.Close();
+                connect.Close();
+
+                // input data.          
+                sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
+                connect.Open();
+                command = new SQLiteCommand(sql, connect);
+                command.ExecuteNonQuery();
+                connect.Close();
+
+                // refresh data         
+                refreshData();
+                cmain.changeCalendar();
+                cmain.calendarListRefresh();
+                cmain.refreshAlarm();
+
+            }
+
+            else {
+                MessageBox.Show("coming soon...");
+            }
         }
 
         // select "Modift mode"     
@@ -119,7 +160,7 @@ namespace CalendarWinForm
             this.numericUpDown_hour.Enabled = false;    this.numericUpDown_hour.Value = 0;
             this.numericUpDown_minute.Enabled = false;  this.numericUpDown_minute.Value = 0;
             this.textBox_text.Enabled = false;          this.textBox_text.Text = "";
-            this.checkBox_alarm.Enabled = false;        this.checkBox_alarm.Checked = false;
+            this.checkBox_alarm.Enabled = false;        this.checkBox_alarm.Checked = true;
             this.button_done.Enabled = false;
             this.dateTimePicker_start.Enabled = false;
             this.dateTimePicker_start.Value = DateTime.Now;

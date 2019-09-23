@@ -68,6 +68,9 @@
  - 트레이 아이콘 탭 기능 추가 (알람 켜기 설정, DataView 표시) ( Add Features to Tray Icon Tab ( Alarm On/Off and DataView ) )
  - DataView 일부 기능 구현 2 (Implementing some features of DataView (part 2))
 
+ #### 17
+ - DataView 알람 추가 기능 구현 완료(단일 알람) (Add an Alarm Add-In in DataView (Single Alarm))
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
