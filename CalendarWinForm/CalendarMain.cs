@@ -318,6 +318,9 @@ namespace CalendarWinForm {
             }
         }
 
+        // double click event. (open DataAddForm)               
+        private void Panel_MonthList_DoubleClick(object sender, EventArgs e) { this.button_addSch_Click(null, null); }
+
 
         // datetime label text changed Event.                   
         private void label_DateTemp_TextChanged(object sender, EventArgs e) { calendarListRefresh(); }
@@ -420,5 +423,6 @@ namespace CalendarWinForm {
             else { alarmONToolStripMenuItem.Checked = false; alarmONToolStripMenuItem.Text = "Alarm : OFF"; }
             button_alarmon_Click(null, null);
         }
+
     }
 }

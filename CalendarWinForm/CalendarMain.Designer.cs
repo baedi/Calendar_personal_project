@@ -57,10 +57,10 @@
             this.label_alarmon = new System.Windows.Forms.Label();
             this.trayicon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.alarmONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_dataview = new System.Windows.Forms.Button();
-            this.dataViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alarmONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel_MonthList.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +96,7 @@
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
             this.panel_MonthList.Size = new System.Drawing.Size(918, 669);
             this.panel_MonthList.TabIndex = 1;
+            this.panel_MonthList.DoubleClick += new System.EventHandler(this.Panel_MonthList_DoubleClick);
             this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_MonthList_MouseDown);
             // 
             // label1
@@ -348,12 +349,28 @@
             this.exitToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.ShowCheckMargin = true;
-            this.contextMenuStrip.Size = new System.Drawing.Size(233, 110);
+            this.contextMenuStrip.Size = new System.Drawing.Size(177, 82);
+            // 
+            // alarmONToolStripMenuItem
+            // 
+            this.alarmONToolStripMenuItem.Checked = true;
+            this.alarmONToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.alarmONToolStripMenuItem.Name = "alarmONToolStripMenuItem";
+            this.alarmONToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.alarmONToolStripMenuItem.Text = "Alarm : ON";
+            this.alarmONToolStripMenuItem.Click += new System.EventHandler(this.AlarmONToolStripMenuItem_Click);
+            // 
+            // dataViewToolStripMenuItem
+            // 
+            this.dataViewToolStripMenuItem.Name = "dataViewToolStripMenuItem";
+            this.dataViewToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.dataViewToolStripMenuItem.Text = "Data view";
+            this.dataViewToolStripMenuItem.Click += new System.EventHandler(this.DataViewToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -367,22 +384,6 @@
             this.button_dataview.Text = "Data view";
             this.button_dataview.UseVisualStyleBackColor = true;
             this.button_dataview.Click += new System.EventHandler(this.button_dataview_Click);
-            // 
-            // dataViewToolStripMenuItem
-            // 
-            this.dataViewToolStripMenuItem.Name = "dataViewToolStripMenuItem";
-            this.dataViewToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
-            this.dataViewToolStripMenuItem.Text = "Data view";
-            this.dataViewToolStripMenuItem.Click += new System.EventHandler(this.DataViewToolStripMenuItem_Click);
-            // 
-            // alarmONToolStripMenuItem
-            // 
-            this.alarmONToolStripMenuItem.Checked = true;
-            this.alarmONToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.alarmONToolStripMenuItem.Name = "alarmONToolStripMenuItem";
-            this.alarmONToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
-            this.alarmONToolStripMenuItem.Text = "Alarm : ON";
-            this.alarmONToolStripMenuItem.Click += new System.EventHandler(this.AlarmONToolStripMenuItem_Click);
             // 
             // CalendarMain
             // 

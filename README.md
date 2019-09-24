@@ -71,6 +71,10 @@
  #### 17
  - DataView 알람 추가 기능 구현 완료(단일 알람) (Add an Alarm Add-In in DataView (Single Alarm))
 
+ #### 18
+ - DataView 알람 추가 기능 구현 완료(다중 알람) (Add an Alarm Add-In in DataView (Multi Alarm))
+ - 달력 더블 클릭 기능 추가 (Add Date Double-click Feature)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

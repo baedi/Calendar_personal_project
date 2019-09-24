@@ -69,24 +69,26 @@ namespace CalendarWinForm
             string[] date;
             SQLiteCommand command;
 
+            date = new string[3];
+            date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
+
+            // duplicate check.     
+            sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
+            connect.Open();
+            command = new SQLiteCommand(sql, connect);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            if (reader.Read()) {
+                MessageBox.Show("Duplicate alarm time.");
+                reader.Close(); connect.Close(); return;
+            }
+
+            reader.Close();
+            connect.Close();
+
+
+            /* normal mode */
             if (this.checkBox_isMulti.Checked == false) {
-
-                date = new string[3];
-                date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
-
-                // duplicate check.     
-                sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
-                connect.Open();
-                command = new SQLiteCommand(sql, connect);
-                SQLiteDataReader reader = command.ExecuteReader();
-
-                if (reader.Read()) {
-                    MessageBox.Show("Duplicate alarm time.");
-                    reader.Close(); connect.Close(); return;
-                }
-
-                reader.Close();
-                connect.Close();
 
                 // input data.          
                 sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
@@ -95,17 +97,53 @@ namespace CalendarWinForm
                 command.ExecuteNonQuery();
                 connect.Close();
 
-                // refresh data         
-                refreshData();
-                cmain.changeCalendar();
-                cmain.calendarListRefresh();
-                cmain.refreshAlarm();
-
             }
 
+
+            /* multi mode */
             else {
-                MessageBox.Show("coming soon...");
+                DateTime temp_nextday = new DateTime(dateTimePicker_start.Value.Ticks);
+                TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-M-d")) - DateTime.Parse(dateTimePicker_start.Value.ToString("yyyy-M-d"));
+                int dayTemp = temp.Days;
+                bool oncemessage = true;
+                
+                // input data (multi).          
+                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
+                    date = new string[3];
+                    date = temp_nextday.ToString("yyyy-M-d").Split('-');
+                    sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
+
+                    connect.Open();
+                    command = new SQLiteCommand(sql, connect);
+                    reader = command.ExecuteReader();
+
+
+                    // data is already exist.      
+                    if (reader.Read()) {
+                        reader.Close(); connect.Close();
+                        if (oncemessage) { MessageBox.Show("Existing data was maintained due to overlapping schedules."); oncemessage = false; }
+                    }
+
+                    // data is not already exist.  
+                    else {
+                        reader.Close(); connect.Close();
+
+                        sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
+                        connect.Open(); command = new SQLiteCommand(sql, connect);
+                        command.ExecuteNonQuery();
+                        connect.Close();
+                    }
+
+                }
+
             }
+
+            // refresh data 
+            refreshData();
+            cmain.changeCalendar();
+            cmain.calendarListRefresh();
+            cmain.refreshAlarm();
+
         }
 
         // select "Modift mode"     
