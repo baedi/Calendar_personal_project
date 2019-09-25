@@ -73,7 +73,11 @@
 
  #### 18
  - DataView 알람 추가 기능 구현 완료(다중 알람) (Add an Alarm Add-In in DataView (Multi Alarm))
- - 달력 더블 클릭 기능 추가 (Add Date Double-click Feature)
+ - 일정 더블 클릭 기능 추가 (Add Date Double-click Feature)
+
+ #### 19 (19-09-25)
+ - 일정 더블 클릭 시 선택 가능한 일정에서만 기능이 동작하도록 수정 (Double-click Schedule to modify the function to only operate on a selectable schedule)
+ - DataView 수정 버튼 기능 구현 (미완성) (Implementing the DataView Modify button function (incomplete))
 
 ---------------------------------------
 

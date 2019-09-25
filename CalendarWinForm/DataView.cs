@@ -11,6 +11,12 @@ namespace CalendarWinForm
         private SQLiteConnection connect;
         private CalendarMain cmain;
 
+        // update sql only. 
+        private DateTime past_day;
+        private decimal past_h;
+        private decimal past_m;
+
+
         // Constructor. 
         public DataView(SQLiteConnection connect, CalendarMain cmain) {
             InitializeComponent();
@@ -24,7 +30,7 @@ namespace CalendarWinForm
         /*** Event. ***/
         private void button_refresh_Click(object sender, EventArgs e){ refreshData(); }
         private void button_add_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Add mode"; }
-        private void button_modify_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Modify mode"; }
+        private void button_modify_Click(object sender, EventArgs e) { buttonClickEnableChanged(); dataSettings(); groupBox_mode.Text = "Modify mode"; }
         private void button_delete_Click(object sender, EventArgs e) { deleteMessage(); }
         private void DataView_Load(object sender, EventArgs e) { refreshData(); }
 
@@ -34,7 +40,11 @@ namespace CalendarWinForm
             
         }
 
-        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) { /*button_modify.Enabled = true; */ button_delete.Enabled = true; }
+        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) {
+            button_modify.Enabled = true;
+            button_delete.Enabled = true;
+        }
+
         private void button_done_Click(object sender, EventArgs e)
         {
             int length;
@@ -146,6 +156,25 @@ namespace CalendarWinForm
 
         }
 
+        // data settings.
+        public void dataSettings(){
+            for (int count = 0; count < listView_allDatalist.Items.Count; count++)
+                if (listView_allDatalist.Items[count].Selected){
+
+                    string[] sp = new string[2];
+                    sp = listView_allDatalist.Items[count].SubItems[1].Text.Split(':');
+
+                    label_targetDate.Text = listView_allDatalist.Items[count].Text;
+
+                    past_day = dateTimePicker_start.Value = DateTime.Parse(label_targetDate.Text);
+                    past_h = numericUpDown_hour.Value = decimal.Parse(sp[0]);
+                    past_m = numericUpDown_minute.Value = decimal.Parse(sp[1]);
+                    textBox_text.Text = listView_allDatalist.Items[count].SubItems[2].Text;
+                    checkBox_alarm.Checked = ((listView_allDatalist.Items[count].SubItems[3].Text) == "O" ? true : false);
+                    break;
+                }
+        }
+
         // select "Modift mode"     
         public void modifyMode(){
 
@@ -190,6 +219,7 @@ namespace CalendarWinForm
             this.checkBox_alarm.Enabled = true;
             this.button_done.Enabled = true;
             this.dateTimePicker_start.Enabled = true;
+            this.label_targetDate.Text = "-";
         }
 
         // Edit disable method. 
@@ -203,6 +233,7 @@ namespace CalendarWinForm
             this.dateTimePicker_start.Enabled = false;
             this.dateTimePicker_start.Value = DateTime.Now;
             this.dateTimePicker_end.Value = DateTime.Now.AddDays(2);
+            this.label_targetDate.Text = "-";
         }
 
 

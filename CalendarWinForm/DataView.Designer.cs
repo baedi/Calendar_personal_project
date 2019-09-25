@@ -58,14 +58,16 @@
             this.checkBox_alarm = new System.Windows.Forms.CheckBox();
             this.button_done = new System.Windows.Forms.Button();
             this.groupBox_mode = new System.Windows.Forms.GroupBox();
+            this.label_targetDate = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_hour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_minute)).BeginInit();
+            this.groupBox_mode.SuspendLayout();
             this.SuspendLayout();
             // 
             // button_modify
             // 
             this.button_modify.Enabled = false;
-            this.button_modify.Location = new System.Drawing.Point(393, 339);
+            this.button_modify.Location = new System.Drawing.Point(392, 365);
             this.button_modify.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_modify.Name = "button_modify";
             this.button_modify.Size = new System.Drawing.Size(86, 29);
@@ -77,7 +79,7 @@
             // button_delete
             // 
             this.button_delete.Enabled = false;
-            this.button_delete.Location = new System.Drawing.Point(486, 339);
+            this.button_delete.Location = new System.Drawing.Point(485, 365);
             this.button_delete.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_delete.Name = "button_delete";
             this.button_delete.Size = new System.Drawing.Size(86, 29);
@@ -98,7 +100,7 @@
             this.listView_allDatalist.Location = new System.Drawing.Point(14, 15);
             this.listView_allDatalist.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_allDatalist.Name = "listView_allDatalist";
-            this.listView_allDatalist.Size = new System.Drawing.Size(569, 315);
+            this.listView_allDatalist.Size = new System.Drawing.Size(569, 331);
             this.listView_allDatalist.TabIndex = 2;
             this.listView_allDatalist.UseCompatibleStateImageBehavior = false;
             this.listView_allDatalist.View = System.Windows.Forms.View.Details;
@@ -125,7 +127,7 @@
             // 
             // button_refresh
             // 
-            this.button_refresh.Location = new System.Drawing.Point(14, 339);
+            this.button_refresh.Location = new System.Drawing.Point(13, 365);
             this.button_refresh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_refresh.Name = "button_refresh";
             this.button_refresh.Size = new System.Drawing.Size(86, 29);
@@ -136,7 +138,7 @@
             // 
             // button_add
             // 
-            this.button_add.Location = new System.Drawing.Point(301, 339);
+            this.button_add.Location = new System.Drawing.Point(300, 365);
             this.button_add.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_add.Name = "button_add";
             this.button_add.Size = new System.Drawing.Size(86, 29);
@@ -148,7 +150,7 @@
             // label_date
             // 
             this.label_date.AutoSize = true;
-            this.label_date.Location = new System.Drawing.Point(600, 46);
+            this.label_date.Location = new System.Drawing.Point(10, 62);
             this.label_date.Name = "label_date";
             this.label_date.Size = new System.Drawing.Size(37, 15);
             this.label_date.TabIndex = 5;
@@ -157,7 +159,7 @@
             // dateTimePicker_start
             // 
             this.dateTimePicker_start.Enabled = false;
-            this.dateTimePicker_start.Location = new System.Drawing.Point(602, 65);
+            this.dateTimePicker_start.Location = new System.Drawing.Point(12, 81);
             this.dateTimePicker_start.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dateTimePicker_start.Name = "dateTimePicker_start";
             this.dateTimePicker_start.Size = new System.Drawing.Size(202, 25);
@@ -167,7 +169,7 @@
             // label_time
             // 
             this.label_time.AutoSize = true;
-            this.label_time.Location = new System.Drawing.Point(600, 172);
+            this.label_time.Location = new System.Drawing.Point(10, 190);
             this.label_time.Name = "label_time";
             this.label_time.Size = new System.Drawing.Size(37, 15);
             this.label_time.TabIndex = 7;
@@ -176,7 +178,7 @@
             // numericUpDown_hour
             // 
             this.numericUpDown_hour.Enabled = false;
-            this.numericUpDown_hour.Location = new System.Drawing.Point(602, 191);
+            this.numericUpDown_hour.Location = new System.Drawing.Point(12, 209);
             this.numericUpDown_hour.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numericUpDown_hour.Maximum = new decimal(new int[] {
             23,
@@ -190,7 +192,7 @@
             // numericUpDown_minute
             // 
             this.numericUpDown_minute.Enabled = false;
-            this.numericUpDown_minute.Location = new System.Drawing.Point(719, 191);
+            this.numericUpDown_minute.Location = new System.Drawing.Point(129, 209);
             this.numericUpDown_minute.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.numericUpDown_minute.Maximum = new decimal(new int[] {
             59,
@@ -204,7 +206,7 @@
             // label_hour
             // 
             this.label_hour.AutoSize = true;
-            this.label_hour.Location = new System.Drawing.Point(663, 198);
+            this.label_hour.Location = new System.Drawing.Point(73, 216);
             this.label_hour.Name = "label_hour";
             this.label_hour.Size = new System.Drawing.Size(38, 15);
             this.label_hour.TabIndex = 10;
@@ -213,7 +215,7 @@
             // label_minute
             // 
             this.label_minute.AutoSize = true;
-            this.label_minute.Location = new System.Drawing.Point(779, 198);
+            this.label_minute.Location = new System.Drawing.Point(189, 216);
             this.label_minute.Name = "label_minute";
             this.label_minute.Size = new System.Drawing.Size(50, 15);
             this.label_minute.TabIndex = 11;
@@ -222,7 +224,7 @@
             // label_next
             // 
             this.label_next.AutoSize = true;
-            this.label_next.Location = new System.Drawing.Point(811, 72);
+            this.label_next.Location = new System.Drawing.Point(221, 88);
             this.label_next.Name = "label_next";
             this.label_next.Size = new System.Drawing.Size(18, 15);
             this.label_next.TabIndex = 12;
@@ -231,7 +233,7 @@
             // dateTimePicker_end
             // 
             this.dateTimePicker_end.Enabled = false;
-            this.dateTimePicker_end.Location = new System.Drawing.Point(602, 99);
+            this.dateTimePicker_end.Location = new System.Drawing.Point(12, 115);
             this.dateTimePicker_end.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.dateTimePicker_end.Name = "dateTimePicker_end";
             this.dateTimePicker_end.Size = new System.Drawing.Size(202, 25);
@@ -242,7 +244,7 @@
             // 
             this.checkBox_isMulti.AutoSize = true;
             this.checkBox_isMulti.Enabled = false;
-            this.checkBox_isMulti.Location = new System.Drawing.Point(602, 132);
+            this.checkBox_isMulti.Location = new System.Drawing.Point(12, 148);
             this.checkBox_isMulti.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBox_isMulti.Name = "checkBox_isMulti";
             this.checkBox_isMulti.Size = new System.Drawing.Size(144, 19);
@@ -254,7 +256,7 @@
             // label_text
             // 
             this.label_text.AutoSize = true;
-            this.label_text.Location = new System.Drawing.Point(600, 241);
+            this.label_text.Location = new System.Drawing.Point(9, 252);
             this.label_text.Name = "label_text";
             this.label_text.Size = new System.Drawing.Size(36, 15);
             this.label_text.TabIndex = 15;
@@ -263,7 +265,7 @@
             // textBox_text
             // 
             this.textBox_text.Enabled = false;
-            this.textBox_text.Location = new System.Drawing.Point(602, 261);
+            this.textBox_text.Location = new System.Drawing.Point(12, 271);
             this.textBox_text.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox_text.Name = "textBox_text";
             this.textBox_text.Size = new System.Drawing.Size(225, 25);
@@ -273,7 +275,7 @@
             // 
             this.checkBox_alarm.AutoSize = true;
             this.checkBox_alarm.Enabled = false;
-            this.checkBox_alarm.Location = new System.Drawing.Point(738, 295);
+            this.checkBox_alarm.Location = new System.Drawing.Point(147, 304);
             this.checkBox_alarm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkBox_alarm.Name = "checkBox_alarm";
             this.checkBox_alarm.Size = new System.Drawing.Size(90, 19);
@@ -284,7 +286,7 @@
             // button_done
             // 
             this.button_done.Enabled = false;
-            this.button_done.Location = new System.Drawing.Point(590, 339);
+            this.button_done.Location = new System.Drawing.Point(589, 365);
             this.button_done.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_done.Name = "button_done";
             this.button_done.Size = new System.Drawing.Size(251, 29);
@@ -295,33 +297,43 @@
             // 
             // groupBox_mode
             // 
+            this.groupBox_mode.Controls.Add(this.label_targetDate);
+            this.groupBox_mode.Controls.Add(this.checkBox_alarm);
+            this.groupBox_mode.Controls.Add(this.checkBox_isMulti);
+            this.groupBox_mode.Controls.Add(this.dateTimePicker_end);
+            this.groupBox_mode.Controls.Add(this.label_text);
+            this.groupBox_mode.Controls.Add(this.label_next);
+            this.groupBox_mode.Controls.Add(this.textBox_text);
+            this.groupBox_mode.Controls.Add(this.dateTimePicker_start);
+            this.groupBox_mode.Controls.Add(this.numericUpDown_hour);
+            this.groupBox_mode.Controls.Add(this.label_date);
+            this.groupBox_mode.Controls.Add(this.label_minute);
+            this.groupBox_mode.Controls.Add(this.label_time);
+            this.groupBox_mode.Controls.Add(this.label_hour);
+            this.groupBox_mode.Controls.Add(this.numericUpDown_minute);
             this.groupBox_mode.Location = new System.Drawing.Point(590, 15);
             this.groupBox_mode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox_mode.Name = "groupBox_mode";
             this.groupBox_mode.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox_mode.Size = new System.Drawing.Size(251, 316);
+            this.groupBox_mode.Size = new System.Drawing.Size(251, 331);
             this.groupBox_mode.TabIndex = 19;
             this.groupBox_mode.TabStop = false;
+            // 
+            // label_targetDate
+            // 
+            this.label_targetDate.AutoSize = true;
+            this.label_targetDate.Location = new System.Drawing.Point(9, 31);
+            this.label_targetDate.Name = "label_targetDate";
+            this.label_targetDate.Size = new System.Drawing.Size(15, 15);
+            this.label_targetDate.TabIndex = 18;
+            this.label_targetDate.Text = "-";
             // 
             // DataView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(845, 379);
+            this.ClientSize = new System.Drawing.Size(845, 407);
             this.Controls.Add(this.button_done);
-            this.Controls.Add(this.checkBox_alarm);
-            this.Controls.Add(this.textBox_text);
-            this.Controls.Add(this.label_text);
-            this.Controls.Add(this.checkBox_isMulti);
-            this.Controls.Add(this.dateTimePicker_end);
-            this.Controls.Add(this.label_next);
-            this.Controls.Add(this.label_minute);
-            this.Controls.Add(this.label_hour);
-            this.Controls.Add(this.numericUpDown_minute);
-            this.Controls.Add(this.numericUpDown_hour);
-            this.Controls.Add(this.label_time);
-            this.Controls.Add(this.dateTimePicker_start);
-            this.Controls.Add(this.label_date);
             this.Controls.Add(this.button_add);
             this.Controls.Add(this.button_refresh);
             this.Controls.Add(this.listView_allDatalist);
@@ -335,8 +347,9 @@
             this.Load += new System.EventHandler(this.DataView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_hour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_minute)).EndInit();
+            this.groupBox_mode.ResumeLayout(false);
+            this.groupBox_mode.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -366,5 +379,6 @@
         private System.Windows.Forms.CheckBox checkBox_alarm;
         private System.Windows.Forms.Button button_done;
         private System.Windows.Forms.GroupBox groupBox_mode;
+        private System.Windows.Forms.Label label_targetDate;
     }
 }

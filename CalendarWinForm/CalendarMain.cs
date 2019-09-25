@@ -16,12 +16,13 @@ namespace CalendarWinForm {
         private int selectYear;
         private int selectMonth;
         private int selectDay;
-        private int calendar_index;
+        //private int calendar_index;
         private int gbox_index;
         private bool alarm_onCheck;
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
         private bool real_exit;
+        private bool isSelectedDate;
 
 
         // main method.                                         
@@ -298,7 +299,7 @@ namespace CalendarWinForm {
 
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
             label_YearMonth.Text = e.End.ToString("yyyy") + "." + (int.Parse(e.End.ToString("MM")).ToString("00"));
-            calendar_index = -1;        // index reset. 
+            //calendar_index = -1;        // index reset. 
         }
 
 
@@ -313,13 +314,19 @@ namespace CalendarWinForm {
 
                     DateTime temp = new DateTime();
                     monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
-                    break;
+                    isSelectedDate = true;
+                    return;
                 }
             }
+
+            isSelectedDate = false;
         }
 
         // double click event. (open DataAddForm)               
-        private void Panel_MonthList_DoubleClick(object sender, EventArgs e) { this.button_addSch_Click(null, null); }
+        private void Panel_MonthList_DoubleClick(object sender, EventArgs e) {
+            if(isSelectedDate) this.button_addSch_Click(null, null);
+
+        }
 
 
         // datetime label text changed Event.                   
@@ -328,7 +335,7 @@ namespace CalendarWinForm {
 
         // schedule click Event.                                
         private void listView_Schedule_Click(object sender, EventArgs e) {
-            foreach (int getIndex in listView_Schedule.SelectedIndices) calendar_index = getIndex;
+            //foreach (int getIndex in listView_Schedule.SelectedIndices) calendar_index = getIndex;
             button_modifySch.Enabled = true;
             button_deleteSch.Enabled = true;
         }
