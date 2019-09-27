@@ -4,11 +4,17 @@
 
         // create table. 
         public static string createTableSQL() { return "create table calendarlist (year INT, month INT, day INT, sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN)";}
-
+        public static string createTableSQL_today() {
+            return "create table  t_alarmlist (sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN, dot_week VARCHAR(4))";
+        }
 
         // insert sql. 
         public static string insertSQL(string[] dateStr, decimal setH, decimal setM, string text, bool alaEnable) {
             return $"insert into calendarlist values ({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, {setH}, {setM}, \"{text}\", {alaEnable})";
+        }
+
+        public static string insertSQL_today(decimal setH, decimal setM, string text) {
+            return $"insert into t_alarmlist values ({setH}, {setM}, \"{text}\", true, \" \")";
         }
 
         // all data check 
@@ -18,8 +24,9 @@
 
 
         // listview refresh sql. 
-        public static string listviewRefreshSQL(int setY, int setM, int setD) {
-            return $"select sethour, setminute, text, active from calendarlist where year = {setY} AND month = {setM} AND day = {setD} order by sethour, setminute ASC;";
+        public static string listviewRefreshSQL(int setY, int setM, int setD) { return $"select sethour, setminute, text, active from calendarlist where year = {setY} AND month = {setM} AND day = {setD} order by sethour, setminute ASC;"; }
+        public static string listviewTodayRefreshSQL() {
+            return $"select sethour, setminute, text from t_alarmlist order by sethour, setminute ASC;";
         }
 
 
@@ -47,8 +54,9 @@
 
 
         // overlap check sql. 
-        public static string overlapCheckSQL(string[] dateStr) {
-            return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";
+        public static string overlapCheckSQL(string[] dateStr) { return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";  }
+        public static string overlapCheckSQL_Today(decimal hour, decimal minute) {
+            return $"select sethour, setminute from t_alarmlist where sethour = {hour} AND setminute = {minute};";
         }
 
         // overlap check sql(test).
@@ -67,8 +75,9 @@
 
 
         // delete date sql. 
-        public static string deleteDateSQL(int setY, int setM, int setD, int[] datetemp) {
-            return $"delete from calendarlist where year = {setY} AND month = {setM} AND day = {setD} AND sethour = {datetemp[0]} AND setminute = {datetemp[1]}";
+        public static string deleteDateSQL(int setY, int setM, int setD, int[] datetemp) { return $"delete from calendarlist where year = {setY} AND month = {setM} AND day = {setD} AND sethour = {datetemp[0]} AND setminute = {datetemp[1]}"; }
+        public static string deleteDateSQL_today(int[] datetemp) {
+            return $"delete from t_alarmlist where sethour = {datetemp[0]} AND setminute = {datetemp[1]}";
         }
 
 

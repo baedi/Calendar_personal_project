@@ -79,6 +79,9 @@
  - 일정 더블 클릭 시 선택 가능한 일정에서만 기능이 동작하도록 수정 (Double-click Schedule to modify the function to only operate on a selectable schedule)
  - DataView 수정 버튼 기능 구현 (미완성) (Implementing the DataView Modify button function (incomplete))
 
+ #### 20 (19-09-27)
+ - 일일 알람 기능 구현 (미완성) (Implementing daily alarm functions (incomplete))
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

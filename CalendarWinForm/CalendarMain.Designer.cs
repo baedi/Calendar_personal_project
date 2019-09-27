@@ -34,6 +34,10 @@
             "test",
             "O"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalendarMain));
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            "00 : 00",
+            "test",
+            "O"}, -1);
             this.panel_MonthList = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,13 +58,18 @@
             this.button_deleteSch = new System.Windows.Forms.Button();
             this.label_YearMonth = new System.Windows.Forms.Label();
             this.button_alarmon = new System.Windows.Forms.Button();
-            this.label_alarmon = new System.Windows.Forms.Label();
             this.trayicon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.alarmONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button_dataview = new System.Windows.Forms.Button();
+            this.listView_todayList = new System.Windows.Forms.ListView();
+            this.ch_today_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ch_today_data = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button_today_add = new System.Windows.Forms.Button();
+            this.button_today_modify = new System.Windows.Forms.Button();
+            this.button_today_delete = new System.Windows.Forms.Button();
             this.panel_MonthList.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -217,7 +226,7 @@
             this.label_DateTemp.BackColor = System.Drawing.Color.Transparent;
             this.label_DateTemp.Font = new System.Drawing.Font("굴림", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label_DateTemp.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label_DateTemp.Location = new System.Drawing.Point(965, 239);
+            this.label_DateTemp.Location = new System.Drawing.Point(964, 250);
             this.label_DateTemp.Name = "label_DateTemp";
             this.label_DateTemp.Size = new System.Drawing.Size(121, 20);
             this.label_DateTemp.TabIndex = 8;
@@ -235,10 +244,10 @@
             listViewItem1.StateImageIndex = 0;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-            this.listView_Schedule.Location = new System.Drawing.Point(963, 261);
+            this.listView_Schedule.Location = new System.Drawing.Point(964, 415);
             this.listView_Schedule.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Schedule.Name = "listView_Schedule";
-            this.listView_Schedule.Size = new System.Drawing.Size(251, 445);
+            this.listView_Schedule.Size = new System.Drawing.Size(251, 290);
             this.listView_Schedule.TabIndex = 9;
             this.listView_Schedule.UseCompatibleStateImageBehavior = false;
             this.listView_Schedule.View = System.Windows.Forms.View.Details;
@@ -248,7 +257,7 @@
             // columnHeader_time
             // 
             this.columnHeader_time.Text = "Time";
-            this.columnHeader_time.Width = 52;
+            this.columnHeader_time.Width = 56;
             // 
             // columnHeader_data
             // 
@@ -310,26 +319,14 @@
             // 
             // button_alarmon
             // 
-            this.button_alarmon.Location = new System.Drawing.Point(874, 45);
+            this.button_alarmon.Location = new System.Drawing.Point(742, 35);
             this.button_alarmon.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_alarmon.Name = "button_alarmon";
-            this.button_alarmon.Size = new System.Drawing.Size(58, 22);
+            this.button_alarmon.Size = new System.Drawing.Size(74, 29);
             this.button_alarmon.TabIndex = 14;
             this.button_alarmon.Text = "ON";
             this.button_alarmon.UseVisualStyleBackColor = true;
             this.button_alarmon.Click += new System.EventHandler(this.button_alarmon_Click);
-            // 
-            // label_alarmon
-            // 
-            this.label_alarmon.AutoSize = true;
-            this.label_alarmon.BackColor = System.Drawing.Color.Transparent;
-            this.label_alarmon.Font = new System.Drawing.Font("굴림", 10F);
-            this.label_alarmon.ForeColor = System.Drawing.Color.White;
-            this.label_alarmon.Location = new System.Drawing.Point(754, 48);
-            this.label_alarmon.Name = "label_alarmon";
-            this.label_alarmon.Size = new System.Drawing.Size(114, 17);
-            this.label_alarmon.TabIndex = 15;
-            this.label_alarmon.Text = "Alarm sound : ";
             // 
             // trayicon
             // 
@@ -376,7 +373,7 @@
             // 
             // button_dataview
             // 
-            this.button_dataview.Location = new System.Drawing.Point(1105, 230);
+            this.button_dataview.Location = new System.Drawing.Point(822, 35);
             this.button_dataview.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button_dataview.Name = "button_dataview";
             this.button_dataview.Size = new System.Drawing.Size(110, 29);
@@ -384,6 +381,62 @@
             this.button_dataview.Text = "Data view";
             this.button_dataview.UseVisualStyleBackColor = true;
             this.button_dataview.Click += new System.EventHandler(this.button_dataview_Click);
+            // 
+            // listView_todayList
+            // 
+            this.listView_todayList.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.listView_todayList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ch_today_time,
+            this.ch_today_data});
+            this.listView_todayList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem2});
+            this.listView_todayList.Location = new System.Drawing.Point(964, 279);
+            this.listView_todayList.Name = "listView_todayList";
+            this.listView_todayList.Size = new System.Drawing.Size(251, 129);
+            this.listView_todayList.TabIndex = 17;
+            this.listView_todayList.UseCompatibleStateImageBehavior = false;
+            this.listView_todayList.View = System.Windows.Forms.View.Details;
+            this.listView_todayList.Click += new System.EventHandler(this.ListView_todayList_Click);
+            // 
+            // ch_today_time
+            // 
+            this.ch_today_time.Text = "Time";
+            this.ch_today_time.Width = 55;
+            // 
+            // ch_today_data
+            // 
+            this.ch_today_data.Text = "Data";
+            this.ch_today_data.Width = 145;
+            // 
+            // button_today_add
+            // 
+            this.button_today_add.Location = new System.Drawing.Point(1123, 247);
+            this.button_today_add.Name = "button_today_add";
+            this.button_today_add.Size = new System.Drawing.Size(30, 30);
+            this.button_today_add.TabIndex = 18;
+            this.button_today_add.Text = "+";
+            this.button_today_add.UseVisualStyleBackColor = true;
+            this.button_today_add.Click += new System.EventHandler(this.Button_today_add_Click);
+            // 
+            // button_today_modify
+            // 
+            this.button_today_modify.Location = new System.Drawing.Point(1154, 247);
+            this.button_today_modify.Name = "button_today_modify";
+            this.button_today_modify.Size = new System.Drawing.Size(30, 30);
+            this.button_today_modify.TabIndex = 19;
+            this.button_today_modify.Text = "R";
+            this.button_today_modify.UseVisualStyleBackColor = true;
+            this.button_today_modify.Click += new System.EventHandler(this.Button_today_modify_Click);
+            // 
+            // button_today_delete
+            // 
+            this.button_today_delete.Location = new System.Drawing.Point(1185, 247);
+            this.button_today_delete.Name = "button_today_delete";
+            this.button_today_delete.Size = new System.Drawing.Size(30, 30);
+            this.button_today_delete.TabIndex = 20;
+            this.button_today_delete.Text = "-";
+            this.button_today_delete.UseVisualStyleBackColor = true;
+            this.button_today_delete.Click += new System.EventHandler(this.Button_today_delete_Click);
             // 
             // CalendarMain
             // 
@@ -394,8 +447,11 @@
             this.BackgroundImage = global::CalendarWinForm.Properties.Resources.wallpaper_3584226_1280;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1235, 759);
+            this.Controls.Add(this.button_today_delete);
+            this.Controls.Add(this.button_today_modify);
+            this.Controls.Add(this.button_today_add);
+            this.Controls.Add(this.listView_todayList);
             this.Controls.Add(this.button_dataview);
-            this.Controls.Add(this.label_alarmon);
             this.Controls.Add(this.button_alarmon);
             this.Controls.Add(this.label_YearMonth);
             this.Controls.Add(this.button_deleteSch);
@@ -442,13 +498,18 @@
         private System.Windows.Forms.ColumnHeader columnHeader_active;
         private System.Windows.Forms.Label label_YearMonth;
         private System.Windows.Forms.Button button_alarmon;
-        private System.Windows.Forms.Label label_alarmon;
         private System.Windows.Forms.NotifyIcon trayicon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Button button_dataview;
         private System.Windows.Forms.ToolStripMenuItem dataViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alarmONToolStripMenuItem;
+        private System.Windows.Forms.ListView listView_todayList;
+        private System.Windows.Forms.ColumnHeader ch_today_time;
+        private System.Windows.Forms.ColumnHeader ch_today_data;
+        private System.Windows.Forms.Button button_today_add;
+        private System.Windows.Forms.Button button_today_modify;
+        private System.Windows.Forms.Button button_today_delete;
     }
 }
 

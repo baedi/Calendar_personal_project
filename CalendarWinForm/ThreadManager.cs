@@ -12,6 +12,7 @@ namespace CalendarWinForm
         private bool threadEnable;
 
         private SQLiteConnection dbconnect;
+        private SQLiteConnection dbconnect2;
         private SQLiteCommand dbcommand;
         private SQLiteDataReader reader;
         private string sql;
@@ -23,13 +24,14 @@ namespace CalendarWinForm
 
 
         // Constructor. 
-        public ThreadManager(Label label, SQLiteConnection conn) {
+        public ThreadManager(Label label, SQLiteConnection conn, SQLiteConnection conn2) {
             timeLabel = label;
             manage = new Thread(new ThreadStart(WorkingThread));
             alarm_form = new AlarmMessage();
 
             threadEnable = true;
             dbconnect = conn;
+            dbconnect2 = conn2;
             nextAlarmReadyRefresh();
             manage.Start();
 
@@ -76,6 +78,70 @@ namespace CalendarWinForm
 
                 reader.Close();
                 dbconnect.Close();
+
+                // todayAlarmChecked();
+            } catch(Exception exc) { MessageBox.Show(exc.Message); }
+        }
+
+        // today alarm check. 
+        public void todayAlarmChecked() {
+            DateTime current = DateTime.Now;
+            DateTime temp_normal = new DateTime();
+            DateTime temp_nextday = new DateTime();
+            string temp_str_normal;
+            string temp_str_nextday;
+            bool tdalarmReady = false;
+
+            try {
+                sql = QueryList.listviewTodayRefreshSQL();
+                dbconnect2.Open();
+                dbcommand = new SQLiteCommand(sql, dbconnect2);
+                reader = dbcommand.ExecuteReader();
+
+                while (reader.Read()){
+                    if (alarm.Hour > (int)reader["sethour"] ||
+                        (alarm.Hour == (int)reader["sethour"] && alarm.Minute > (int)reader["setminute"])) {
+
+                        temp_normal = new DateTime();
+                        temp_normal = temp_normal.AddYears(current.Year - 1).
+                                        AddMonths(current.Month - 1).
+                                        AddDays(current.Day - 1).
+                                        AddHours((int)reader["sethour"]).
+                                        AddMinutes((int)reader["setminute"]);
+
+                        temp_str_normal = reader["text"].ToString();
+                        tdalarmReady = true;
+                    }
+                    else break;
+                }
+
+                if (tdalarmReady) {
+                    if(current < temp_normal && temp_normal > alarm) {
+
+
+
+                    }
+                }
+
+                reader.Close();
+                reader = dbcommand.ExecuteReader();
+                if (reader.Read()) {
+                    temp_nextday = temp_nextday.AddYears(current.Year - 1).
+                                    AddMonths(current.Month - 1).
+                                    AddDays(current.Day).
+                                    AddHours((int)reader["sethour"]).
+                                    AddMinutes((int)reader["setminute"]);
+
+                    temp_str_nextday = reader["text"].ToString();
+                }
+
+                reader.Close();
+                dbconnect2.Close();
+
+
+
+
+                MessageBox.Show(alarm.Year + " " + alarm.Month + " " + alarm.Day + " " + alarm.Hour + " " + alarm.Minute);
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
 

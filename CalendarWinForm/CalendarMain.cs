@@ -10,8 +10,11 @@ namespace CalendarWinForm {
         private ThreadManager tManager;
         private ListBox[] gbox;
         private DataAddForm addForm;
-        private SQLiteConnection dbConnect;
+        private TodayDataAddForm addForm_today;
+        private SQLiteConnection dbConnect;         // calendar db.         
+        private SQLiteConnection dbConnect2;        // today data db.       
         private SQLiteCommand dbCommand;
+        private SQLiteCommand dbCommand2;
         private DataView dataview;
         private int selectYear;
         private int selectMonth;
@@ -21,6 +24,7 @@ namespace CalendarWinForm {
         private bool alarm_onCheck;
         private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private string dbFileName = @"\calendar.db";
+        private string dbFileName2 = @"\todayAlarm.db";
         private bool real_exit;
         private bool isSelectedDate;
 
@@ -31,28 +35,39 @@ namespace CalendarWinForm {
             alarm_onCheck = true;
             gbox = new ListBox[42];
             addForm = new DataAddForm(label_DateTemp, this, false);
+            addForm_today = new TodayDataAddForm(this);
 
 
             // Database setting. 
             dbConnect = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
+            dbConnect2 = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
             addForm.setDbConnect(dbConnect);
+            addForm_today.setDbConnect(dbConnect2);
 
             if (!File.Exists(path + dbFileName)) {
                 dbCommand = new SQLiteCommand(QueryList.createTableSQL(), dbConnect);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
-                MessageBox.Show("New calendar db created.");
+                MessageBox.Show("Created new calendar db.");
                 dbConnect.Open();
                 dbCommand.ExecuteNonQuery();
                 dbConnect.Close();
             }
 
+            if(!File.Exists(path + dbFileName2)){
+                dbCommand2 = new SQLiteCommand(QueryList.createTableSQL_today(), dbConnect2);
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                SQLiteConnection.CreateFile(path + dbFileName2);
+                MessageBox.Show("Created new today alarm db.");
+                dbConnect2.Open();
+                dbCommand2.ExecuteNonQuery();
+                dbConnect2.Close();
+            }
 
-            // Thread setting. 
-            tManager = new ThreadManager(label_Time, dbConnect);
 
-            // DataView setting.
-            dataview = new DataView(dbConnect, this);
+            
+            tManager = new ThreadManager(label_Time, dbConnect, dbConnect2);    // Thread setting.  
+            dataview = new DataView(dbConnect, this);                           // DataView setting.
 
 
             // Panel setting.                                   
@@ -69,6 +84,7 @@ namespace CalendarWinForm {
             label_DateTemp.Text = selectYear.ToString() + "." + selectMonth.ToString() + "." + selectDay.ToString();
             label_YearMonth.Text = selectYear.ToString() + "." + selectMonth.ToString("00");
             changeCalendar();
+            todayAlarmListRefresh();
         }
 
 
@@ -194,6 +210,28 @@ namespace CalendarWinForm {
             dataview.refreshData();
         }
 
+        // database(today) current day calendar import.
+        public void todayAlarmListRefresh() {
+            dbConnect2.Open();
+            listView_todayList.Items.Clear();
+
+            dbCommand2 = new SQLiteCommand(QueryList.listviewTodayRefreshSQL(), dbConnect2);
+            SQLiteDataReader reader = dbCommand2.ExecuteReader();
+
+            while (reader.Read()) {
+                listView_todayList.Items.Add(new ListViewItem(new string[] {
+                    ((int)reader["sethour"]).ToString("00") + " : " + ((int)reader["setminute"]).ToString("00"),
+                    reader["text"].ToString()
+                }));
+            }
+
+            reader.Close();
+            dbConnect2.Close();
+
+            button_today_modify.Enabled = false;
+            button_today_delete.Enabled = false;
+        }
+
 
         // select box data refresh. 
         public void selectBoxDataRefresh(ListBox selectBox, string[] dateStr) {
@@ -232,6 +270,19 @@ namespace CalendarWinForm {
             dbCommand = new SQLiteCommand(QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp), dbConnect);
             dbCommand.ExecuteNonQuery();
             dbConnect.Close();
+        }
+
+        private void deleteDBdata_today(int index) {
+            string[] splitstr = new string[2];
+            int[] datetemp = new int[2];
+            splitstr = listView_todayList.Items[index].Text.Split(':');
+            datetemp[0] = int.Parse(splitstr[0]);
+            datetemp[1] = int.Parse(splitstr[1]);
+
+            dbConnect2.Open();
+            dbCommand2 = new SQLiteCommand(QueryList.deleteDateSQL_today(datetemp), dbConnect2);
+            dbCommand2.ExecuteNonQuery();
+            dbConnect2.Close();
         }
 
 
@@ -346,12 +397,26 @@ namespace CalendarWinForm {
         }
 
 
+        // today schedule click Event.
+        private void ListView_todayList_Click(object sender, EventArgs e) {
+            button_today_delete.Enabled = true;
+        } 
+
+
+
         // "ADD" button click Event.                            
         private void button_addSch_Click(object sender, EventArgs e) {
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm.gboxSetting(gbox[gbox_index]);
             addForm.setDbConnect(dbConnect);
             addForm.Show();
+        }
+
+        // "ADD" button click Event. (Today)                    
+        private void Button_today_add_Click(object sender, EventArgs e) {
+            addForm_today = new TodayDataAddForm(this);
+            addForm_today.setDbConnect(dbConnect2);
+            addForm_today.Show();
         }
 
 
@@ -370,6 +435,13 @@ namespace CalendarWinForm {
             addForm.Show();
         }
 
+        // "MODIFY" button click Event. (Today)                 
+        private void Button_today_modify_Click(object sender, EventArgs e) {
+
+            /* coming soon */
+
+        }
+
 
         // "Delete" button click Event.                         
         private void button_deleteSch_Click(object sender, EventArgs e) {
@@ -386,6 +458,18 @@ namespace CalendarWinForm {
 
                 refreshAlarm();
             }
+        }
+
+        // "DELETE" button click Event. (Today)                 
+        private void Button_today_delete_Click(object sender, EventArgs e) {
+            if(MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                for (int count = listView_todayList.Items.Count - 1; count >= 0; count = count - 1)
+                    if (listView_todayList.Items[count].Selected == true) deleteDBdata_today(count);
+
+                todayAlarmListRefresh();
+                refreshAlarm();
+            }
+
         }
 
 

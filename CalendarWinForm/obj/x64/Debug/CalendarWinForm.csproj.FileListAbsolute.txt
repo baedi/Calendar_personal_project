@@ -58,3 +58,4 @@ D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\
 D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.csproj.CopyComplete
 D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.exe
 D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.pdb
+D:\SaveFiles\VisualStudioProjects\Calendar_semina\CalendarWinForm\obj\x64\Debug\CalendarWinForm.TodayDataAddForm.resources
