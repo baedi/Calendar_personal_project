@@ -82,6 +82,9 @@
  #### 20 (19-09-27)
  - 일일 알람 기능 구현 (미완성) (Implementing daily alarm functions (incomplete))
 
+ #### 21 (19-09-29)
+ - 일일 알람 기능 구현 완료 (Complete implementing daily alarm functions)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

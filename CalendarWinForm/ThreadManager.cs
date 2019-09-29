@@ -79,18 +79,15 @@ namespace CalendarWinForm
                 reader.Close();
                 dbconnect.Close();
 
-                // todayAlarmChecked();
+                todayAlarmChecked();
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
 
         // today alarm check. 
         public void todayAlarmChecked() {
+            DateTime today = new DateTime();
             DateTime current = DateTime.Now;
-            DateTime temp_normal = new DateTime();
-            DateTime temp_nextday = new DateTime();
-            string temp_str_normal;
-            string temp_str_nextday;
-            bool tdalarmReady = false;
+            bool findToday = false;
 
             try {
                 sql = QueryList.listviewTodayRefreshSQL();
@@ -98,50 +95,55 @@ namespace CalendarWinForm
                 dbcommand = new SQLiteCommand(sql, dbconnect2);
                 reader = dbcommand.ExecuteReader();
 
+                // Today alarm confirm.     
                 while (reader.Read()){
-                    if (alarm.Hour > (int)reader["sethour"] ||
-                        (alarm.Hour == (int)reader["sethour"] && alarm.Minute > (int)reader["setminute"])) {
+                    today = new DateTime();
 
-                        temp_normal = new DateTime();
-                        temp_normal = temp_normal.AddYears(current.Year - 1).
-                                        AddMonths(current.Month - 1).
-                                        AddDays(current.Day - 1).
-                                        AddHours((int)reader["sethour"]).
-                                        AddMinutes((int)reader["setminute"]);
+                    today = today.AddYears(current.Year - 1).AddMonths(current.Month - 1).AddDays(current.Day - 1).
+                        AddHours((int)reader["sethour"]).AddMinutes((int)reader["setminute"]);
 
-                        temp_str_normal = reader["text"].ToString();
-                        tdalarmReady = true;
-                    }
-                    else break;
-                }
+                    if (today <= current) continue;
+                    else if(today > current){
+                        findToday = true;
 
-                if (tdalarmReady) {
-                    if(current < temp_normal && temp_normal > alarm) {
-
-
-
+                        if (today >= alarm) break;
+                        else if (today < alarm) {
+                            alarm = today;
+                            alarm_text = reader["text"].ToString();
+                            break;
+                        }
                     }
                 }
 
                 reader.Close();
-                reader = dbcommand.ExecuteReader();
-                if (reader.Read()) {
-                    temp_nextday = temp_nextday.AddYears(current.Year - 1).
-                                    AddMonths(current.Month - 1).
-                                    AddDays(current.Day).
-                                    AddHours((int)reader["sethour"]).
-                                    AddMinutes((int)reader["setminute"]);
 
-                    temp_str_nextday = reader["text"].ToString();
+                // Next day confirm.        
+                if (!findToday) {
+                    reader = dbcommand.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        today = new DateTime();
+
+                        today = today.AddYears(current.Year - 1).AddMonths(current.Month - 1).AddDays(current.Day).
+                            AddHours((int)reader["sethour"]).AddMinutes((int)reader["setminute"]);
+
+                        if (today <= current) { }
+                        else if (today > current) {
+                            if (today >= alarm) { }
+                            else if (today < alarm) {
+                                alarm = today;
+                                alarm_text = reader["text"].ToString();
+                            }
+                        }
+                    }
+
+                    reader.Close();
                 }
 
-                reader.Close();
                 dbconnect2.Close();
 
-
-
-
-                MessageBox.Show(alarm.Year + " " + alarm.Month + " " + alarm.Day + " " + alarm.Hour + " " + alarm.Minute);
+                MessageBox.Show("alarm : " + alarm.Year + "." + alarm.Month + "." + alarm.Day + " " + alarm.Hour + ":" + alarm.Minute);
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
 
