@@ -178,6 +178,46 @@ namespace CalendarWinForm
         // select "Modift mode"     
         public void modifyMode(){
 
+            string sql;
+            string[] date;
+
+            date = new string[3];
+            date = past_day.ToString("yyyy-M-d").Split('-');
+            sql = QueryList.overlapMultiCheckSQL(date, past_h, past_m);
+            connect.Open();
+            SQLiteCommand command = new SQLiteCommand(sql, connect);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+
+            // single alarm mode. 
+            if(checkBox_isMulti.Checked == false) {
+                if (!reader.Read()) {
+                    MessageBox.Show("Can't find past data.");
+                    reader.Close();     connect.Close();
+                    return;
+                }
+
+                reader.Close();     connect.Close();
+                sql = QueryList.updateSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked, (int)past_h, (int)past_m);
+                connect.Open();
+                command = new SQLiteCommand(sql, connect);
+                command.ExecuteNonQuery();
+                connect.Close();
+                
+            }
+
+            // multi alarm mode. 
+            else {
+                // coming soon. 
+                MessageBox.Show("Coming soon...");
+                return;
+            }
+
+            // refresh data 
+            refreshData();
+            cmain.changeCalendar();
+            cmain.calendarListRefresh();
+            cmain.refreshAlarm();
         }
 
 

@@ -85,6 +85,9 @@
  #### 21 (19-09-29)
  - 일일 알람 기능 구현 완료 (Complete implementing daily alarm functions)
 
+ #### 22 (19-09-30)
+ - DataView 화면에서 알람 수정 기능 구현 (단일 알람) (Implementing an alarm modification function on the DataView screen (single alarm))
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
