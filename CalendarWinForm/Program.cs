@@ -1,6 +1,7 @@
 ﻿using System;
 //using System.IO;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace CalendarWinForm {
     static class Program
@@ -27,6 +28,14 @@ namespace CalendarWinForm {
                     fileStream.Close();
                 }
                 */
+
+                Mutex mutex = new Mutex(true, "bdi_calendar");
+                TimeSpan wait = new TimeSpan(0, 0, 1);
+
+                if (!mutex.WaitOne(wait)) {
+                    MessageBox.Show("Calendar program is already running.");
+                    return;
+                }
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

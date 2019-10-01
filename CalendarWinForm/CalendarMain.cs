@@ -475,8 +475,8 @@ namespace CalendarWinForm {
 
         // "Alarm ON button click Event.                        
         private void button_alarmon_Click(object sender, EventArgs e) {
-            if (alarm_onCheck) { tManager.alarmOnOff_check(alarm_onCheck = false); button_alarmon.Text = "OFF"; }
-            else if (!alarm_onCheck) { tManager.alarmOnOff_check(alarm_onCheck = true); button_alarmon.Text = "ON"; }
+            if (alarm_onCheck) alarmOnOffChange(false);
+            else if (!alarm_onCheck) alarmOnOffChange(true);
         }
 
 
@@ -510,9 +510,26 @@ namespace CalendarWinForm {
         private void exitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
         private void DataViewToolStripMenuItem_Click(object sender, EventArgs e){ button_dataview_Click(null, null);  }
         private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e){
-            if (alarmONToolStripMenuItem.Checked == false) { alarmONToolStripMenuItem.Checked = true; alarmONToolStripMenuItem.Text = "Alarm : ON"; }
-            else { alarmONToolStripMenuItem.Checked = false; alarmONToolStripMenuItem.Text = "Alarm : OFF"; }
-            button_alarmon_Click(null, null);
+            if (alarmONToolStripMenuItem.Checked == false) alarmOnOffChange(true);
+            else alarmOnOffChange(false);
+        }
+
+        private void alarmOnOffChange(bool onAlarm) {
+            if (onAlarm) {
+                alarmONToolStripMenuItem.Checked = true;
+                alarmONToolStripMenuItem.Text = "Alarm : ON";
+
+                tManager.alarmOnOff_check(alarm_onCheck = true);
+                button_alarmon.Text = "ON";
+            }
+
+            else {
+                alarmONToolStripMenuItem.Checked = false;
+                alarmONToolStripMenuItem.Text = "Alarm : OFF";
+
+                tManager.alarmOnOff_check(alarm_onCheck = false);
+                button_alarmon.Text = "OFF";
+            }
         }
 
     }

@@ -88,6 +88,10 @@
  #### 22 (19-09-30)
  - DataView 화면에서 알람 수정 기능 구현 (단일 알람) (Implementing an alarm modification function on the DataView screen (single alarm))
 
+ #### 23 (19-10-01)
+ - 프로그램 중복 실행 방지 기능 구현 (Modifying it to run in a single process manner)
+ - 알람 ON/OFF 관련 버그 수정. (Fixed the bug related to alarm on/off.)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
@@ -121,6 +125,7 @@
  - (두 DateTime '일'수 차이 구하기) https://nicebury.tistory.com/60
  - (ListView 항목 복수 선택) https://wwwi.tistory.com/324
  - (트레이 아이콘) https://www.youtube.com/watch?v=TgDKcdC7X3E
+ - (단일 프로세스 실행) http://egloos.zum.com/metashower/v/9468289
 ---------------------------------------
 
 ## Etc.
