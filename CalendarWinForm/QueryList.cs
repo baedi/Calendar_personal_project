@@ -52,6 +52,12 @@
                     $"AND sethour = {setH} AND setminute = {setM}";
         }
 
+        public static string updateMultiSQL2(string[] dateStr, decimal setH, decimal setM, string text, bool alaEnable, decimal pastH, decimal pastM) {
+            return $"UPDATE calendarlist SET (sethour, setminute, text, active) = ({setH}, {setM}, '{text}', {alaEnable}) " +
+                    $"WHERE year = {int.Parse(dateStr[0])} AND month = {int.Parse(dateStr[1])} AND day = {int.Parse(dateStr[2])} " +
+                    $"AND sethour = {pastH} AND setMinute = {pastM}";
+        }
+
 
         // overlap check sql. 
         public static string overlapCheckSQL(string[] dateStr) { return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";  }

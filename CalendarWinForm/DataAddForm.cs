@@ -130,7 +130,7 @@ namespace CalendarWinForm
                     }
 
 
-                    // modify schedule mode. (normal)
+                    // modify schedule mode. (normal)   
                     else {
 
                         // overlap alarm check. 

@@ -188,16 +188,15 @@ namespace CalendarWinForm
             SQLiteCommand command = new SQLiteCommand(sql, connect);
             SQLiteDataReader reader = command.ExecuteReader();
 
+            if (!reader.Read()){
+                MessageBox.Show("Can't find past data.");
+                reader.Close(); connect.Close();
+                return;
+            }
+            reader.Close();     connect.Close();
 
             // single alarm mode. 
             if(checkBox_isMulti.Checked == false) {
-                if (!reader.Read()) {
-                    MessageBox.Show("Can't find past data.");
-                    reader.Close();     connect.Close();
-                    return;
-                }
-
-                reader.Close();     connect.Close();
                 sql = QueryList.updateSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked, (int)past_h, (int)past_m);
                 connect.Open();
                 command = new SQLiteCommand(sql, connect);
@@ -208,9 +207,19 @@ namespace CalendarWinForm
 
             // multi alarm mode. 
             else {
-                // coming soon. 
-                MessageBox.Show("Coming soon...");
-                return;
+                DateTime temp_checkDay = new DateTime(dateTimePicker_start.Value.Ticks);
+                int dayCount = (DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-M-d")) - DateTime.Parse(dateTimePicker_start.Value.ToString("yyyy-M-d"))).Days;
+
+                for(int count = 0; count <= dayCount; count++, temp_checkDay = temp_checkDay.AddDays(1)) {
+                    date = new string[3];
+                    date = temp_checkDay.ToString("yyyy-M-d").Split('-');
+                    sql = QueryList.updateMultiSQL2(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked,past_h,past_m);
+
+                    connect.Open();
+                    command = new SQLiteCommand(sql, connect);
+                    command.ExecuteNonQuery();
+                    connect.Close();
+                }
             }
 
             // refresh data 

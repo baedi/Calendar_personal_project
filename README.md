@@ -92,6 +92,9 @@
  - 프로그램 중복 실행 방지 기능 구현 (Modifying it to run in a single process manner)
  - 알람 ON/OFF 관련 버그 수정. (Fixed the bug related to alarm on/off.)
 
+ #### 24 (19-10-02)
+ - DataView 화면에서 알람 수정 기능 구현 (다중 알람) (Implementing an alarm modification function on the DataView screen (multi alarm))
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
