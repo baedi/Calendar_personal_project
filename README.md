@@ -95,6 +95,10 @@
  #### 24 (19-10-02)
  - DataView 화면에서 알람 수정 기능 구현 (다중 알람) (Implementing an alarm modification function on the DataView screen (multi alarm))
 
+ #### 25 (19-10-03)
+ - 소스 파일 구성 정리 (Clean up C# class and form source files)
+ - 싱글턴 패턴 적용 테스트 (Singleton pattern implementation test)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
