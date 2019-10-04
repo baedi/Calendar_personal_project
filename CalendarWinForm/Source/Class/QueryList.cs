@@ -89,8 +89,8 @@
 
         // next alarm import. 
         public static string nextAlarmImport(string nowY, string nowM, string nowD) {
-            return $"select * from calendarlist where year >= {int.Parse(nowY)} AND month >= {int.Parse(nowM)} AND day >= {int.Parse(nowD)} " +
-                    "order by year, month, day, sethour, setminute ASC";
+            return $"SELECT * FROM calendarlist WHERE year >= {int.Parse(nowY)} AND month >= {int.Parse(nowM)} AND day >= {int.Parse(nowD)} " +
+                    "ORDER BY year, month, day, sethour, setminute ASC";
         }
     }
 }

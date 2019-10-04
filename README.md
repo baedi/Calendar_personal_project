@@ -99,6 +99,9 @@
  - 소스 파일 구성 정리 (Clean up C# class and form source files)
  - 싱글턴 패턴 적용 테스트 (Singleton pattern implementation test)
 
+ #### 26 (19-10-04)
+ - 코드 분류 작업 1 (Code cleanup 1)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

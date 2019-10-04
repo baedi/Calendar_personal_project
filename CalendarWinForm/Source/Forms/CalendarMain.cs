@@ -7,27 +7,25 @@ namespace CalendarWinForm {
     public partial class CalendarMain : Form {
 
         // variable.                                            
+        private AppManager appManager;
+
         private ThreadManager tManager;
         private ListBox[] gbox;
         private DataAddForm addForm;
         private TodayDataAddForm addForm_today;
-        //private SQLiteConnection dbConnect;         // calendar db.         
-        private SQLiteConnection dbConnect2;        // today data db.       
-        private SQLiteCommand dbCommand;
-        private SQLiteCommand dbCommand2;
         private DataView dataview;
+
         private int selectYear;
         private int selectMonth;
         private int selectDay;
-        //private int calendar_index;
         private int gbox_index;
         private bool alarm_onCheck;
-        private string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
-        private string dbFileName = @"\calendar.db";
-        private string dbFileName2 = @"\todayAlarm.db";
         private bool real_exit;
         private bool isSelectedDate;
 
+        private readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
+        private readonly string dbFileName = @"\calendar.db";
+        private readonly string dbFileName2 = @"\todayAlarm.db";
 
         // main method.                                         
         public CalendarMain() {
@@ -38,38 +36,39 @@ namespace CalendarWinForm {
             addForm_today = new TodayDataAddForm(this);
 
             // singleton Instance. 
-            AppManager.GetInstance().S_Main = this;
+            appManager = AppManager.GetInstance();
+            appManager.S_Main = this;
 
             // Database setting. 
-            AppManager.GetInstance().S_Connect = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
-            dbConnect2 = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
-            addForm.setDbConnect(AppManager.GetInstance().S_Connect);
-            addForm_today.setDbConnect(dbConnect2);
+            appManager.Connect_calendar = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
+            appManager.Connect_today = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
+            addForm.setDbConnect(appManager.Connect_calendar);
+            addForm_today.setDbConnect(appManager.Connect_today);
 
             if (!File.Exists(path + dbFileName)) {
-                dbCommand = new SQLiteCommand(QueryList.createTableSQL(), AppManager.GetInstance().S_Connect);
+                appManager.Command_calendar = new SQLiteCommand(QueryList.createTableSQL(), appManager.Connect_calendar);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
                 MessageBox.Show("Created new calendar db.");
-                AppManager.GetInstance().S_Connect.Open();
-                dbCommand.ExecuteNonQuery();
-                AppManager.GetInstance().S_Connect.Close();
+                appManager.Connect_calendar.Open();
+                appManager.Command_calendar.ExecuteNonQuery();
+                appManager.Connect_calendar.Close();
             }
 
             if(!File.Exists(path + dbFileName2)){
-                dbCommand2 = new SQLiteCommand(QueryList.createTableSQL_today(), dbConnect2);
+                appManager.Command_today = new SQLiteCommand(QueryList.createTableSQL_today(), appManager.Connect_today);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName2);
                 MessageBox.Show("Created new today alarm db.");
-                dbConnect2.Open();
-                dbCommand2.ExecuteNonQuery();
-                dbConnect2.Close();
+                appManager.Connect_today.Open();
+                appManager.Command_today.ExecuteNonQuery();
+                appManager.Connect_today.Close();
             }
 
 
             
-            tManager = new ThreadManager(label_Time, AppManager.GetInstance().S_Connect, dbConnect2);    // Thread setting.  
-            dataview = new DataView(AppManager.GetInstance().S_Connect, this);                           // DataView setting.
+            tManager = new ThreadManager(label_Time/*, appManager.Connect_calendar, appManager.Connect_today*/);    // Thread setting.  
+            dataview = new DataView(appManager.Connect_calendar, this);                           // DataView setting.
 
 
             // Panel setting.                                   
@@ -112,7 +111,7 @@ namespace CalendarWinForm {
             }
 
             tempCt = blankCount - 1;
-            AppManager.GetInstance().S_Connect.Open();
+            appManager.Connect_calendar.Open();
 
             for (int row = 1, boxCount = 0, dayCount = 1; row <= 6; row = row + 1)
                 for (int col = 0; col < 7; col = col + 1) {
@@ -144,8 +143,8 @@ namespace CalendarWinForm {
                         dateStr[1] = int.Parse(dateStr[1]).ToString();
                         dateStr[2] = int.Parse(dateStr[2]).ToString();
 
-                        dbCommand = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), AppManager.GetInstance().S_Connect);
-                        SQLiteDataReader reader = dbCommand.ExecuteReader();
+                        appManager.Command_calendar = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), appManager.Connect_calendar);
+                        SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
                         gbox[boxCount].Items.Insert(0, dayCount);
 
                         int moreCount = 0;
@@ -168,7 +167,7 @@ namespace CalendarWinForm {
 
                 }
 
-            AppManager.GetInstance().S_Connect.Close();
+            appManager.Connect_calendar.Close();
 
             gbox_index = selectDay + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
@@ -187,11 +186,11 @@ namespace CalendarWinForm {
 
         // database current day calendar import.                
         public void calendarListRefresh() {
-            AppManager.GetInstance().S_Connect.Open();
+            appManager.Connect_calendar.Open();
             listView_Schedule.Items.Clear();
 
-            dbCommand = new SQLiteCommand(QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay), AppManager.GetInstance().S_Connect);
-            SQLiteDataReader reader = dbCommand.ExecuteReader();
+            appManager.Command_calendar = new SQLiteCommand(QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay), appManager.Connect_calendar);
+            SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
 
             while (reader.Read()) {
                 bool active = (bool)reader["active"];
@@ -204,7 +203,7 @@ namespace CalendarWinForm {
             }
 
             reader.Close();
-            AppManager.GetInstance().S_Connect.Close();
+            appManager.Connect_calendar.Close();
 
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
@@ -214,11 +213,11 @@ namespace CalendarWinForm {
 
         // database(today) current day calendar import.
         public void todayAlarmListRefresh() {
-            dbConnect2.Open();
+            appManager.Connect_today.Open();
             listView_todayList.Items.Clear();
 
-            dbCommand2 = new SQLiteCommand(QueryList.listviewTodayRefreshSQL(), dbConnect2);
-            SQLiteDataReader reader = dbCommand2.ExecuteReader();
+            appManager.Command_today = new SQLiteCommand(QueryList.listviewTodayRefreshSQL(), appManager.Connect_today);
+            SQLiteDataReader reader = appManager.Command_today.ExecuteReader();
 
             while (reader.Read()) {
                 listView_todayList.Items.Add(new ListViewItem(new string[] {
@@ -228,7 +227,7 @@ namespace CalendarWinForm {
             }
 
             reader.Close();
-            dbConnect2.Close();
+            appManager.Connect_today.Close();
 
             button_today_modify.Enabled = false;
             button_today_delete.Enabled = false;
@@ -241,8 +240,8 @@ namespace CalendarWinForm {
             selectBox.Items.Clear();
             selectBox.Items.Insert(0, dayItem);
 
-            AppManager.GetInstance().S_Connect.Open();
-            SQLiteCommand command = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), AppManager.GetInstance().S_Connect);
+            appManager.Connect_calendar.Open();
+            SQLiteCommand command = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), appManager.Connect_calendar);
             SQLiteDataReader reader = command.ExecuteReader();
 
             int moreCount = 0;
@@ -254,7 +253,7 @@ namespace CalendarWinForm {
 
             if (moreCount > 0) selectBox.Items.Insert(4, "(...more " + moreCount + ")");
             reader.Close();
-            AppManager.GetInstance().S_Connect.Close();
+            appManager.Connect_calendar.Close();
         }
 
 
@@ -267,11 +266,11 @@ namespace CalendarWinForm {
             datetemp[1] = int.Parse(splitstr[1]);
 
             // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
-            AppManager.GetInstance().S_Connect.Open();
+            appManager.Connect_calendar.Open();
 
-            dbCommand = new SQLiteCommand(QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp), AppManager.GetInstance().S_Connect);
-            dbCommand.ExecuteNonQuery();
-            AppManager.GetInstance().S_Connect.Close();
+            appManager.Command_calendar = new SQLiteCommand(QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp), appManager.Connect_calendar);
+            appManager.Command_calendar.ExecuteNonQuery();
+            appManager.Connect_calendar.Close();
         }
 
         private void deleteDBdata_today(int index) {
@@ -281,10 +280,10 @@ namespace CalendarWinForm {
             datetemp[0] = int.Parse(splitstr[0]);
             datetemp[1] = int.Parse(splitstr[1]);
 
-            dbConnect2.Open();
-            dbCommand2 = new SQLiteCommand(QueryList.deleteDateSQL_today(datetemp), dbConnect2);
-            dbCommand2.ExecuteNonQuery();
-            dbConnect2.Close();
+            appManager.Connect_today.Open();
+            appManager.Command_today = new SQLiteCommand(QueryList.deleteDateSQL_today(datetemp), appManager.Connect_today);
+            appManager.Command_today.ExecuteNonQuery();
+            appManager.Connect_today.Close();
         }
 
 
@@ -410,14 +409,14 @@ namespace CalendarWinForm {
         private void button_addSch_Click(object sender, EventArgs e) {
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm.gboxSetting(gbox[gbox_index]);
-            addForm.setDbConnect(AppManager.GetInstance().S_Connect);
+            addForm.setDbConnect(appManager.Connect_calendar);
             addForm.Show();
         }
 
         // "ADD" button click Event. (Today)                    
         private void Button_today_add_Click(object sender, EventArgs e) {
             addForm_today = new TodayDataAddForm(this);
-            addForm_today.setDbConnect(dbConnect2);
+            addForm_today.setDbConnect(appManager.Connect_today);
             addForm_today.Show();
         }
 
@@ -432,7 +431,7 @@ namespace CalendarWinForm {
 
             addForm = new DataAddForm(label_DateTemp, this, true);
             addForm.gboxSetting(gbox[gbox_index]);
-            addForm.setDbConnect(AppManager.GetInstance().S_Connect);
+            addForm.setDbConnect(appManager.Connect_calendar);
             addForm.setSelectData(datalist, text, actCheck);
             addForm.Show();
         }
@@ -500,7 +499,7 @@ namespace CalendarWinForm {
         // data view mode. 
         private void button_dataview_Click(object sender, EventArgs e) {
             try { dataview.Show(); }
-            catch (ObjectDisposedException exc) { dataview = new DataView(AppManager.GetInstance().S_Connect,  this); dataview.Show(); }
+            catch (ObjectDisposedException exc) { dataview = new DataView(appManager.Connect_calendar,  this); dataview.Show(); }
         }
 
         // get, set Method. 
