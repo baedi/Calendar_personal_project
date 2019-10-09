@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\CalendarMain\AlarmStatusChange.cs" />
     <Compile Include="Source\Class\AppManager.cs" />
     <Compile Include="Source\Forms\AlarmMessage.cs">
       <SubType>Form</SubType>
@@ -113,10 +114,10 @@
     <Compile Include="Source\Forms\AlarmMessage.Designer.cs">
       <DependentUpon>AlarmMessage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\Forms\CalendarMain.cs">
+    <Compile Include="Source\CalendarMain\CalendarMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\Forms\CalendarMain.Designer.cs">
+    <Compile Include="Source\CalendarMain\CalendarMain.Designer.cs">
       <DependentUpon>CalendarMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Forms\DataAddForm.cs">
@@ -150,7 +151,7 @@
     <EmbeddedResource Include="Source\Forms\AlarmMessage.resx">
       <DependentUpon>AlarmMessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\Forms\CalendarMain.resx">
+    <EmbeddedResource Include="Source\CalendarMain\CalendarMain.resx">
       <DependentUpon>CalendarMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Source\Forms\DataAddForm.resx">
