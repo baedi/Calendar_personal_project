@@ -100,11 +100,14 @@
  - 싱글턴 패턴 적용 테스트 (Singleton pattern implementation test)
 
  #### 26 (19-10-04)
- - 코드 분류 작업 1 (Code cleanup 1)
+ - 코드 정리 작업 (Code cleanup )
 
  #### 27 (19-10-09)
  - 코드 정리 작업 : AlarmStatusChange class (Code cleanup : AlarmStatusChange)
   + 기존 CalendarMain에 있었던 알람 온오프 관련 메서드들을 AlarmStatusChange 객체에서 처리하도록 구현
+
+ ### 28 (19-10-10 ~ )
+ - 코드 정리 작업 (CalendarMain) (Code cleanup : CalendarMain)
 
 ---------------------------------------
 

@@ -17,9 +17,7 @@ namespace CalendarWinForm
         private TodayDataAddForm addForm_today;
         private DataView dataview;
 
-        private int selectYear;
-        private int selectMonth;
-        private int selectDay;
+        private int[] selectCalendarDay;
         private int gbox_index;
         private bool alarm_onCheck;
         private bool real_exit;
@@ -33,8 +31,10 @@ namespace CalendarWinForm
         public CalendarMain()
         {
             InitializeComponent();
+
             alarm_onCheck = true;
             gbox = new ListBox[42];
+            selectCalendarDay = new int[3];
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm_today = new TodayDataAddForm(this);
 
@@ -80,15 +80,15 @@ namespace CalendarWinForm
             for (int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
 
             // Current date setting. 
-            selectDay = int.Parse(DateTime.Now.ToString("dd"));
-            selectYear = int.Parse(DateTime.Now.ToString("yyyy"));
-            selectMonth = int.Parse(DateTime.Now.ToString("MM"));
+            selectCalendarDay[0] = int.Parse(DateTime.Now.ToString("yyyy"));
+            selectCalendarDay[1] = int.Parse(DateTime.Now.ToString("MM"));
+            selectCalendarDay[2] = int.Parse(DateTime.Now.ToString("dd"));
 
             for (int row = 1, count = 0; row <= 6; row++)
                 for (int col = 0; col < 7; col++) { panel_MonthList.Controls.Add(gbox[count], col, row); count++; }
 
-            label_DateTemp.Text = selectYear.ToString() + "." + selectMonth.ToString() + "." + selectDay.ToString();
-            label_YearMonth.Text = selectYear.ToString() + "." + selectMonth.ToString("00");
+            label_DateTemp.Text = selectCalendarDay[0].ToString() + "." + selectCalendarDay[1].ToString() + "." + selectCalendarDay[2].ToString();
+            label_YearMonth.Text = selectCalendarDay[0].ToString() + "." + selectCalendarDay[1].ToString("00");
             changeCalendar();
             todayAlarmListRefresh();
         }
@@ -98,11 +98,11 @@ namespace CalendarWinForm
         // calendar diary set Method.                           
         private void settingCalendar()
         {
-            int maxDays = int.Parse(DateTime.DaysInMonth(selectYear, selectMonth).ToString());
+            int maxDays = int.Parse(DateTime.DaysInMonth(selectCalendarDay[0], selectCalendarDay[1]).ToString());
             int blankCount, tempCt;
             DateTime dOfMonth = new DateTime();
 
-            dOfMonth = dOfMonth.AddYears(selectYear - 1).AddMonths(selectMonth - 1);
+            dOfMonth = dOfMonth.AddYears(selectCalendarDay[0] - 1).AddMonths(selectCalendarDay[1] - 1);
 
             switch (dOfMonth.DayOfWeek.ToString())
             {
@@ -134,7 +134,7 @@ namespace CalendarWinForm
                         string[] dateStr = new string[3];
 
                         // Calender Panel color setting.
-                        if (DateTime.Now.ToString("yyyy-MM") == (selectYear.ToString() + "-" + selectMonth.ToString("00")) && dayCount == int.Parse(DateTime.Now.ToString("dd")))
+                        if (DateTime.Now.ToString("yyyy-MM") == (selectCalendarDay[0].ToString() + "-" + selectCalendarDay[1].ToString("00")) && dayCount == int.Parse(DateTime.Now.ToString("dd")))
                             gbox[dayCount + tempCt].BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
 
                         else if (dOfMonth.DayOfWeek.ToString() == "Sunday")
@@ -178,7 +178,7 @@ namespace CalendarWinForm
 
             appManager.Connect_calendar.Close();
 
-            gbox_index = selectDay + tempCt;
+            gbox_index = selectCalendarDay[2] + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
             //MessageBox.Show("Refresh Database");
             dataview.refreshData();
@@ -200,7 +200,7 @@ namespace CalendarWinForm
             appManager.Connect_calendar.Open();
             listView_Schedule.Items.Clear();
 
-            appManager.Command_calendar = new SQLiteCommand(QueryList.listviewRefreshSQL(selectYear, selectMonth, selectDay), appManager.Connect_calendar);
+            appManager.Command_calendar = new SQLiteCommand(QueryList.listviewRefreshSQL(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]), appManager.Connect_calendar);
             SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
 
             while (reader.Read())
@@ -284,7 +284,7 @@ namespace CalendarWinForm
             // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
             appManager.Connect_calendar.Open();
 
-            appManager.Command_calendar = new SQLiteCommand(QueryList.deleteDateSQL(selectYear, selectMonth, selectDay, datetemp), appManager.Connect_calendar);
+            appManager.Command_calendar = new SQLiteCommand(QueryList.deleteDateSQL(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2], datetemp), appManager.Connect_calendar);
             appManager.Command_calendar.ExecuteNonQuery();
             appManager.Connect_calendar.Close();
         }
@@ -310,14 +310,14 @@ namespace CalendarWinForm
         // calendar widget Event.                               
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            int cval = selectDay;
-            int temp = selectDay;
-            selectDay = int.Parse(e.End.ToString("dd"));
+            int cval = selectCalendarDay[2];
+            int temp = selectCalendarDay[2];
+            selectCalendarDay[2] = int.Parse(e.End.ToString("dd"));
 
-            if (int.Parse(e.Start.Year.ToString()) == selectYear &&
-                int.Parse(e.Start.Month.ToString()) == selectMonth)
+            if (int.Parse(e.Start.Year.ToString()) == selectCalendarDay[0] &&
+                int.Parse(e.Start.Month.ToString()) == selectCalendarDay[1])
             {
-                cval = selectDay - cval;
+                cval = selectCalendarDay[2] - cval;
                 if (cval == 0) return;
 
                 int[] sat_index = { 13, 20, 27, 34, 41 };
@@ -349,7 +349,7 @@ namespace CalendarWinForm
 
 
                 // current date color ... skycolor (192 255 255)
-                if (DateTime.Now.ToString("yyyy-MM-dd") == (selectYear.ToString() + "-" + selectMonth.ToString("00") + "-" + temp.ToString("00")))
+                if (DateTime.Now.ToString("yyyy-MM-dd") == (selectCalendarDay[0].ToString() + "-" + selectCalendarDay[1].ToString("00") + "-" + temp.ToString("00")))
                     gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
 
 
@@ -364,8 +364,8 @@ namespace CalendarWinForm
 
             else
             {
-                selectYear = int.Parse(e.End.ToString("yyyy"));
-                selectMonth = int.Parse(e.End.ToString("MM"));
+                selectCalendarDay[0] = int.Parse(e.End.ToString("yyyy"));
+                selectCalendarDay[1] = int.Parse(e.End.ToString("MM"));
                 changeCalendar();
             }
 
@@ -388,7 +388,7 @@ namespace CalendarWinForm
                 {
 
                     DateTime temp = new DateTime();
-                    monthCalendar1.SetDate(temp.AddYears(selectYear - 1).AddMonths(selectMonth - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
+                    monthCalendar1.SetDate(temp.AddYears(selectCalendarDay[0] - 1).AddMonths(selectCalendarDay[1] - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
                     isSelectedDate = true;
                     return;
                 }
@@ -484,9 +484,9 @@ namespace CalendarWinForm
                     if (listView_Schedule.Items[count].Selected == true) deleteDBdata(count);
 
                 string[] tempStr = new string[3];
-                tempStr[0] = selectYear.ToString();
-                tempStr[1] = selectMonth.ToString();
-                tempStr[2] = selectDay.ToString();
+                tempStr[0] = selectCalendarDay[0].ToString();
+                tempStr[1] = selectCalendarDay[1].ToString();
+                tempStr[2] = selectCalendarDay[2].ToString();
                 selectBoxDataRefresh(gbox[gbox_index], tempStr);
                 calendarListRefresh();
 
