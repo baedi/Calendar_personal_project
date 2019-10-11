@@ -8,8 +8,8 @@ namespace CalendarWinForm
     public partial class DataView : Form
     {
         // instance variable. 
-        private SQLiteConnection connect;
-        private CalendarMain cmain;
+        private CalendarMain tempMain;
+        private SQLiteConnection tempConnect;
 
         // update sql only. 
         private DateTime past_day;
@@ -18,11 +18,12 @@ namespace CalendarWinForm
 
 
         // Constructor. 
-        public DataView(SQLiteConnection connect, CalendarMain cmain) {
+        public DataView() {
             InitializeComponent();
 
-            this.connect = connect;
-            this.cmain = cmain;
+            this.tempConnect = AppManager.GetInstance().Connect_calendar;
+            this.tempMain = AppManager.GetInstance().S_Main;
+            //this.Visible = false;
             refreshData();
         }
 
@@ -84,17 +85,17 @@ namespace CalendarWinForm
 
             // duplicate check.     
             sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
-            connect.Open();
-            command = new SQLiteCommand(sql, connect);
+            tempConnect.Open();
+            command = new SQLiteCommand(sql, tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             if (reader.Read()) {
                 MessageBox.Show("Duplicate alarm time.");
-                reader.Close(); connect.Close(); return;
+                reader.Close(); tempConnect.Close(); return;
             }
 
             reader.Close();
-            connect.Close();
+            tempConnect.Close();
 
 
             /* normal mode */
@@ -102,10 +103,10 @@ namespace CalendarWinForm
 
                 // input data.          
                 sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
-                connect.Open();
-                command = new SQLiteCommand(sql, connect);
+                tempConnect.Open();
+                command = new SQLiteCommand(sql, tempConnect);
                 command.ExecuteNonQuery();
-                connect.Close();
+                tempConnect.Close();
 
             }
 
@@ -123,25 +124,25 @@ namespace CalendarWinForm
                     date = temp_nextday.ToString("yyyy-M-d").Split('-');
                     sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
 
-                    connect.Open();
-                    command = new SQLiteCommand(sql, connect);
+                    tempConnect.Open();
+                    command = new SQLiteCommand(sql, tempConnect);
                     reader = command.ExecuteReader();
 
 
                     // data is already exist.      
                     if (reader.Read()) {
-                        reader.Close(); connect.Close();
+                        reader.Close(); tempConnect.Close();
                         if (oncemessage) { MessageBox.Show("Existing data was maintained due to overlapping schedules."); oncemessage = false; }
                     }
 
                     // data is not already exist.  
                     else {
-                        reader.Close(); connect.Close();
+                        reader.Close(); tempConnect.Close();
 
                         sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
-                        connect.Open(); command = new SQLiteCommand(sql, connect);
+                        tempConnect.Open(); command = new SQLiteCommand(sql, tempConnect);
                         command.ExecuteNonQuery();
-                        connect.Close();
+                        tempConnect.Close();
                     }
 
                 }
@@ -150,9 +151,9 @@ namespace CalendarWinForm
 
             // refresh data 
             refreshData();
-            cmain.changeCalendar();
-            cmain.calendarListRefresh();
-            cmain.refreshAlarm();
+            tempMain.changeCalendar();
+            tempMain.calendarListRefresh();
+            tempMain.refreshAlarm();
 
         }
 
@@ -184,24 +185,24 @@ namespace CalendarWinForm
             date = new string[3];
             date = past_day.ToString("yyyy-M-d").Split('-');
             sql = QueryList.overlapMultiCheckSQL(date, past_h, past_m);
-            connect.Open();
-            SQLiteCommand command = new SQLiteCommand(sql, connect);
+            tempConnect.Open();
+            SQLiteCommand command = new SQLiteCommand(sql, tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             if (!reader.Read()){
                 MessageBox.Show("Can't find past data.");
-                reader.Close(); connect.Close();
+                reader.Close(); tempConnect.Close();
                 return;
             }
-            reader.Close();     connect.Close();
+            reader.Close();     tempConnect.Close();
 
             // single alarm mode. 
             if(checkBox_isMulti.Checked == false) {
                 sql = QueryList.updateSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked, (int)past_h, (int)past_m);
-                connect.Open();
-                command = new SQLiteCommand(sql, connect);
+                tempConnect.Open();
+                command = new SQLiteCommand(sql, tempConnect);
                 command.ExecuteNonQuery();
-                connect.Close();
+                tempConnect.Close();
                 
             }
 
@@ -215,18 +216,18 @@ namespace CalendarWinForm
                     date = temp_checkDay.ToString("yyyy-M-d").Split('-');
                     sql = QueryList.updateMultiSQL2(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked,past_h,past_m);
 
-                    connect.Open();
-                    command = new SQLiteCommand(sql, connect);
+                    tempConnect.Open();
+                    command = new SQLiteCommand(sql, tempConnect);
                     command.ExecuteNonQuery();
-                    connect.Close();
+                    tempConnect.Close();
                 }
             }
 
             // refresh data 
             refreshData();
-            cmain.changeCalendar();
-            cmain.calendarListRefresh();
-            cmain.refreshAlarm();
+            tempMain.changeCalendar();
+            tempMain.calendarListRefresh();
+            tempMain.refreshAlarm();
         }
 
 
@@ -234,8 +235,8 @@ namespace CalendarWinForm
             listView_allDatalist.Items.Clear();
             groupBox_mode.Text = "Unselected";
 
-            connect.Open();
-            SQLiteCommand command = new SQLiteCommand(QueryList.allDataSQL(), connect);
+            tempConnect.Open();
+            SQLiteCommand command = new SQLiteCommand(QueryList.allDataSQL(), tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) {
@@ -251,7 +252,7 @@ namespace CalendarWinForm
             }
 
             reader.Close();
-            connect.Close();
+            tempConnect.Close();
 
             button_modify.Enabled = false;
             button_delete.Enabled = false;
@@ -300,19 +301,23 @@ namespace CalendarWinForm
                         int[] alarm = new int[2];   alarm[0] = int.Parse(alarm_temp[0]);
                                                     alarm[1] = int.Parse(alarm_temp[1]);
 
-                        connect.Open();
-                        SQLiteCommand command = new SQLiteCommand(QueryList.deleteDateSQL(date[0], date[1], date[2], alarm), connect);
+                        tempConnect.Open();
+                        SQLiteCommand command = new SQLiteCommand(QueryList.deleteDateSQL(date[0], date[1], date[2], alarm), tempConnect);
                         command.ExecuteNonQuery();
-                        connect.Close();
+                        tempConnect.Close();
                     }
                 }
 
                 refreshData();
-                cmain.changeCalendar();
-                cmain.calendarListRefresh();
-                cmain.refreshAlarm();
+                tempMain.changeCalendar();
+                tempMain.calendarListRefresh();
+                tempMain.refreshAlarm();
             }
         }
 
+        private void DataView_FormClosing(object sender, FormClosingEventArgs e) {
+            e.Cancel = true;
+            this.Visible = false;
+        }
     }
 }

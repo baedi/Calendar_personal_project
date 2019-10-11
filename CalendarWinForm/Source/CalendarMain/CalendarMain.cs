@@ -73,7 +73,6 @@ namespace CalendarWinForm
 
 
             tManager = new ThreadManager(label_Time/*, appManager.Connect_calendar, appManager.Connect_today*/);    // Thread setting.  
-            dataview = new DataView(appManager.Connect_calendar, this);                           // DataView setting.
 
 
             // Panel setting.                                   
@@ -181,7 +180,7 @@ namespace CalendarWinForm
             gbox_index = selectCalendarDay[2] + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
             //MessageBox.Show("Refresh Database");
-            dataview.refreshData();
+            if (dataview != null) dataview.refreshData();
         }
 
 
@@ -220,7 +219,7 @@ namespace CalendarWinForm
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
 
-            dataview.refreshData();
+            if(dataview != null)dataview.refreshData();
         }
 
         // database(today) current day calendar import.
@@ -516,29 +515,19 @@ namespace CalendarWinForm
         // program close Event.                                 
         private void Form_Calendar_main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (real_exit)
-            {
-                try
-                {
+            if (real_exit) {
+                try {
                     tManager.setThreadEnable(false);
                     if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
                 }
                 catch (NullReferenceException exc) { }
             }
 
-            else
-            {
-                e.Cancel = true;
-                Visible = false;
-            }
+            else { e.Cancel = true; Visible = false; }
         }
 
         // data view mode. 
-        private void button_dataview_Click(object sender, EventArgs e)
-        {
-            try { dataview.Show(); }
-            catch (ObjectDisposedException exc) { dataview = new DataView(appManager.Connect_calendar, this); dataview.Show(); }
-        }
+        private void button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
 
         // get, set Method. 
         public void refreshAlarm() { tManager.nextAlarmReadyRefresh(); }

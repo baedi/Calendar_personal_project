@@ -107,8 +107,9 @@
   + 기존 CalendarMain에 있었던 알람 온오프 관련 메서드들을 AlarmStatusChange 객체에서 처리하도록 구현
 
  ### 28 (19-10-10 ~ )
- - 코드 정리 작업 (CalendarMain) (Code cleanup : CalendarMain)
-
+ - 10.10 코드 정리 작업 (CalendarMain) (Code cleanup : CalendarMain)
+ - 10.11 	DataView 객체 생성 방식 변경 (Change how DataView objects are created)
+ -	AppManager에서 불필요한 코드 제거 (Remove unnecessary code from AppManager)
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

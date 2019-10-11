@@ -95,6 +95,7 @@
             this.col_time,
             this.col_text,
             this.col_active});
+            this.listView_allDatalist.HideSelection = false;
             this.listView_allDatalist.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.listView_allDatalist.Location = new System.Drawing.Point(14, 15);
@@ -344,6 +345,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "DataView";
             this.Text = "DataView";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataView_FormClosing);
             this.Load += new System.EventHandler(this.DataView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_hour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_minute)).EndInit();
