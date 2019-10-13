@@ -9,13 +9,27 @@ namespace CalendarWinForm {
         // Instance var.    
         private SQLiteConnection dbConnect;
         private CalendarMain calendar;
+        private bool isAddMode;
+        private decimal past_hour;
+        private decimal past_date;
+        private string past_text;
 
         // Constructor. 
-        public TodayDataAddForm(CalendarMain calendar)  {
+        public TodayDataAddForm(CalendarMain calendar, bool mode)  {
             InitializeComponent();
 
             this.calendar = calendar;
+            isAddMode = mode;
+        }
 
+        public void pastDataSet(string[] timeTemp, string textTemp) {
+            past_hour = decimal.Parse(timeTemp[0]);
+            past_date = decimal.Parse(timeTemp[1]);
+            past_text = textTemp;
+
+            nUD_t_hour.Value = past_hour;
+            nUD_t_minute.Value = past_date;
+            textBox_today_text.Text = past_text;
         }
 
 
@@ -32,14 +46,16 @@ namespace CalendarWinForm {
             }
 
             try {
+                if (isAddMode){
+                    sql = QueryList.overlapCheckSQL_Today(nUD_t_hour.Value, nUD_t_minute.Value);
+                    if (!overlapCheck(sql)) { MessageBox.Show("Duplicate alarm time."); return; }
 
-                sql = QueryList.overlapCheckSQL_Today(nUD_t_hour.Value, nUD_t_minute.Value);
-                if (!overlapCheck(sql)) { MessageBox.Show("Duplicate alarm time."); return; }
+                    // insert
+                    sql = QueryList.insertSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text);
+                    queryActive(sql);
+                }
 
-                // insert
-                sql = QueryList.insertSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text);
-                queryActive(sql);
-
+                else MessageBox.Show("Coming soon...");
 
             } catch(Exception exc) {
                 MessageBox.Show("Error : " + exc.Message);

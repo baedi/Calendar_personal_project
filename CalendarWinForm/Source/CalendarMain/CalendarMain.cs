@@ -36,7 +36,7 @@ namespace CalendarWinForm
             gbox = new ListBox[42];
             selectCalendarDay = new int[3];
             addForm = new DataAddForm(label_DateTemp, this, false);
-            addForm_today = new TodayDataAddForm(this);
+            addForm_today = new TodayDataAddForm(this, false);
 
             // singleton Instance. 
             appManager = AppManager.GetInstance();
@@ -426,6 +426,7 @@ namespace CalendarWinForm
         // today schedule click Event.
         private void ListView_todayList_Click(object sender, EventArgs e)
         {
+            button_today_modify.Enabled = true;
             button_today_delete.Enabled = true;
         }
 
@@ -443,7 +444,7 @@ namespace CalendarWinForm
         // "ADD" button click Event. (Today)                    
         private void Button_today_add_Click(object sender, EventArgs e)
         {
-            addForm_today = new TodayDataAddForm(this);
+            addForm_today = new TodayDataAddForm(this, true);
             addForm_today.setDbConnect(appManager.Connect_today);
             addForm_today.Show();
         }
@@ -466,11 +467,13 @@ namespace CalendarWinForm
         }
 
         // "MODIFY" button click Event. (Today)                 
-        private void Button_today_modify_Click(object sender, EventArgs e)
-        {
-
-            /* coming soon */
-
+        private void Button_today_modify_Click(object sender, EventArgs e) {
+            addForm_today = new TodayDataAddForm(this, false);
+            addForm_today.Text = "TodayDataAddForm(Modify)";
+            addForm_today.pastDataSet(listView_todayList.SelectedItems[0].Text.ToString().Split(':'),
+                                        listView_todayList.SelectedItems[0].SubItems[1].Text);
+            addForm_today.setDbConnect(appManager.Connect_today);
+            addForm_today.Show();
         }
 
 
