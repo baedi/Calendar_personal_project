@@ -116,6 +116,9 @@
  ### 30 (19-10-13)
  - 일일 알람 "수정 버튼" 기능 틀 구현 (Implementing the daily alarm "modify button" function frame)
 
+ ### 31 (10-10-14)
+ - 일일 알람 "수정 버튼" 기능 구현 완료 (Completed implementation of daily alarm "modify button" function)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

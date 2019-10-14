@@ -58,6 +58,12 @@
                     $"AND sethour = {pastH} AND setMinute = {pastM}";
         }
 
+        // update sql today.
+        public static string updateSQL_today(decimal setH, decimal setM, string text, decimal origH, decimal origM) {
+            return $"UPDATE t_alarmlist SET (sethour, setminute, text) = ({setH}, {setM}, '{text}') " +
+                    $"WHERE sethour = {origH} AND setminute = {origM}";
+        }
+
 
         // overlap check sql. 
         public static string overlapCheckSQL(string[] dateStr) { return $"select sethour, setminute from calendarlist where year = {dateStr[0]} AND month = {dateStr[1]} AND day = {dateStr[2]};";  }

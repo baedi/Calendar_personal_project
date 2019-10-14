@@ -11,8 +11,8 @@ namespace CalendarWinForm {
         private CalendarMain calendar;
         private bool isAddMode;
         private decimal past_hour;
-        private decimal past_date;
-        private string past_text;
+        private decimal past_min;
+
 
         // Constructor. 
         public TodayDataAddForm(CalendarMain calendar, bool mode)  {
@@ -24,12 +24,11 @@ namespace CalendarWinForm {
 
         public void pastDataSet(string[] timeTemp, string textTemp) {
             past_hour = decimal.Parse(timeTemp[0]);
-            past_date = decimal.Parse(timeTemp[1]);
-            past_text = textTemp;
+            past_min = decimal.Parse(timeTemp[1]);
 
             nUD_t_hour.Value = past_hour;
-            nUD_t_minute.Value = past_date;
-            textBox_today_text.Text = past_text;
+            nUD_t_minute.Value = past_min;
+            textBox_today_text.Text = textTemp;
         }
 
 
@@ -46,17 +45,19 @@ namespace CalendarWinForm {
             }
 
             try {
-                if (isAddMode){
-                    sql = QueryList.overlapCheckSQL_Today(nUD_t_hour.Value, nUD_t_minute.Value);
-                    if (!overlapCheck(sql)) { MessageBox.Show("Duplicate alarm time."); return; }
 
-                    // insert
+                sql = QueryList.overlapCheckSQL_Today(nUD_t_hour.Value, nUD_t_minute.Value);
+                if (!overlapCheck(sql)) { MessageBox.Show("Duplicate alarm time."); return; }
+
+                // add mode
+                if (isAddMode)
                     sql = QueryList.insertSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text);
-                    queryActive(sql);
-                }
 
-                else MessageBox.Show("Coming soon...");
 
+                else
+                    sql = QueryList.updateSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text, past_hour, past_min);
+
+                queryActive(sql);
             } catch(Exception exc) {
                 MessageBox.Show("Error : " + exc.Message);
                 if (dbConnect.State.ToString() == "Open") dbConnect.Close();
