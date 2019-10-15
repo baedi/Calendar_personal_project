@@ -116,8 +116,11 @@
  ### 30 (19-10-13)
  - 일일 알람 "수정 버튼" 기능 틀 구현 (Implementing the daily alarm "modify button" function frame)
 
- ### 31 (10-10-14)
+ ### 31 (19-10-14)
  - 일일 알람 "수정 버튼" 기능 구현 완료 (Completed implementation of daily alarm "modify button" function)
+
+ ### 32 (19-10-15)
+ - SQL 전용 클래스 변경 작업 (정적 -> 동적 방식으로) (SQL-only class change operation (static -> dynamic))
 
 ---------------------------------------
 

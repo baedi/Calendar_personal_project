@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Source\CalendarMain\AlarmStatusChange.cs" />
     <Compile Include="Source\Class\AppManager.cs" />
+    <Compile Include="Source\Class\ListSqlQuery.cs" />
     <Compile Include="Source\Forms\AlarmMessage.cs">
       <SubType>Form</SubType>
     </Compile>
