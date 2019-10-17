@@ -50,7 +50,8 @@ namespace CalendarWinForm
 
             if (!File.Exists(path + dbFileName))
             {
-                appManager.Command_calendar = new SQLiteCommand(QueryList.createTableSQL(), appManager.Connect_calendar);
+                //appManager.Command_calendar = new SQLiteCommand(QueryList.createTableSQL(), appManager.Connect_calendar);
+                appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlCreateTable(ListSqlQuery.CALENDAR_MODE), appManager.Connect_calendar);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
                 MessageBox.Show("Created new calendar db.");
@@ -61,7 +62,8 @@ namespace CalendarWinForm
 
             if (!File.Exists(path + dbFileName2))
             {
-                appManager.Command_today = new SQLiteCommand(QueryList.createTableSQL_today(), appManager.Connect_today);
+                //appManager.Command_today = new SQLiteCommand(QueryList.createTableSQL_today(), appManager.Connect_today);
+                appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlCreateTable(ListSqlQuery.ALARM_MODE), appManager.Connect_today);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName2);
                 MessageBox.Show("Created new today alarm db.");

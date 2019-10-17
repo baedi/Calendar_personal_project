@@ -12,7 +12,8 @@ namespace CalendarWinForm
         private Label date;
         private CalendarMain calendar;
         private bool modifyMode;
-        private string[] dateStr;
+        private string[] dateStr;           // temp &&&&&
+        private decimal[] setDateYMD;       // new  *****
 
         private int original_hour;
         private int original_minute;
@@ -32,16 +33,16 @@ namespace CalendarWinForm
             if (mode) this.Text = "Modify schedule";
             else this.Text = "Add schedule";
 
-            dateStrSetting();
+            dateSetting();
 
             startDateTemp = new DateTime();
             endDateTemp = new DateTime();
 
-            startDateTemp = startDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) - 1);
-            endDateTemp = endDateTemp.AddYears(int.Parse(dateStr[0]) - 1).AddMonths(int.Parse(dateStr[1]) - 1).AddDays(int.Parse(dateStr[2]) + 3);
+            startDateTemp = startDateTemp.AddYears((int)setDateYMD[0] - 1).AddMonths((int)setDateYMD[1] - 1).AddDays((int)setDateYMD[2] - 1);
+            endDateTemp = endDateTemp.AddYears((int)setDateYMD[0] - 1).AddMonths((int)setDateYMD[1] - 1).AddDays((int)setDateYMD[2] + 2);
 
             dateTimePicker_end.Value = endDateTemp;
-            groupBox_curdatecheck.Text = dateStr[0] + "." + dateStr[1] + "." + dateStr[2];
+            groupBox_curdatecheck.Text = setDateYMD[0] + "." + setDateYMD[1] + "." + setDateYMD[2];
 
             //TimeSpan temp = DateTime.Parse(endDateTemp.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
             //int day_temp = temp.Days;
@@ -49,7 +50,16 @@ namespace CalendarWinForm
 
         // Setting Method            
         public void gboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
-        public void dateStrSetting() { dateStr = new string[3]; dateStr = date.Text.Split('.'); }
+        public void dateSetting() {
+            dateStr = new string[3]; dateStr = date.Text.Split('.');    // temp &&&&&
+
+            // new *****
+            setDateYMD = new decimal[3];
+            string[] tempString = new string[3]; tempString = date.Text.Split('.');
+
+            for (int count = 0; count < tempString.Length; count++)
+                setDateYMD[count] = decimal.Parse(tempString[count]);
+        }
 
 
         // button Event.            
@@ -57,6 +67,7 @@ namespace CalendarWinForm
 
             int length;
             string sql;
+            decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
 
             length = Encoding.Default.GetBytes(textBox_calendarText.Text).Length;
 
@@ -64,7 +75,7 @@ namespace CalendarWinForm
             if (length <= 20 && length > 0) {
                 try {
 
-                    sql = QueryList.overlapCheckSQL(dateStr);
+                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM);
 
                     // add schedule mode.
                     if (!modifyMode) {
@@ -74,7 +85,7 @@ namespace CalendarWinForm
 
                         // insert data. (normal)        
                         if (!checkBox_multiMode.Checked) {
-                            sql = QueryList.insertSQL(dateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                            sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                             queryActive(sql);
                         }
 
@@ -249,7 +260,7 @@ namespace CalendarWinForm
             // select calendar year, month change check 
             int y_temp = int.Parse(dateStr[0]);
             int m_temp = int.Parse(dateStr[1]);
-            dateStrSetting();
+            dateSetting();
 
             if (y_temp == int.Parse(dateStr[0]) && m_temp == int.Parse(dateStr[1])){
                 calendar.selectBoxDataRefresh(selectBox, dateStr);

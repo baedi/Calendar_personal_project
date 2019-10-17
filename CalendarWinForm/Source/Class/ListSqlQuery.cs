@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CalendarWinForm.Source.Class {
+namespace CalendarWinForm {
     class ListSqlQuery {
 
         public const int CALENDAR_MODE = 1;
@@ -19,7 +19,7 @@ namespace CalendarWinForm.Source.Class {
 
         // INSERT SQL               
         public string sqlInsertValues(int mode, decimal[] setDate, decimal[] setTime, string text, bool alarmEnable) {
-            if (mode == CALENDAR_MODE) return $"INSERT INTO calendarlist VALUES ({setDate[0]}, {setDate[1]}, {setDate[2]}, {setTime[0]}, {setTime[1]}, \"{text}\", {alarmEnable}";
+            if (mode == CALENDAR_MODE) return $"INSERT INTO calendarlist VALUES ({setDate[0]}, {setDate[1]}, {setDate[2]}, {setTime[0]}, {setTime[1]}, \"{text}\", {alarmEnable})";
             else if (mode == ALARM_MODE) return $"INSERT INTO t_alarmlist VALUES ({setTime[0]}, {setTime[1]}, \"{text}\", true, \" \");";
             return null;
         }

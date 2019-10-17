@@ -8,6 +8,7 @@
             return "create table  t_alarmlist (sethour INT, setminute INT, text VARCHAR(21), active BOOLEAN, dot_week VARCHAR(4))";
         }
 
+        
         // insert sql. 
         public static string insertSQL(string[] dateStr, decimal setH, decimal setM, string text, bool alaEnable) {
             return $"insert into calendarlist values ({dateStr[0]}, {dateStr[1]}, {dateStr[2]}, {setH}, {setM}, \"{text}\", {alaEnable})";
@@ -16,7 +17,7 @@
         public static string insertSQL_today(decimal setH, decimal setM, string text) {
             return $"insert into t_alarmlist values ({setH}, {setM}, \"{text}\", true, \" \")";
         }
-
+        
         // all data check 
         public static string allDataSQL() {
             return "select * from calendarlist order by year, month, day, sethour, setminute ASC";

@@ -119,7 +119,7 @@
  ### 31 (19-10-14)
  - 일일 알람 "수정 버튼" 기능 구현 완료 (Completed implementation of daily alarm "modify button" function)
 
- ### 32 (19-10-15 ~ 19-10-16)
+ ### 32 (19-10-15 ~ 19-10-17)
  - SQL 전용 클래스 변경 작업 (정적 -> 동적 방식으로) (SQL-only class change operation (static -> dynamic))
 
 ---------------------------------------
