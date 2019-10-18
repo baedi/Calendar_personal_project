@@ -12,11 +12,8 @@ namespace CalendarWinForm
         private Label date;
         private CalendarMain calendar;
         private bool modifyMode;
-        private string[] dateStr;           // temp &&&&&
-        private decimal[] setDateYMD;       // new  *****
-
-        private int original_hour;
-        private int original_minute;
+        private decimal[] setDateYMD;       
+        private decimal[] originalHM;
         private string original_text;
 
         private ListBox selectBox;
@@ -50,10 +47,8 @@ namespace CalendarWinForm
 
         // Setting Method            
         public void gboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
-        public void dateSetting() {
-            dateStr = new string[3]; dateStr = date.Text.Split('.');    // temp &&&&&
 
-            // new *****
+        public void dateSetting() {
             setDateYMD = new decimal[3];
             string[] tempString = new string[3]; tempString = date.Text.Split('.');
 
@@ -149,7 +144,7 @@ namespace CalendarWinForm
 
                         // update data. (normal)        
                         if (!checkBox_multiMode.Checked) {
-                            sql = QueryList.updateSQL(dateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked, original_hour, original_minute);
+                            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, setDateYMD, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                             queryActive(sql);
                         }
 
@@ -226,13 +221,12 @@ namespace CalendarWinForm
             dbConnect.Open();
             command = new SQLiteCommand(sql, dbConnect);
             SQLiteDataReader reader = command.ExecuteReader();
-
             while (reader.Read())
             {
                 if (int.Parse(reader["sethour"].ToString()) == numericUpDown_setHour.Value &&
                      int.Parse(reader["setminute"].ToString()) == numericUpDown_setMinute.Value) {
 
-                    if (numericUpDown_setHour.Value == original_hour && numericUpDown_setMinute.Value == original_minute && modifyMode)
+                    if (numericUpDown_setHour.Value == originalHM[0] && numericUpDown_setMinute.Value == originalHM[1] && modifyMode)
                         continue;
 
                     MessageBox.Show("Duplicate alarm time.");
@@ -258,12 +252,12 @@ namespace CalendarWinForm
 
 
             // select calendar year, month change check 
-            int y_temp = int.Parse(dateStr[0]);
-            int m_temp = int.Parse(dateStr[1]);
+            decimal y_temp = setDateYMD[0];
+            decimal m_temp = setDateYMD[1];
             dateSetting();
 
-            if (y_temp == int.Parse(dateStr[0]) && m_temp == int.Parse(dateStr[1])){
-                calendar.selectBoxDataRefresh(selectBox, dateStr);
+            if (y_temp == setDateYMD[0] && m_temp == setDateYMD[1]){
+                calendar.selectBoxDataRefresh(selectBox, setDateYMD);
                 calendar.calendarListRefresh();
             }
 
@@ -277,12 +271,13 @@ namespace CalendarWinForm
         // get, set Method. 
         public void setDbConnect(SQLiteConnection conn) { dbConnect = conn; }
         public void setSelectData(string[] temp, string text, bool act) {
-            original_hour = int.Parse(temp[0]);
-            original_minute = int.Parse(temp[1]);
+            originalHM = new decimal[2];
+            originalHM[0] = decimal.Parse(temp[0]);
+            originalHM[1] = decimal.Parse(temp[1]);
             original_text = text;
 
-            numericUpDown_setHour.Value = original_hour;
-            numericUpDown_setMinute.Value = original_minute;
+            numericUpDown_setHour.Value = originalHM[0];
+            numericUpDown_setMinute.Value = originalHM[1];
             textBox_calendarText.Text = original_text;
             checkBox_checkAlarm.Checked = act;
         }

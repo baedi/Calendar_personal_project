@@ -38,7 +38,7 @@ namespace CalendarWinForm {
 
         // LISTBOX REFRESH          
         public string sqlListboxRefresh(decimal[] dateYMD) {
-            return $"SELECT text FROM calendarlist WHERE year = {dateYMD[0]} AND month = {dateYMD[1]} AND day = {dateYMD[3]} ORDER BY sethour, setminute ASC";
+            return $"SELECT text FROM calendarlist WHERE year = {dateYMD[0]} AND month = {dateYMD[1]} AND day = {dateYMD[2]} ORDER BY sethour, setminute ASC";
         }
 
         // UPDATE SQL               

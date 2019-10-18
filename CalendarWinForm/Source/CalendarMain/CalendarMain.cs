@@ -48,9 +48,7 @@ namespace CalendarWinForm
             addForm.setDbConnect(appManager.Connect_calendar);
             addForm_today.setDbConnect(appManager.Connect_today);
 
-            if (!File.Exists(path + dbFileName))
-            {
-                //appManager.Command_calendar = new SQLiteCommand(QueryList.createTableSQL(), appManager.Connect_calendar);
+            if (!File.Exists(path + dbFileName)) {
                 appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlCreateTable(ListSqlQuery.CALENDAR_MODE), appManager.Connect_calendar);
                 Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName);
@@ -60,9 +58,7 @@ namespace CalendarWinForm
                 appManager.Connect_calendar.Close();
             }
 
-            if (!File.Exists(path + dbFileName2))
-            {
-                //appManager.Command_today = new SQLiteCommand(QueryList.createTableSQL_today(), appManager.Connect_today);
+            if (!File.Exists(path + dbFileName2)) {
                 appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlCreateTable(ListSqlQuery.ALARM_MODE), appManager.Connect_today);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
                 SQLiteConnection.CreateFile(path + dbFileName2);
@@ -250,14 +246,14 @@ namespace CalendarWinForm
 
 
         // select box data refresh. 
-        public void selectBoxDataRefresh(ListBox selectBox, string[] dateStr)
+        public void selectBoxDataRefresh(ListBox selectBox, decimal[] dateYMD)
         {
             int dayItem = (int)selectBox.Items[0];
             selectBox.Items.Clear();
             selectBox.Items.Insert(0, dayItem);
 
             appManager.Connect_calendar.Open();
-            SQLiteCommand command = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), appManager.Connect_calendar);
+            SQLiteCommand command = new SQLiteCommand(new ListSqlQuery().sqlListboxRefresh(dateYMD), appManager.Connect_calendar);
             SQLiteDataReader reader = command.ExecuteReader();
 
             int moreCount = 0;
@@ -487,11 +483,11 @@ namespace CalendarWinForm
                 for (int count = listView_Schedule.Items.Count - 1; count >= 0; count = count - 1)
                     if (listView_Schedule.Items[count].Selected == true) deleteDBdata(count);
 
-                string[] tempStr = new string[3];
-                tempStr[0] = selectCalendarDay[0].ToString();
-                tempStr[1] = selectCalendarDay[1].ToString();
-                tempStr[2] = selectCalendarDay[2].ToString();
-                selectBoxDataRefresh(gbox[gbox_index], tempStr);
+                decimal[] tempYMD = new decimal[3];
+                tempYMD[0] = selectCalendarDay[0];
+                tempYMD[1] = selectCalendarDay[1];
+                tempYMD[2] = selectCalendarDay[2];
+                selectBoxDataRefresh(gbox[gbox_index], tempYMD);
                 calendarListRefresh();
 
                 refreshAlarm();
