@@ -9,16 +9,16 @@ namespace CalendarWinForm
     {
         // Instance variable.       
         private SQLiteConnection dbConnect;
-        private Label date;
-        private CalendarMain calendar;
-        private bool modifyMode;
+        private readonly Label date;
+        private readonly CalendarMain calendar;
+        private readonly bool modifyMode;
         private decimal[] setDateYMD;       
         private decimal[] originalHM;
         private string original_text;
 
         private ListBox selectBox;
-        private DateTime startDateTemp;
-        private DateTime endDateTemp;
+        private readonly DateTime startDateTemp;
+        private readonly DateTime endDateTemp;
 
         // Constructor.             
         public DataAddForm(Label date, CalendarMain calendar, bool mode) {
@@ -58,7 +58,7 @@ namespace CalendarWinForm
 
 
         // button Event.            
-        private void button_ok_Click(object sender, EventArgs e) {
+        private void Button_ok_Click(object sender, EventArgs e) {
 
             int length;
             string sql;
@@ -96,7 +96,8 @@ namespace CalendarWinForm
 
                                     // DB Check 
                                     string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    sql = QueryList.overlapMultiCheckSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value);
+                                    decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
+                                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM);
 
                                     dbConnect.Open();
                                     SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
@@ -116,7 +117,7 @@ namespace CalendarWinForm
                                         reader.Close();
                                         dbConnect.Close();
                                         
-                                        sql = QueryList.insertSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                                        sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
 
                                         dbConnect.Open();
                                         command = new SQLiteCommand(sql, dbConnect);
@@ -159,7 +160,9 @@ namespace CalendarWinForm
 
                                     // DB Check
                                     string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    sql = QueryList.overlapMultiCheckSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value);
+                                    decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
+
+                                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, originalHM);
 
                                     dbConnect.Open();
                                     SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
@@ -170,7 +173,7 @@ namespace CalendarWinForm
                                         reader.Close();
                                         dbConnect.Close();
 
-                                        sql = QueryList.updateMultiSQL(curDateStr, numericUpDown_setHour.Value, numericUpDown_setMinute.Value, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                                        sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, curDate, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
 
                                         dbConnect.Open();
                                         command = new SQLiteCommand(sql, dbConnect);
@@ -193,14 +196,17 @@ namespace CalendarWinForm
 
 
                     }
+                    
                 }
+            
                 catch (Exception exc) {
                     MessageBox.Show("Error : " + exc.Message);
                     if (dbConnect.State.ToString() == "Open")
                         dbConnect.Close();
                 }
+                
             }
-
+            
             else if (length <= 0) { MessageBox.Show("You didn't enter anything!");}
             else { MessageBox.Show("Character size must be no larger than 20."); }
         }
@@ -226,8 +232,9 @@ namespace CalendarWinForm
                 if (int.Parse(reader["sethour"].ToString()) == numericUpDown_setHour.Value &&
                      int.Parse(reader["setminute"].ToString()) == numericUpDown_setMinute.Value) {
 
-                    if (numericUpDown_setHour.Value == originalHM[0] && numericUpDown_setMinute.Value == originalHM[1] && modifyMode)
-                        continue;
+                    if(modifyMode)
+                        if (numericUpDown_setHour.Value == originalHM[0] && numericUpDown_setMinute.Value == originalHM[1])
+                            continue;
 
                     MessageBox.Show("Duplicate alarm time.");
                     reader.Close();
