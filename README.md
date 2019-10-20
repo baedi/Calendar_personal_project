@@ -119,10 +119,11 @@
  ### 31 (19-10-14)
  - 일일 알람 "수정 버튼" 기능 구현 완료 (Completed implementation of daily alarm "modify button" function)
 
- ### 32 (19-10-15 ~ 19-10-19)
+ ### 32 (19-10-15 ~ 19-10-20)
  - SQL 전용 클래스 변경 작업 (정적 -> 동적 방식으로) (SQL-only class change operation (static -> dynamic))
  + (19-10-19) 일정 중복 관련 오류 해결 (An error that occurs when a schedule is duplicated has been corrected.)
  + (19-10-19) DataView의 QueryList를 ListSqlQuery로 대체 완료 (Replacing DataView's QueryList with ListSqlQuery)
+ + (19-10-20) 일일 알람 수정 중 중복된 알람 입력 시 오류가 발생되는 현상 확인됨. (Error detected when registering duplicate alarms in daily alarm modification.)
 
 ---------------------------------------
 

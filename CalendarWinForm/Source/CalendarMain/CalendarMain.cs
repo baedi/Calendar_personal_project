@@ -129,6 +129,7 @@ namespace CalendarWinForm
                     else
                     {
                         string[] dateStr = new string[3];
+                        decimal[] dateYMD = new decimal[3];
 
                         // Calender Panel color setting.
                         if (DateTime.Now.ToString("yyyy-MM") == (selectCalendarDay[0].ToString() + "-" + selectCalendarDay[1].ToString("00")) && dayCount == int.Parse(DateTime.Now.ToString("dd")))
@@ -145,10 +146,11 @@ namespace CalendarWinForm
 
                         // database setting. 
                         dateStr = dOfMonth.ToString("yyyy-MM-dd").Split('-');
-                        dateStr[1] = int.Parse(dateStr[1]).ToString();
-                        dateStr[2] = int.Parse(dateStr[2]).ToString();
+                        dateYMD[0] = decimal.Parse(dateStr[0]);
+                        dateYMD[1] = decimal.Parse(dateStr[1]);
+                        dateYMD[2] = decimal.Parse(dateStr[2]);
 
-                        appManager.Command_calendar = new SQLiteCommand(QueryList.listBoxRefreshSQL(dateStr), appManager.Connect_calendar);
+                        appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlListboxRefresh(dateYMD), appManager.Connect_calendar);
                         SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
                         gbox[boxCount].Items.Insert(0, dayCount);
 
@@ -196,8 +198,9 @@ namespace CalendarWinForm
         {
             appManager.Connect_calendar.Open();
             listView_Schedule.Items.Clear();
+            decimal[] selectCalendarDay2 = { selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2] };
 
-            appManager.Command_calendar = new SQLiteCommand(QueryList.listviewRefreshSQL(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]), appManager.Connect_calendar);
+            appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.CALENDAR_MODE, selectCalendarDay2), appManager.Connect_calendar);
             SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
 
             while (reader.Read())
@@ -226,7 +229,7 @@ namespace CalendarWinForm
             appManager.Connect_today.Open();
             listView_todayList.Items.Clear();
 
-            appManager.Command_today = new SQLiteCommand(QueryList.listviewTodayRefreshSQL(), appManager.Connect_today);
+            appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.ALARM_MODE, null), appManager.Connect_today);
             SQLiteDataReader reader = appManager.Command_today.ExecuteReader();
 
             while (reader.Read())
