@@ -61,7 +61,7 @@ namespace CalendarWinForm {
 
         // DELEDE DATA              
         public string sqlDeleteData(int mode, decimal[] dateYMD, decimal[] time) {
-            if (mode == CALENDAR_MODE) return $"SELECT FROM calendarlist WHERE year = {dateYMD[0]} AND month = {dateYMD[1]} AND day = {dateYMD[2]} AND sethour = {time[0]} AND setminute = {time[1]};";
+            if (mode == CALENDAR_MODE) return $"DELETE FROM calendarlist WHERE year = {dateYMD[0]} AND month = {dateYMD[1]} AND day = {dateYMD[2]} AND sethour = {time[0]} AND setminute = {time[1]};";
             else if (mode == ALARM_MODE) return $"DELETE FROM t_alarmlist WHERE sethour = {time[0]} AND setminute = {time[1]};";
             return null;
         }

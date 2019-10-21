@@ -17,7 +17,7 @@ namespace CalendarWinForm
         private TodayDataAddForm addForm_today;
         private DataView dataview;
 
-        private int[] selectCalendarDay;
+        private decimal[] selectCalendarDay;
         private int gbox_index;
         private bool alarm_onCheck;
         private bool real_exit;
@@ -34,7 +34,7 @@ namespace CalendarWinForm
 
             alarm_onCheck = true;
             gbox = new ListBox[42];
-            selectCalendarDay = new int[3];
+            selectCalendarDay = new decimal[3];
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm_today = new TodayDataAddForm(this, false);
 
@@ -95,11 +95,11 @@ namespace CalendarWinForm
         // calendar diary set Method.                           
         private void settingCalendar()
         {
-            int maxDays = int.Parse(DateTime.DaysInMonth(selectCalendarDay[0], selectCalendarDay[1]).ToString());
+            int maxDays = int.Parse(DateTime.DaysInMonth((int)selectCalendarDay[0], (int)selectCalendarDay[1]).ToString());
             int blankCount, tempCt;
             DateTime dOfMonth = new DateTime();
 
-            dOfMonth = dOfMonth.AddYears(selectCalendarDay[0] - 1).AddMonths(selectCalendarDay[1] - 1);
+            dOfMonth = dOfMonth.AddYears((int)selectCalendarDay[0] - 1).AddMonths((int)selectCalendarDay[1] - 1);
 
             switch (dOfMonth.DayOfWeek.ToString())
             {
@@ -177,7 +177,7 @@ namespace CalendarWinForm
 
             appManager.Connect_calendar.Close();
 
-            gbox_index = selectCalendarDay[2] + tempCt;
+            gbox_index = (int)selectCalendarDay[2] + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
             //MessageBox.Show("Refresh Database");
             if (dataview != null) dataview.refreshData();
@@ -276,15 +276,14 @@ namespace CalendarWinForm
         private void deleteDBdata(int index)
         {
             string[] splitstr = new string[2];
-            int[] datetemp = new int[2];
+            decimal[] datetemp = new decimal[2];
             splitstr = listView_Schedule.Items[index].Text.Split(':');
-            datetemp[0] = int.Parse(splitstr[0]);
-            datetemp[1] = int.Parse(splitstr[1]);
+            datetemp[0] = decimal.Parse(splitstr[0]);
+            datetemp[1] = decimal.Parse(splitstr[1]);
 
             // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
             appManager.Connect_calendar.Open();
-
-            appManager.Command_calendar = new SQLiteCommand(QueryList.deleteDateSQL(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2], datetemp), appManager.Connect_calendar);
+            appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.CALENDAR_MODE, selectCalendarDay, datetemp), appManager.Connect_calendar);
             appManager.Command_calendar.ExecuteNonQuery();
             appManager.Connect_calendar.Close();
         }
@@ -292,13 +291,13 @@ namespace CalendarWinForm
         private void deleteDBdata_today(int index)
         {
             string[] splitstr = new string[2];
-            int[] datetemp = new int[2];
+            decimal[] datetemp = new decimal[2];
             splitstr = listView_todayList.Items[index].Text.Split(':');
-            datetemp[0] = int.Parse(splitstr[0]);
-            datetemp[1] = int.Parse(splitstr[1]);
+            datetemp[0] = decimal.Parse(splitstr[0]);
+            datetemp[1] = decimal.Parse(splitstr[1]);
 
             appManager.Connect_today.Open();
-            appManager.Command_today = new SQLiteCommand(QueryList.deleteDateSQL_today(datetemp), appManager.Connect_today);
+            appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.ALARM_MODE, null, datetemp), appManager.Connect_today);
             appManager.Command_today.ExecuteNonQuery();
             appManager.Connect_today.Close();
         }
@@ -310,14 +309,14 @@ namespace CalendarWinForm
         // calendar widget Event.                               
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
-            int cval = selectCalendarDay[2];
-            int temp = selectCalendarDay[2];
+            int cval = (int)selectCalendarDay[2];
+            int temp = (int)selectCalendarDay[2];
             selectCalendarDay[2] = int.Parse(e.End.ToString("dd"));
 
             if (int.Parse(e.Start.Year.ToString()) == selectCalendarDay[0] &&
                 int.Parse(e.Start.Month.ToString()) == selectCalendarDay[1])
             {
-                cval = selectCalendarDay[2] - cval;
+                cval = (int)selectCalendarDay[2] - cval;
                 if (cval == 0) return;
 
                 int[] sat_index = { 13, 20, 27, 34, 41 };
@@ -388,7 +387,7 @@ namespace CalendarWinForm
                 {
 
                     DateTime temp = new DateTime();
-                    monthCalendar1.SetDate(temp.AddYears(selectCalendarDay[0] - 1).AddMonths(selectCalendarDay[1] - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
+                    monthCalendar1.SetDate(temp.AddYears((int)selectCalendarDay[0] - 1).AddMonths((int)selectCalendarDay[1] - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
                     isSelectedDate = true;
                     return;
                 }

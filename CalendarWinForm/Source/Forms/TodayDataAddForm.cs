@@ -79,6 +79,7 @@ namespace CalendarWinForm {
 
             if (reader.Read()) return_bool = false;
 
+            reader.Close();
             dbConnect.Close();
             return return_bool;
         }
