@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CalendarWinForm.exe" size="2333184">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CalendarWinForm.exe" size="2333696">
       <assemblyIdentity name="CalendarWinForm" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>I72lUblDXyk9mCIyS6nvTjZ7oH7IfuShD+xRH1ezuJg=</dsig:DigestValue>
+        <dsig:DigestValue>Ka5kL0p88AKqoXghtmZokwepfo/KobF+ypEickAksVg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

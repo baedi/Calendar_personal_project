@@ -10,8 +10,7 @@ namespace CalendarWinForm {
         private SQLiteConnection dbConnect;
         private CalendarMain calendar;
         private bool isAddMode;
-        private decimal past_hour;
-        private decimal past_min;
+        private decimal[] pastHM;
 
 
         // Constructor. 
@@ -23,11 +22,12 @@ namespace CalendarWinForm {
         }
 
         public void pastDataSet(string[] timeTemp, string textTemp) {
-            past_hour = decimal.Parse(timeTemp[0]);
-            past_min = decimal.Parse(timeTemp[1]);
+            pastHM = new decimal[2];
+            pastHM[0] = decimal.Parse(timeTemp[0]);
+            pastHM[1] = decimal.Parse(timeTemp[1]);
 
-            nUD_t_hour.Value = past_hour;
-            nUD_t_minute.Value = past_min;
+            nUD_t_hour.Value = pastHM[0];
+            nUD_t_minute.Value = pastHM[1];
             textBox_today_text.Text = textTemp;
         }
 
@@ -36,6 +36,7 @@ namespace CalendarWinForm {
         private void Button_today_OK_Click(object sender, EventArgs e) {
             int length;
             string sql;
+            decimal[] time = { nUD_t_hour.Value, nUD_t_minute.Value };
 
             length = Encoding.Default.GetBytes(textBox_today_text.Text).Length;
 
@@ -45,17 +46,12 @@ namespace CalendarWinForm {
             }
 
             try {
-
-                sql = QueryList.overlapCheckSQL_Today(nUD_t_hour.Value, nUD_t_minute.Value);
+                sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.ALARM_MODE, null, time);
                 if (!overlapCheck(sql)) { MessageBox.Show("Duplicate alarm time."); return; }
 
                 // add mode
-                if (isAddMode)
-                    sql = QueryList.insertSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text);
-
-
-                else
-                    sql = QueryList.updateSQL_today(nUD_t_hour.Value, nUD_t_minute.Value, textBox_today_text.Text, past_hour, past_min);
+                if (isAddMode)  sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.ALARM_MODE, null, time, textBox_today_text.Text, true);
+                else            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.ALARM_MODE, null, pastHM, time, textBox_today_text.Text, true);
 
                 queryActive(sql);
             } catch(Exception exc) {

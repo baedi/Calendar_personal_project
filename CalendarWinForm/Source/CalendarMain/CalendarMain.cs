@@ -45,8 +45,8 @@ namespace CalendarWinForm
             // Database setting. 
             appManager.Connect_calendar = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
             appManager.Connect_today = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
-            addForm.setDbConnect(appManager.Connect_calendar);
-            addForm_today.setDbConnect(appManager.Connect_today);
+            addForm.setDbConnect(appManager.Connect_calendar);      addForm.Close();
+            addForm_today.setDbConnect(appManager.Connect_today);   addForm_today.Close();
 
             if (!File.Exists(path + dbFileName)) {
                 appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlCreateTable(ListSqlQuery.CALENDAR_MODE), appManager.Connect_calendar);
@@ -435,18 +435,22 @@ namespace CalendarWinForm
         // "ADD" button click Event.                            
         private void button_addSch_Click(object sender, EventArgs e)
         {
-            addForm = new DataAddForm(label_DateTemp, this, false);
-            addForm.gboxSetting(gbox[gbox_index]);
-            addForm.setDbConnect(appManager.Connect_calendar);
-            addForm.Show();
+            if (addForm.IsDisposed) {
+                addForm = new DataAddForm(label_DateTemp, this, false);
+                addForm.gboxSetting(gbox[gbox_index]);
+                addForm.setDbConnect(appManager.Connect_calendar);
+                addForm.Show();
+            }
         }
 
         // "ADD" button click Event. (Today)                    
         private void Button_today_add_Click(object sender, EventArgs e)
         {
-            addForm_today = new TodayDataAddForm(this, true);
-            addForm_today.setDbConnect(appManager.Connect_today);
-            addForm_today.Show();
+            if (addForm_today.IsDisposed){
+                addForm_today = new TodayDataAddForm(this, true);
+                addForm_today.setDbConnect(appManager.Connect_today);
+                addForm_today.Show();
+            }
         }
 
 
@@ -459,27 +463,32 @@ namespace CalendarWinForm
 
             datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
 
-            addForm = new DataAddForm(label_DateTemp, this, true);
-            addForm.gboxSetting(gbox[gbox_index]);
-            addForm.setDbConnect(appManager.Connect_calendar);
-            addForm.setSelectData(datalist, text, actCheck);
-            addForm.Show();
+            if (addForm.IsDisposed) {
+                addForm = new DataAddForm(label_DateTemp, this, true);
+                addForm.gboxSetting(gbox[gbox_index]);
+                addForm.setDbConnect(appManager.Connect_calendar);
+                addForm.setSelectData(datalist, text, actCheck);
+                addForm.Show();
+            }
         }
 
         // "MODIFY" button click Event. (Today)                 
         private void Button_today_modify_Click(object sender, EventArgs e) {
-            addForm_today = new TodayDataAddForm(this, false);
-            addForm_today.Text = "TodayDataAddForm(Modify)";
-            addForm_today.pastDataSet(listView_todayList.SelectedItems[0].Text.ToString().Split(':'),
-                                        listView_todayList.SelectedItems[0].SubItems[1].Text);
-            addForm_today.setDbConnect(appManager.Connect_today);
-            addForm_today.Show();
+            if (addForm_today.IsDisposed) {
+                addForm_today = new TodayDataAddForm(this, false);
+                addForm_today.Text = "TodayDataAddForm(Modify)";
+                addForm_today.pastDataSet(listView_todayList.SelectedItems[0].Text.ToString().Split(':'),
+                                            listView_todayList.SelectedItems[0].SubItems[1].Text);
+                addForm_today.setDbConnect(appManager.Connect_today);
+                addForm_today.Show();
+            }
         }
 
 
         // "Delete" button click Event.                         
         private void button_deleteSch_Click(object sender, EventArgs e)
         {
+            if (!addForm.IsDisposed) return;
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 for (int count = listView_Schedule.Items.Count - 1; count >= 0; count = count - 1)
@@ -499,6 +508,7 @@ namespace CalendarWinForm
         // "DELETE" button click Event. (Today)                 
         private void Button_today_delete_Click(object sender, EventArgs e)
         {
+            if (!addForm_today.IsDisposed) return;
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 for (int count = listView_todayList.Items.Count - 1; count >= 0; count = count - 1)
