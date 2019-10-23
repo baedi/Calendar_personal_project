@@ -46,8 +46,9 @@ namespace CalendarWinForm
         public void nextAlarmReadyRefresh() {
             try {
                 isAlarmExist = false;
+                decimal[] dateYMD = { decimal.Parse(DateTime.Now.ToString("yyyy")), decimal.Parse(DateTime.Now.ToString("MM")), decimal.Parse(DateTime.Now.ToString("dd")) };
 
-                sql = QueryList.nextAlarmImport(DateTime.Now.ToString("yyyy"), DateTime.Now.ToString("MM"), DateTime.Now.ToString("dd"));
+                sql = new ListSqlQuery().sqlNextAlarmCheck(dateYMD);
 
                 appManager.Connect_calendar.Open();
                 appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_calendar);
@@ -91,7 +92,7 @@ namespace CalendarWinForm
             bool findToday = false;
 
             try {
-                sql = QueryList.listviewTodayRefreshSQL();
+                sql = new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.ALARM_MODE, null);
                 appManager.Connect_today.Open();
                 appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_today);
                 reader = appManager.Command_calendar.ExecuteReader();

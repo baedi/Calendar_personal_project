@@ -82,9 +82,11 @@ namespace CalendarWinForm
 
             date = new string[3];
             date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
+            decimal[] dateYMD = { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
+            decimal[] dateHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
             // duplicate check.     
-            sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
+            sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
             tempConnect.Open();
             command = new SQLiteCommand(sql, tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
@@ -102,7 +104,7 @@ namespace CalendarWinForm
             if (this.checkBox_isMulti.Checked == false) {
 
                 // input data.          
-                sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
+                sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
                 tempConnect.Open();
                 command = new SQLiteCommand(sql, tempConnect);
                 command.ExecuteNonQuery();
@@ -117,12 +119,17 @@ namespace CalendarWinForm
                 TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-M-d")) - DateTime.Parse(dateTimePicker_start.Value.ToString("yyyy-M-d"));
                 int dayTemp = temp.Days;
                 bool oncemessage = true;
-                
+
                 // input data (multi).          
-                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
+                for (int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
                     date = new string[3];
                     date = temp_nextday.ToString("yyyy-M-d").Split('-');
-                    sql = QueryList.overlapMultiCheckSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value);
+
+                    dateYMD[0] = decimal.Parse(date[0]);
+                    dateYMD[1] = decimal.Parse(date[1]);
+                    dateYMD[2] = decimal.Parse(date[2]);
+
+                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
 
                     tempConnect.Open();
                     command = new SQLiteCommand(sql, tempConnect);
@@ -138,8 +145,7 @@ namespace CalendarWinForm
                     // data is not already exist.  
                     else {
                         reader.Close(); tempConnect.Close();
-
-                        sql = QueryList.insertSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked);
+                        sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
                         tempConnect.Open(); command = new SQLiteCommand(sql, tempConnect);
                         command.ExecuteNonQuery();
                         tempConnect.Close();
