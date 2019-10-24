@@ -8,22 +8,20 @@ namespace CalendarWinForm
     public partial class DataView : Form
     {
         // instance variable. 
-        private CalendarMain tempMain;
-        private SQLiteConnection tempConnect;
+        private readonly CalendarMain tempMain;
+        private readonly SQLiteConnection tempConnect;
 
         // update sql only. 
         private DateTime past_day;
-        private decimal past_h;
-        private decimal past_m;
+        private decimal[] pastHM;
 
 
         // Constructor. 
         public DataView() {
             InitializeComponent();
-
+            pastHM = new decimal[2];
             this.tempConnect = AppManager.GetInstance().Connect_calendar;
             this.tempMain = AppManager.GetInstance().S_Main;
-            //this.Visible = false;
             refreshData();
         }
 
@@ -76,19 +74,16 @@ namespace CalendarWinForm
         // select "Add mode"        
         public void addMode(){
 
-            string sql;
-            string[] date;
-            SQLiteCommand command;
-
-            date = new string[3];
-            date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
+            string sql_str;
+            string[] date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
             decimal[] dateYMD = { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
             decimal[] dateHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
             // duplicate check.     
-            sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
+            sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
+
             tempConnect.Open();
-            command = new SQLiteCommand(sql, tempConnect);
+            SQLiteCommand command = new SQLiteCommand(sql_str, tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             if (reader.Read()) {
@@ -96,17 +91,16 @@ namespace CalendarWinForm
                 reader.Close(); tempConnect.Close(); return;
             }
 
-            reader.Close();
-            tempConnect.Close();
+            reader.Close(); tempConnect.Close();
 
 
             /* normal mode */
             if (this.checkBox_isMulti.Checked == false) {
 
                 // input data.          
-                sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
+                sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
                 tempConnect.Open();
-                command = new SQLiteCommand(sql, tempConnect);
+                command = new SQLiteCommand(sql_str, tempConnect);
                 command.ExecuteNonQuery();
                 tempConnect.Close();
 
@@ -129,10 +123,10 @@ namespace CalendarWinForm
                     dateYMD[1] = decimal.Parse(date[1]);
                     dateYMD[2] = decimal.Parse(date[2]);
 
-                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
+                    sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
 
                     tempConnect.Open();
-                    command = new SQLiteCommand(sql, tempConnect);
+                    command = new SQLiteCommand(sql_str, tempConnect);
                     reader = command.ExecuteReader();
 
 
@@ -145,8 +139,8 @@ namespace CalendarWinForm
                     // data is not already exist.  
                     else {
                         reader.Close(); tempConnect.Close();
-                        sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
-                        tempConnect.Open(); command = new SQLiteCommand(sql, tempConnect);
+                        sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM, textBox_text.Text, checkBox_alarm.Checked);
+                        tempConnect.Open(); command = new SQLiteCommand(sql_str, tempConnect);
                         command.ExecuteNonQuery();
                         tempConnect.Close();
                     }
@@ -174,8 +168,8 @@ namespace CalendarWinForm
                     label_targetDate.Text = listView_allDatalist.Items[count].Text;
 
                     past_day = dateTimePicker_start.Value = DateTime.Parse(label_targetDate.Text);
-                    past_h = numericUpDown_hour.Value = decimal.Parse(sp[0]);
-                    past_m = numericUpDown_minute.Value = decimal.Parse(sp[1]);
+                    pastHM[0] = numericUpDown_hour.Value = decimal.Parse(sp[0]);
+                    pastHM[1] = numericUpDown_minute.Value = decimal.Parse(sp[1]);
                     textBox_text.Text = listView_allDatalist.Items[count].SubItems[2].Text;
                     checkBox_alarm.Checked = ((listView_allDatalist.Items[count].SubItems[3].Text) == "O" ? true : false);
                     break;
@@ -186,25 +180,25 @@ namespace CalendarWinForm
         public void modifyMode(){
 
             string sql;
-            string[] date;
+            string[] date = past_day.ToString("yyyy-M-d").Split('-');
+            decimal[] pastDateYMD = { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
+            decimal[] setTimeHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
-            date = new string[3];
-            date = past_day.ToString("yyyy-M-d").Split('-');
-            sql = QueryList.overlapMultiCheckSQL(date, past_h, past_m);
+            sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, pastDateYMD, pastHM);
+
             tempConnect.Open();
             SQLiteCommand command = new SQLiteCommand(sql, tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
-            if (!reader.Read()){
-                MessageBox.Show("Can't find past data.");
-                reader.Close(); tempConnect.Close();
-                return;
-            }
-            reader.Close();     tempConnect.Close();
+            bool isRead = reader.Read();
+            reader.Close(); tempConnect.Close();
+
+            if (!isRead) { MessageBox.Show("Can't Find past data."); return; }
+
 
             // single alarm mode. 
             if(checkBox_isMulti.Checked == false) {
-                sql = QueryList.updateSQL(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked, (int)past_h, (int)past_m);
+                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, pastHM, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
                 tempConnect.Open();
                 command = new SQLiteCommand(sql, tempConnect);
                 command.ExecuteNonQuery();
@@ -218,9 +212,12 @@ namespace CalendarWinForm
                 int dayCount = (DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-M-d")) - DateTime.Parse(dateTimePicker_start.Value.ToString("yyyy-M-d"))).Days;
 
                 for(int count = 0; count <= dayCount; count++, temp_checkDay = temp_checkDay.AddDays(1)) {
-                    date = new string[3];
                     date = temp_checkDay.ToString("yyyy-M-d").Split('-');
-                    sql = QueryList.updateMultiSQL2(date, numericUpDown_hour.Value, numericUpDown_minute.Value, textBox_text.Text, checkBox_alarm.Checked,past_h,past_m);
+                    pastDateYMD[0] = decimal.Parse(date[0]);
+                    pastDateYMD[1] = decimal.Parse(date[1]);
+                    pastDateYMD[2] = decimal.Parse(date[2]);
+
+                    sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, pastHM, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
 
                     tempConnect.Open();
                     command = new SQLiteCommand(sql, tempConnect);
@@ -242,7 +239,7 @@ namespace CalendarWinForm
             groupBox_mode.Text = "Unselected";
 
             tempConnect.Open();
-            SQLiteCommand command = new SQLiteCommand(QueryList.allDataSQL(), tempConnect);
+            SQLiteCommand command = new SQLiteCommand(new ListSqlQuery().sqlAllCalendarData(), tempConnect);
             SQLiteDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) {
@@ -257,8 +254,7 @@ namespace CalendarWinForm
                 listView_allDatalist.Items.Add(new ListViewItem(items));
             }
 
-            reader.Close();
-            tempConnect.Close();
+            reader.Close(); tempConnect.Close();
 
             button_modify.Enabled = false;
             button_delete.Enabled = false;
@@ -297,18 +293,14 @@ namespace CalendarWinForm
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes) {
                 for(int count = listView_allDatalist.Items.Count - 1; count >= 0; count = count - 1) {
                     if (listView_allDatalist.Items[count].Selected == true) {
+
                         string[] date_temp = listView_allDatalist.Items[count].Text.ToString().Split('-');
                         string[] alarm_temp = listView_allDatalist.Items[count].SubItems[1].Text.ToString().Split(':');
-
-                        int[] date = new int[3];    date[0] = int.Parse(date_temp[0]);
-                                                    date[1] = int.Parse(date_temp[1]);
-                                                    date[2] = int.Parse(date_temp[2]);
-
-                        int[] alarm = new int[2];   alarm[0] = int.Parse(alarm_temp[0]);
-                                                    alarm[1] = int.Parse(alarm_temp[1]);
+                        decimal[] date = { decimal.Parse(date_temp[0]), decimal.Parse(date_temp[1]), decimal.Parse(date_temp[2]) };
+                        decimal[] alarm = { decimal.Parse(alarm_temp[0]), decimal.Parse(alarm_temp[1]) };
 
                         tempConnect.Open();
-                        SQLiteCommand command = new SQLiteCommand(QueryList.deleteDateSQL(date[0], date[1], date[2], alarm), tempConnect);
+                        SQLiteCommand command = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.CALENDAR_MODE, date, alarm), tempConnect);
                         command.ExecuteNonQuery();
                         tempConnect.Close();
                     }
@@ -321,9 +313,6 @@ namespace CalendarWinForm
             }
         }
 
-        private void DataView_FormClosing(object sender, FormClosingEventArgs e) {
-            e.Cancel = true;
-            this.Visible = false;
-        }
+        private void DataView_FormClosing(object sender, FormClosingEventArgs e) { e.Cancel = true; this.Visible = false;   }
     }
 }

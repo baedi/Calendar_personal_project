@@ -127,6 +127,9 @@
  + (19-10-21) 일일 알람 오류 수정 (Modify daily alarm errors)
  + (19-10-22) "알람 편집기"가 이중으로 열리지 않도록 수정. (Modified to prevent the "Alarm Editor" from double opening)
 
+ #### 33 (19-10-24)
+ - DataView 코드 정리 작업 (DataView Code Cleanup Operation)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
