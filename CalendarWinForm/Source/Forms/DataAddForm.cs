@@ -125,9 +125,9 @@ namespace CalendarWinForm
                                         dbConnect.Close();
                                     }
                                 }
-                                calendar.changeCalendar();
-                                calendar.calendarListRefresh();
-                                calendar.refreshAlarm();
+                                calendar.ChangeCalendar();
+                                calendar.CalendarListRefresh();
+                                calendar.RefreshAlarm();
                                 Close();
                                 return;
                             }
@@ -187,9 +187,9 @@ namespace CalendarWinForm
 
                                 }
                             }
-                            calendar.changeCalendar();
-                            calendar.calendarListRefresh();
-                            calendar.refreshAlarm();
+                            calendar.ChangeCalendar();
+                            calendar.CalendarListRefresh();
+                            calendar.RefreshAlarm();
                             Close();
                             return;
                         }
@@ -264,13 +264,13 @@ namespace CalendarWinForm
             dateSetting();
 
             if (y_temp == setDateYMD[0] && m_temp == setDateYMD[1]){
-                calendar.selectBoxDataRefresh(selectBox, setDateYMD);
-                calendar.calendarListRefresh();
+                calendar.SelectBoxDataRefresh(selectBox, setDateYMD);
+                calendar.CalendarListRefresh();
             }
 
-            else calendar.changeCalendar();
+            else calendar.ChangeCalendar();
 
-            calendar.refreshAlarm();
+            calendar.RefreshAlarm();
             Close();
         }
 

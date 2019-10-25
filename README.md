@@ -130,6 +130,10 @@
  #### 33 (19-10-24)
  - DataView 코드 정리 작업 (DataView Code Cleanup Operation)
 
+ #### 34 (19-10-25)
+ - 코드 정리 작업 (Code cleanup)
+ - 모든 쿼리를 통일화된 ListSqlQuery로 대체 완료 (Completed integrating all query commands into "ListSqlQuery")
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

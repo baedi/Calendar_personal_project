@@ -106,7 +106,7 @@
             this.panel_MonthList.Size = new System.Drawing.Size(918, 669);
             this.panel_MonthList.TabIndex = 1;
             this.panel_MonthList.DoubleClick += new System.EventHandler(this.Panel_MonthList_DoubleClick);
-            this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel_MonthList_MouseDown);
+            this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Panel_MonthList_MouseDown);
             // 
             // label1
             // 
@@ -218,7 +218,7 @@
             this.monthCalendar1.Margin = new System.Windows.Forms.Padding(10, 11, 10, 11);
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 7;
-            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
+            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.MonthCalendar1_DateChanged);
             // 
             // label_DateTemp
             // 
@@ -231,7 +231,7 @@
             this.label_DateTemp.Size = new System.Drawing.Size(121, 20);
             this.label_DateTemp.TabIndex = 8;
             this.label_DateTemp.Text = "2019.01.01";
-            this.label_DateTemp.TextChanged += new System.EventHandler(this.label_DateTemp_TextChanged);
+            this.label_DateTemp.TextChanged += new System.EventHandler(this.Label_DateTemp_TextChanged);
             // 
             // listView_Schedule
             // 
@@ -251,8 +251,8 @@
             this.listView_Schedule.TabIndex = 9;
             this.listView_Schedule.UseCompatibleStateImageBehavior = false;
             this.listView_Schedule.View = System.Windows.Forms.View.Details;
-            this.listView_Schedule.Click += new System.EventHandler(this.listView_Schedule_Click);
-            this.listView_Schedule.DoubleClick += new System.EventHandler(this.listView_Schedule_DoubleClick);
+            this.listView_Schedule.Click += new System.EventHandler(this.ListView_Schedule_Click);
+            this.listView_Schedule.DoubleClick += new System.EventHandler(this.ListView_Schedule_DoubleClick);
             // 
             // columnHeader_time
             // 
@@ -279,7 +279,7 @@
             this.button_addSch.TabIndex = 10;
             this.button_addSch.Text = "Add";
             this.button_addSch.UseVisualStyleBackColor = false;
-            this.button_addSch.Click += new System.EventHandler(this.button_addSch_Click);
+            this.button_addSch.Click += new System.EventHandler(this.Button_addSch_Click);
             // 
             // button_modifySch
             // 
@@ -291,7 +291,7 @@
             this.button_modifySch.TabIndex = 11;
             this.button_modifySch.Text = "Modify";
             this.button_modifySch.UseVisualStyleBackColor = false;
-            this.button_modifySch.Click += new System.EventHandler(this.button_modifySch_Click);
+            this.button_modifySch.Click += new System.EventHandler(this.Button_modifySch_Click);
             // 
             // button_deleteSch
             // 
@@ -303,7 +303,7 @@
             this.button_deleteSch.TabIndex = 12;
             this.button_deleteSch.Text = "Delete";
             this.button_deleteSch.UseVisualStyleBackColor = false;
-            this.button_deleteSch.Click += new System.EventHandler(this.button_deleteSch_Click);
+            this.button_deleteSch.Click += new System.EventHandler(this.Button_deleteSch_Click);
             // 
             // label_YearMonth
             // 
@@ -326,7 +326,7 @@
             this.button_alarmon.TabIndex = 14;
             this.button_alarmon.Text = "ON";
             this.button_alarmon.UseVisualStyleBackColor = true;
-            this.button_alarmon.Click += new System.EventHandler(this.button_alarmon_Click);
+            this.button_alarmon.Click += new System.EventHandler(this.Button_alarmon_Click);
             // 
             // trayicon
             // 
@@ -335,7 +335,7 @@
             this.trayicon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayicon.Icon")));
             this.trayicon.Text = "baedi_calendar";
             this.trayicon.Visible = true;
-            this.trayicon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.trayicon_MouseDoubleClick);
+            this.trayicon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Trayicon_MouseDoubleClick);
             // 
             // contextMenuStrip
             // 
@@ -369,7 +369,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // button_dataview
             // 
@@ -380,7 +380,7 @@
             this.button_dataview.TabIndex = 16;
             this.button_dataview.Text = "Data view";
             this.button_dataview.UseVisualStyleBackColor = true;
-            this.button_dataview.Click += new System.EventHandler(this.button_dataview_Click);
+            this.button_dataview.Click += new System.EventHandler(this.Button_dataview_Click);
             // 
             // listView_todayList
             // 

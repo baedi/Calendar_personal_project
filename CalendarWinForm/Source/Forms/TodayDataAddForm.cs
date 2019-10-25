@@ -88,8 +88,8 @@ namespace CalendarWinForm {
             command.ExecuteNonQuery();
             dbConnect.Close();
 
-            calendar.todayAlarmListRefresh();
-            calendar.refreshAlarm();
+            calendar.TodayAlarmListRefresh();
+            calendar.RefreshAlarm();
             Close();
         }
     }

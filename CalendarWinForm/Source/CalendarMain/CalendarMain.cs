@@ -9,19 +9,19 @@ namespace CalendarWinForm
     {
 
         // variable.                                            
-        private AppManager appManager;
-
-        private ThreadManager tManager;
-        private ListBox[] gbox;
         private DataAddForm addForm;
         private TodayDataAddForm addForm_today;
         private DataView dataview;
 
-        private decimal[] selectCalendarDay;
         private int gbox_index;
         private bool alarm_onCheck;
         private bool real_exit;
         private bool isSelectedDate;
+
+        private readonly AppManager appManager;
+        private readonly ThreadManager tManager;
+        private readonly ListBox[] gbox;
+        private readonly decimal[] selectCalendarDay;
 
         private readonly string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\baedi_calendar";
         private readonly string dbFileName = @"\calendar.db";
@@ -34,7 +34,6 @@ namespace CalendarWinForm
 
             alarm_onCheck = true;
             gbox = new ListBox[42];
-            selectCalendarDay = new decimal[3];
             addForm = new DataAddForm(label_DateTemp, this, false);
             addForm_today = new TodayDataAddForm(this, false);
 
@@ -68,32 +67,30 @@ namespace CalendarWinForm
                 appManager.Connect_today.Close();
             }
 
-
-
-            tManager = new ThreadManager(label_Time/*, appManager.Connect_calendar, appManager.Connect_today*/);    // Thread setting.  
+            tManager = new ThreadManager(label_Time);    // Thread setting.  
 
 
             // Panel setting.                                   
             for (int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
 
             // Current date setting. 
-            selectCalendarDay[0] = int.Parse(DateTime.Now.ToString("yyyy"));
-            selectCalendarDay[1] = int.Parse(DateTime.Now.ToString("MM"));
-            selectCalendarDay[2] = int.Parse(DateTime.Now.ToString("dd"));
+            DateTime curTime = new DateTime(DateTime.Now.Ticks);
+            string[] ymd = curTime.ToString("yyyy-MM-dd").Split('-');
+            selectCalendarDay = new decimal[] { decimal.Parse(ymd[0]), decimal.Parse(ymd[1]), decimal.Parse(ymd[2]) };
 
             for (int row = 1, count = 0; row <= 6; row++)
                 for (int col = 0; col < 7; col++) { panel_MonthList.Controls.Add(gbox[count], col, row); count++; }
 
             label_DateTemp.Text = selectCalendarDay[0].ToString() + "." + selectCalendarDay[1].ToString() + "." + selectCalendarDay[2].ToString();
             label_YearMonth.Text = selectCalendarDay[0].ToString() + "." + selectCalendarDay[1].ToString("00");
-            changeCalendar();
-            todayAlarmListRefresh();
+            ChangeCalendar();
+            TodayAlarmListRefresh();
         }
 
 
 
         // calendar diary set Method.                           
-        private void settingCalendar()
+        private void SettingCalendar()
         {
             int maxDays = int.Parse(DateTime.DaysInMonth((int)selectCalendarDay[0], (int)selectCalendarDay[1]).ToString());
             int blankCount, tempCt;
@@ -119,18 +116,13 @@ namespace CalendarWinForm
                 for (int col = 0; col < 7; col = col + 1)
                 {
 
-                    if (blankCount > 0 || dayCount > maxDays)
-                    {
+                    if (blankCount > 0 || dayCount > maxDays) {
                         gbox[boxCount].BackColor = System.Drawing.SystemColors.InactiveCaptionText;
                         gbox[boxCount].TabStop = false;
                         blankCount = blankCount - 1;
                     }
 
-                    else
-                    {
-                        string[] dateStr = new string[3];
-                        decimal[] dateYMD = new decimal[3];
-
+                    else {
                         // Calender Panel color setting.
                         if (DateTime.Now.ToString("yyyy-MM") == (selectCalendarDay[0].ToString() + "-" + selectCalendarDay[1].ToString("00")) && dayCount == int.Parse(DateTime.Now.ToString("dd")))
                             gbox[dayCount + tempCt].BackColor = System.Drawing.Color.FromArgb(192, 255, 255);
@@ -145,18 +137,15 @@ namespace CalendarWinForm
 
 
                         // database setting. 
-                        dateStr = dOfMonth.ToString("yyyy-MM-dd").Split('-');
-                        dateYMD[0] = decimal.Parse(dateStr[0]);
-                        dateYMD[1] = decimal.Parse(dateStr[1]);
-                        dateYMD[2] = decimal.Parse(dateStr[2]);
+                        string[] dateStr = dOfMonth.ToString("yyyy-MM-dd").Split('-');
+                        DataManage dManage = new DataManage(decimal.Parse(dateStr[0]), decimal.Parse(dateStr[1]), decimal.Parse(dateStr[2]));
 
-                        appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlListboxRefresh(dateYMD), appManager.Connect_calendar);
+                        appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlListboxRefresh(dManage.YearMonthDay), appManager.Connect_calendar);
                         SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
                         gbox[boxCount].Items.Insert(0, dayCount);
 
                         int moreCount = 0;
-                        for (int count = 1; reader.Read(); count = count + 1)
-                        {
+                        for (int count = 1; reader.Read(); count = count + 1) {
                             if (count >= 4) moreCount = moreCount + 1;
                             else gbox[boxCount].Items.Insert(count, reader["text"].ToString());
                         }
@@ -179,22 +168,21 @@ namespace CalendarWinForm
 
             gbox_index = (int)selectCalendarDay[2] + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
-            //MessageBox.Show("Refresh Database");
             if (dataview != null) dataview.refreshData();
         }
 
 
-        public void changeCalendar()
+        public void ChangeCalendar()
         {
             for (int count = 0; count < gbox.Length; count++) gbox[count].Items.Clear();
-            settingCalendar();
+            SettingCalendar();
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
         }
 
 
         // database current day calendar import.                
-        public void calendarListRefresh()
+        public void CalendarListRefresh()
         {
             appManager.Connect_calendar.Open();
             listView_Schedule.Items.Clear();
@@ -224,7 +212,7 @@ namespace CalendarWinForm
         }
 
         // database(today) current day calendar import.
-        public void todayAlarmListRefresh()
+        public void TodayAlarmListRefresh()
         {
             appManager.Connect_today.Open();
             listView_todayList.Items.Clear();
@@ -249,7 +237,7 @@ namespace CalendarWinForm
 
 
         // select box data refresh. 
-        public void selectBoxDataRefresh(ListBox selectBox, decimal[] dateYMD)
+        public void SelectBoxDataRefresh(ListBox selectBox, decimal[] dateYMD)
         {
             int dayItem = (int)selectBox.Items[0];
             selectBox.Items.Clear();
@@ -260,8 +248,7 @@ namespace CalendarWinForm
             SQLiteDataReader reader = command.ExecuteReader();
 
             int moreCount = 0;
-            for (int count = 1; reader.Read(); count = count + 1)
-            {
+            for (int count = 1; reader.Read(); count = count + 1) {
                 if (count >= 4) moreCount = moreCount + 1;
                 else selectBox.Items.Insert(count, reader["text"].ToString());
             }
@@ -273,41 +260,31 @@ namespace CalendarWinForm
 
 
         // delete select database.                              
-        private void deleteDBdata(int index)
-        {
-            string[] splitstr = new string[2];
-            decimal[] datetemp = new decimal[2];
-            splitstr = listView_Schedule.Items[index].Text.Split(':');
-            datetemp[0] = decimal.Parse(splitstr[0]);
-            datetemp[1] = decimal.Parse(splitstr[1]);
+        private void DeleteDBdata(int index) {
 
-            // MessageBox.Show(listView_Schedule.SelectedItems[0].SubItems[1].ToString());
+            string[] splitstr = listView_Schedule.Items[index].Text.Split(':');
+            DataManage dManage = new DataManage(decimal.Parse(splitstr[0]), decimal.Parse(splitstr[1]));
+
             appManager.Connect_calendar.Open();
-            appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.CALENDAR_MODE, selectCalendarDay, datetemp), appManager.Connect_calendar);
+            appManager.Command_calendar = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.CALENDAR_MODE, selectCalendarDay, dManage.HourMinute), appManager.Connect_calendar);
             appManager.Command_calendar.ExecuteNonQuery();
             appManager.Connect_calendar.Close();
         }
 
-        private void deleteDBdata_today(int index)
+        private void DeleteDBdata_today(int index)
         {
-            string[] splitstr = new string[2];
-            decimal[] datetemp = new decimal[2];
-            splitstr = listView_todayList.Items[index].Text.Split(':');
-            datetemp[0] = decimal.Parse(splitstr[0]);
-            datetemp[1] = decimal.Parse(splitstr[1]);
+            string[] splitstr = listView_todayList.Items[index].Text.Split(':');
+            DataManage dManage = new DataManage(decimal.Parse(splitstr[0]), decimal.Parse(splitstr[1]));
 
             appManager.Connect_today.Open();
-            appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.ALARM_MODE, null, datetemp), appManager.Connect_today);
+            appManager.Command_today = new SQLiteCommand(new ListSqlQuery().sqlDeleteData(ListSqlQuery.ALARM_MODE, null, dManage.HourMinute), appManager.Connect_today);
             appManager.Command_today.ExecuteNonQuery();
             appManager.Connect_today.Close();
         }
 
 
-
-
-
         // calendar widget Event.                               
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        private void MonthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             int cval = (int)selectCalendarDay[2];
             int temp = (int)selectCalendarDay[2];
@@ -361,11 +338,10 @@ namespace CalendarWinForm
             }
 
 
-            else
-            {
+            else {
                 selectCalendarDay[0] = int.Parse(e.End.ToString("yyyy"));
                 selectCalendarDay[1] = int.Parse(e.End.ToString("MM"));
-                changeCalendar();
+                ChangeCalendar();
             }
 
             label_DateTemp.Text = e.End.ToString("yyyy") + "." + int.Parse(e.End.ToString("MM")).ToString() + "." + int.Parse(e.End.ToString("dd")).ToString();
@@ -375,7 +351,7 @@ namespace CalendarWinForm
 
 
         // click location check Event. (main calender click)    
-        private void panel_MonthList_MouseDown(object sender, MouseEventArgs e)
+        private void Panel_MonthList_MouseDown(object sender, MouseEventArgs e)
         {
             for (int count = 0; count < gbox.Length; count++)
             {
@@ -397,26 +373,22 @@ namespace CalendarWinForm
         }
 
         // double click event. (open DataAddForm)               
-        private void Panel_MonthList_DoubleClick(object sender, EventArgs e)
-        {
-            if (isSelectedDate) this.button_addSch_Click(null, null);
-
-        }
+        private void Panel_MonthList_DoubleClick(object sender, EventArgs e){   if (isSelectedDate) this.Button_addSch_Click(null, null); }
 
 
         // datetime label text changed Event.                   
-        private void label_DateTemp_TextChanged(object sender, EventArgs e) { calendarListRefresh(); }
+        private void Label_DateTemp_TextChanged(object sender, EventArgs e) { CalendarListRefresh(); }
 
 
         // schedule click Event.                                
-        private void listView_Schedule_Click(object sender, EventArgs e)
+        private void ListView_Schedule_Click(object sender, EventArgs e)
         {
             //foreach (int getIndex in listView_Schedule.SelectedIndices) calendar_index = getIndex;
             button_modifySch.Enabled = true;
             button_deleteSch.Enabled = true;
         }
 
-        private void listView_Schedule_DoubleClick(object sender, EventArgs e)
+        private void ListView_Schedule_DoubleClick(object sender, EventArgs e)
         {
             foreach (int getIndex in listView_Schedule.SelectedIndices)
                 MessageBox.Show(getIndex.ToString());
@@ -433,7 +405,7 @@ namespace CalendarWinForm
 
 
         // "ADD" button click Event.                            
-        private void button_addSch_Click(object sender, EventArgs e)
+        private void Button_addSch_Click(object sender, EventArgs e)
         {
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, false);
@@ -455,13 +427,11 @@ namespace CalendarWinForm
 
 
         // "Modify" button click Event.                         
-        private void button_modifySch_Click(object sender, EventArgs e)
+        private void Button_modifySch_Click(object sender, EventArgs e)
         {
-            string[] datalist = new string[2];
             string text = listView_Schedule.SelectedItems[0].SubItems[1].Text.ToString();
             bool actCheck = listView_Schedule.SelectedItems[0].SubItems[2].Text == "Y" ? true : false;
-
-            datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
+            string[] datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
 
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, true);
@@ -486,22 +456,19 @@ namespace CalendarWinForm
 
 
         // "Delete" button click Event.                         
-        private void button_deleteSch_Click(object sender, EventArgs e)
+        private void Button_deleteSch_Click(object sender, EventArgs e)
         {
             if (!addForm.IsDisposed) return;
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 for (int count = listView_Schedule.Items.Count - 1; count >= 0; count = count - 1)
-                    if (listView_Schedule.Items[count].Selected == true) deleteDBdata(count);
+                    if (listView_Schedule.Items[count].Selected == true) DeleteDBdata(count);
 
-                decimal[] tempYMD = new decimal[3];
-                tempYMD[0] = selectCalendarDay[0];
-                tempYMD[1] = selectCalendarDay[1];
-                tempYMD[2] = selectCalendarDay[2];
-                selectBoxDataRefresh(gbox[gbox_index], tempYMD);
-                calendarListRefresh();
+                DataManage dManage = new DataManage(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]);
+                SelectBoxDataRefresh(gbox[gbox_index], dManage.YearMonthDay);
+                CalendarListRefresh();
 
-                refreshAlarm();
+                RefreshAlarm();
             }
         }
 
@@ -512,45 +479,46 @@ namespace CalendarWinForm
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 for (int count = listView_todayList.Items.Count - 1; count >= 0; count = count - 1)
-                    if (listView_todayList.Items[count].Selected == true) deleteDBdata_today(count);
+                    if (listView_todayList.Items[count].Selected == true) DeleteDBdata_today(count);
 
-                todayAlarmListRefresh();
-                refreshAlarm();
+                TodayAlarmListRefresh();
+                RefreshAlarm();
             }
 
         }
 
 
         // "Alarm ON button click Event.                        
-        private void button_alarmon_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(alarmONToolStripMenuItem, button_alarmon, tManager, alarm_onCheck ? AlarmStatusChange.BC_FALSE : AlarmStatusChange.BC_TRUE); }
+        private void Button_alarmon_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(alarmONToolStripMenuItem, button_alarmon, tManager, alarm_onCheck ? AlarmStatusChange.BC_FALSE : AlarmStatusChange.BC_TRUE); }
 
 
         // program close Event.                                 
         private void Form_Calendar_main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (real_exit) {
-                try {
+                try
+                {
                     tManager.setThreadEnable(false);
                     if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
                 }
-                catch (NullReferenceException exc) { }
+                catch (NullReferenceException) { }
             }
 
             else { e.Cancel = true; Visible = false; }
         }
 
         // data view mode. 
-        private void button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
+        private void Button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
 
         // get, set Method. 
-        public void refreshAlarm() { tManager.nextAlarmReadyRefresh(); }
-        public void setAlarmOnCheck(bool temp) { alarm_onCheck = temp; }
+        public void RefreshAlarm() { tManager.nextAlarmReadyRefresh(); }
+        public void SetAlarmOnCheck(bool temp) { alarm_onCheck = temp; }
 
 
         // trayicon Event. 
-        private void trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
-        private void DataViewToolStripMenuItem_Click(object sender, EventArgs e) { button_dataview_Click(null, null); }
+        private void Trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
+        private void DataViewToolStripMenuItem_Click(object sender, EventArgs e) { Button_dataview_Click(null, null); }
         private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(alarmONToolStripMenuItem, button_alarmon, tManager, AlarmStatusChange.STRIP_CLICK); }
 
     }

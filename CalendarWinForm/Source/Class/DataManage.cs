@@ -4,32 +4,32 @@ using System.Collections;
 namespace CalendarWinForm {
 
     class DataManage : ArrayList {
-        private int year;
-        private int month;
-        private int day;
-        private int sethour;
-        private int setminute;
-        private string text;
-        private bool active;
+        private decimal year;
+        private decimal month;
+        private decimal day;
+        private decimal hour;
+        private decimal minute;
 
         // Constructor.
-        public DataManage() { }
-        public DataManage(int y, int m, int d, int sh, int sm, string t, bool a) {
-            this.year = y;          this.month = m;
-            this.day = d;           this.sethour = sh;
-            this.setminute = sm;    this.text = t;
-            this.active = a;
+        public DataManage(decimal year, decimal month, decimal day, decimal hour, decimal minute, string text, bool alarm) {
+            this.year = year;       this.month = month;         this.day = day;
+            this.hour = hour;       this.minute = minute;
+            this.Text = text;       this.Active = alarm;
+        }
+
+        public DataManage(decimal year, decimal month, decimal day) {
+            this.year = year;       this.month = month;         this.day = day;
+        }
+
+        public DataManage(decimal hour, decimal minute) {
+            this.hour = hour;       this.minute = minute;
         }
 
         // property. 
-        public int Year { get { return year; } set { year = value; } }
-        public int Month { get { return month; } set { month = value; } }
-        public int Day { get { return day; } set { day = value; } }
-        public int Sethour { get { return sethour; } set { sethour = value; } }
-        public int Setminute { get { return setminute; } set { setminute = value; } }
-
-        public string Text { get { return text; } set { text = value; } }
-        public bool Active { get { return active; } set { active = value; } }
+        public decimal []YearMonthDay { get { return new decimal[] { year, month, day }; } set { year = value[0]; month = value[1]; day = value[2]; } }
+        public decimal []HourMinute { get { return new decimal[] { hour, minute }; } set { hour = value[0]; minute = value[1]; } }
+        public string Text { get; set; }
+        public bool Active { get; set; }
 
     }
 }

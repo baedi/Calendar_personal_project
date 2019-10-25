@@ -151,9 +151,9 @@ namespace CalendarWinForm
 
             // refresh data 
             refreshData();
-            tempMain.changeCalendar();
-            tempMain.calendarListRefresh();
-            tempMain.refreshAlarm();
+            tempMain.ChangeCalendar();
+            tempMain.CalendarListRefresh();
+            tempMain.RefreshAlarm();
 
         }
 
@@ -228,9 +228,9 @@ namespace CalendarWinForm
 
             // refresh data 
             refreshData();
-            tempMain.changeCalendar();
-            tempMain.calendarListRefresh();
-            tempMain.refreshAlarm();
+            tempMain.ChangeCalendar();
+            tempMain.CalendarListRefresh();
+            tempMain.RefreshAlarm();
         }
 
 
@@ -307,9 +307,9 @@ namespace CalendarWinForm
                 }
 
                 refreshData();
-                tempMain.changeCalendar();
-                tempMain.calendarListRefresh();
-                tempMain.refreshAlarm();
+                tempMain.ChangeCalendar();
+                tempMain.CalendarListRefresh();
+                tempMain.RefreshAlarm();
             }
         }
 

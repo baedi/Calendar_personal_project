@@ -1,4 +1,5 @@
-﻿namespace CalendarWinForm
+﻿/*
+namespace CalendarWinForm
 {
     static class QueryList {
 
@@ -101,3 +102,4 @@
         }
     }
 }
+*/

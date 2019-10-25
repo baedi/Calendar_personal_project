@@ -18,7 +18,7 @@ namespace CalendarWinForm {
                 alaItem.Checked = true;
                 alaItem.Text = "Alarm : ON";
                 tmanager.alarmOnOff_check(true);
-                AppManager.GetInstance().S_Main.setAlarmOnCheck(true);
+                AppManager.GetInstance().S_Main.SetAlarmOnCheck(true);
                 alaButton.Text = "ON";
             }
 
@@ -26,7 +26,7 @@ namespace CalendarWinForm {
                 alaItem.Checked = false;
                 alaItem.Text = "Alarm : OFF";
                 tmanager.alarmOnOff_check(false);
-                AppManager.GetInstance().S_Main.setAlarmOnCheck(false);
+                AppManager.GetInstance().S_Main.SetAlarmOnCheck(false);
                 alaButton.Text = "OFF";
             }
 
