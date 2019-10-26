@@ -134,6 +134,10 @@
  - 코드 정리 작업 (Code cleanup)
  - 모든 쿼리를 통일화된 ListSqlQuery로 대체 완료 (Completed integrating all query commands into "ListSqlQuery")
 
+ #### 35 (19-10-26)
+ - 인터페이스 추가 (new Interface : IDataControl)
+ - 코드 정리 작업 (Code cleanup)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

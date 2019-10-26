@@ -12,6 +12,7 @@ namespace CalendarWinForm
         private readonly Label date;
         private readonly CalendarMain calendar;
         private readonly bool modifyMode;
+
         private decimal[] setDateYMD;       
         private decimal[] originalHM;
         private string original_text;
@@ -30,7 +31,8 @@ namespace CalendarWinForm
             if (mode) this.Text = "Modify schedule";
             else this.Text = "Add schedule";
 
-            dateSetting();
+            string[] tempString = date.Text.Split('.');
+            setDateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
 
             startDateTemp = new DateTime();
             endDateTemp = new DateTime();
@@ -40,171 +42,22 @@ namespace CalendarWinForm
 
             dateTimePicker_end.Value = endDateTemp;
             groupBox_curdatecheck.Text = setDateYMD[0] + "." + setDateYMD[1] + "." + setDateYMD[2];
-
-            //TimeSpan temp = DateTime.Parse(endDateTemp.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
-            //int day_temp = temp.Days;
         }
 
         // Setting Method            
-        public void gboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
-
-        public void dateSetting() {
-            setDateYMD = new decimal[3];
-            string[] tempString = new string[3]; tempString = date.Text.Split('.');
-
-            for (int count = 0; count < tempString.Length; count++)
-                setDateYMD[count] = decimal.Parse(tempString[count]);
-        }
+        public void GboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
 
 
         // button Event.            
         private void Button_ok_Click(object sender, EventArgs e) {
 
             int length;
-            string sql;
-            decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
-
             length = Encoding.Default.GetBytes(textBox_calendarText.Text).Length;
 
 
             if (length <= 20 && length > 0) {
-                try {
-
-                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM);
-
-                    // add schedule mode.
-                    if (!modifyMode) {
-
-                        // overlap alarm check. 
-                        if (!overlapCheck(sql, false)) return;
-
-                        // insert data. (normal)        
-                        if (!checkBox_multiMode.Checked) {
-                            sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-                            queryActive(sql);
-                        }
-
-                        // insert data. (multi)         
-                        else {
-                            DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
-                            TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
-                            int dayTemp = temp.Days;
-                            bool oncemessage = true;
-
-                            if(dayTemp > 0) {
-                                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
-
-                                    // DB Check 
-                                    string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
-                                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM);
-
-                                    dbConnect.Open();
-                                    SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
-                                    SQLiteDataReader reader = command.ExecuteReader();
-
-                                    // data is already exist. 
-                                    if (reader.Read()) {
-                                        reader.Close();
-                                        dbConnect.Close();
-                                        if(oncemessage) MessageBox.Show("Existing data was maintained due to overlapping schedules.");
-                                        oncemessage = false;
-                                    }
-
-                                    // data is not already exist. 
-                                    else {
-                                        
-                                        reader.Close();
-                                        dbConnect.Close();
-                                        
-                                        sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-
-                                        dbConnect.Open();
-                                        command = new SQLiteCommand(sql, dbConnect);
-                                        command.ExecuteNonQuery();
-                                        dbConnect.Close();
-                                    }
-                                }
-                                calendar.ChangeCalendar();
-                                calendar.CalendarListRefresh();
-                                calendar.RefreshAlarm();
-                                Close();
-                                return;
-                            }
-
-                            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
-                        }
-                    }
-
-
-                    // modify schedule mode. (normal)   
-                    else {
-
-                        // overlap alarm check. 
-                        if (!overlapCheck(sql, true)) return;
-
-                        // update data. (normal)        
-                        if (!checkBox_multiMode.Checked) {
-                            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, setDateYMD, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-                            queryActive(sql);
-                        }
-
-                        // update data. (multi)         
-                        else {
-                            DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
-                            TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
-                            int dayTemp = temp.Days;
-
-                            if(dayTemp > 0) {
-                                for(int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
-
-                                    // DB Check
-                                    string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
-                                    decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
-
-                                    sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, originalHM);
-
-                                    dbConnect.Open();
-                                    SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
-                                    SQLiteDataReader reader = command.ExecuteReader();
-
-                                    // data is already exist. 
-                                    if (reader.Read()) {
-                                        reader.Close();
-                                        dbConnect.Close();
-
-                                        sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, curDate, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-
-                                        dbConnect.Open();
-                                        command = new SQLiteCommand(sql, dbConnect);
-                                        command.ExecuteNonQuery();
-                                        dbConnect.Close();
-                                    }
-
-
-                                    // data is not already exist. 
-                                    else { reader.Close(); dbConnect.Close();}
-
-                                }
-                            }
-                            calendar.ChangeCalendar();
-                            calendar.CalendarListRefresh();
-                            calendar.RefreshAlarm();
-                            Close();
-                            return;
-                        }
-
-
-                    }
-                    
-                }
-            
-                catch (Exception exc) {
-                    MessageBox.Show("Error : " + exc.Message);
-                    if (dbConnect.State.ToString() == "Open")
-                        dbConnect.Close();
-                }
-                
+                    if (!modifyMode) AddMode();
+                    else ModifyMode();
             }
             
             else if (length <= 0) { MessageBox.Show("You didn't enter anything!");}
@@ -212,8 +65,147 @@ namespace CalendarWinForm
         }
 
 
+        public void AddMode() {
+            decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
+            string sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM);
+
+            // overlap alarm check. 
+            if (!OverlapCheck(sql, false)) return;
+
+            // insert data. (normal)        
+            if (!checkBox_multiMode.Checked)
+            {
+                sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                QueryActive(sql);
+            }
+
+            // insert data. (multi)         
+            else
+            {
+                DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
+                TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
+                int dayTemp = temp.Days;
+                bool oncemessage = true;
+
+                if (dayTemp > 0)
+                {
+                    for (int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1))
+                    {
+
+                        // DB Check 
+                        string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
+                        decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
+                        sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM);
+
+                        dbConnect.Open();
+                        SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+                        SQLiteDataReader reader = command.ExecuteReader();
+
+                        // data is already exist. 
+                        if (reader.Read())
+                        {
+                            reader.Close();
+                            dbConnect.Close();
+                            if (oncemessage) MessageBox.Show("Existing data was maintained due to overlapping schedules.");
+                            oncemessage = false;
+                        }
+
+                        // data is not already exist. 
+                        else
+                        {
+
+                            reader.Close();
+                            dbConnect.Close();
+
+                            sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+
+                            dbConnect.Open();
+                            command = new SQLiteCommand(sql, dbConnect);
+                            command.ExecuteNonQuery();
+                            dbConnect.Close();
+                        }
+                    }
+                    calendar.ChangeCalendar();
+                    calendar.CalendarListRefresh();
+                    calendar.RefreshAlarm();
+                    Close();
+                    return;
+                }
+
+                else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
+            }
+        }
+
+
+        public void ModifyMode() {
+            decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
+            string sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setDateYMD, setDateHM);
+
+            // overlap alarm check. 
+            if (!OverlapCheck(sql, true)) return;
+
+            // update data. (normal)        
+            if (!checkBox_multiMode.Checked)
+            {
+                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, setDateYMD, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                QueryActive(sql);
+            }
+
+            // update data. (multi)         
+            else
+            {
+                DateTime temp_nextday = new DateTime(startDateTemp.Ticks);
+                TimeSpan temp = DateTime.Parse(dateTimePicker_end.Value.ToString("yyyy-MM-dd")) - DateTime.Parse(startDateTemp.ToString("yyyy-MM-dd"));
+                int dayTemp = temp.Days;
+
+                if (dayTemp > 0)
+                {
+                    for (int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1))
+                    {
+
+                        // DB Check
+                        string[] curDateStr = temp_nextday.ToString("yyyy-MM-dd").Split('-');
+                        decimal[] curDate = { decimal.Parse(curDateStr[0]), decimal.Parse(curDateStr[1]), decimal.Parse(curDateStr[2]) };
+
+                        sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, originalHM);
+
+                        dbConnect.Open();
+                        SQLiteCommand command = new SQLiteCommand(sql, dbConnect);
+                        SQLiteDataReader reader = command.ExecuteReader();
+
+                        // data is already exist. 
+                        if (reader.Read())
+                        {
+                            reader.Close();
+                            dbConnect.Close();
+
+                            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, curDate, originalHM, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+
+                            dbConnect.Open();
+                            command = new SQLiteCommand(sql, dbConnect);
+                            command.ExecuteNonQuery();
+                            dbConnect.Close();
+                        }
+
+
+                        // data is not already exist. 
+                        else { reader.Close(); dbConnect.Close(); }
+
+                    }
+                }
+                calendar.ChangeCalendar();
+                calendar.CalendarListRefresh();
+                calendar.RefreshAlarm();
+                Close();
+                return;
+            }
+
+
+        }
+
+
         // multi range check Event. 
-        private void checkBox_multiMode_CheckedChanged(object sender, EventArgs e) {
+        private void CheckBox_multiMode_CheckedChanged(object sender, EventArgs e) {
             if (checkBox_multiMode.Checked == false) dateTimePicker_end.Enabled = false;
             else if(checkBox_multiMode.Checked == true) dateTimePicker_end.Enabled = true;
         }
@@ -221,7 +213,7 @@ namespace CalendarWinForm
 
 
         // overlap alarm check Method. 
-        private bool overlapCheck(string sql, bool modifyMode) {
+        private bool OverlapCheck(string sql, bool modifyMode) {
             SQLiteCommand command;
 
             dbConnect.Open();
@@ -249,7 +241,7 @@ namespace CalendarWinForm
 
 
         // insert, modify data Method. 
-        private void queryActive(string sql) {
+        private void QueryActive(string sql) {
             SQLiteCommand command;
 
             dbConnect.Open();
@@ -261,7 +253,9 @@ namespace CalendarWinForm
             // select calendar year, month change check 
             decimal y_temp = setDateYMD[0];
             decimal m_temp = setDateYMD[1];
-            dateSetting();
+
+            string[] tempString = date.Text.Split('.');
+            setDateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
 
             if (y_temp == setDateYMD[0] && m_temp == setDateYMD[1]){
                 calendar.SelectBoxDataRefresh(selectBox, setDateYMD);
@@ -277,10 +271,8 @@ namespace CalendarWinForm
 
         // get, set Method. 
         public void setDbConnect(SQLiteConnection conn) { dbConnect = conn; }
-        public void setSelectData(string[] temp, string text, bool act) {
-            originalHM = new decimal[2];
-            originalHM[0] = decimal.Parse(temp[0]);
-            originalHM[1] = decimal.Parse(temp[1]);
+        public void SetSelectData(string[] temp, string text, bool act) {
+            originalHM = new decimal[2] { decimal.Parse(temp[0]), decimal.Parse(temp[1]) };
             original_text = text;
 
             numericUpDown_setHour.Value = originalHM[0];

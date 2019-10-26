@@ -13,7 +13,7 @@ namespace CalendarWinForm
 
         // update sql only. 
         private DateTime past_day;
-        private decimal[] pastHM;
+        private readonly decimal[] pastHM;
 
 
         // Constructor. 
@@ -22,16 +22,16 @@ namespace CalendarWinForm
             pastHM = new decimal[2];
             this.tempConnect = AppManager.GetInstance().Connect_calendar;
             this.tempMain = AppManager.GetInstance().S_Main;
-            refreshData();
+            RefreshData();
         }
 
 
         /*** Event. ***/
-        private void button_refresh_Click(object sender, EventArgs e){ refreshData(); }
-        private void button_add_Click(object sender, EventArgs e) { buttonClickEnableChanged(); groupBox_mode.Text = "Add mode"; }
-        private void button_modify_Click(object sender, EventArgs e) { buttonClickEnableChanged(); dataSettings(); groupBox_mode.Text = "Modify mode"; }
-        private void button_delete_Click(object sender, EventArgs e) { deleteMessage(); }
-        private void DataView_Load(object sender, EventArgs e) { refreshData(); }
+        private void Button_refresh_Click(object sender, EventArgs e){ RefreshData(); }
+        private void Button_add_Click(object sender, EventArgs e) { ButtonClickEnableChanged(); groupBox_mode.Text = "Add mode"; }
+        private void Button_modify_Click(object sender, EventArgs e) { ButtonClickEnableChanged(); DataSettings(); groupBox_mode.Text = "Modify mode"; }
+        private void Button_delete_Click(object sender, EventArgs e) { DeleteMessage(); }
+        private void DataView_Load(object sender, EventArgs e) { RefreshData(); }
 
         private void CheckBox_isMulti_CheckedChanged(object sender, EventArgs e) {
             if (this.checkBox_isMulti.Checked == true)  this.dateTimePicker_end.Enabled = true;
@@ -39,23 +39,23 @@ namespace CalendarWinForm
             
         }
 
-        private void listView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) {
+        private void ListView_allDatalist_SelectedIndexChanged(object sender, EventArgs e) {
             button_modify.Enabled = true;
             button_delete.Enabled = true;
         }
 
-        private void button_done_Click(object sender, EventArgs e)
+        private void Button_done_Click(object sender, EventArgs e)
         {
             int length;
 
             length = Encoding.Default.GetBytes(textBox_text.Text).Length;
 
             if (length <= 20 && length > 0) {
-                if (groupBox_mode.Text.Equals("Add mode")) addMode();
-                else if (groupBox_mode.Text.Equals("Modify mode")) modifyMode();
+                if (groupBox_mode.Text.Equals("Add mode")) AddMode();
+                else if (groupBox_mode.Text.Equals("Modify mode")) ModifyMode();
             }
 
-            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
+            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); }
         }
 
         private void DateTimePicker_start_ValueChanged(object sender, EventArgs e) {
@@ -72,7 +72,7 @@ namespace CalendarWinForm
         /*** Method List. ***/
 
         // select "Add mode"        
-        public void addMode(){
+        public void AddMode(){
 
             string sql_str;
             string[] date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
@@ -150,7 +150,7 @@ namespace CalendarWinForm
             }
 
             // refresh data 
-            refreshData();
+            RefreshData();
             tempMain.ChangeCalendar();
             tempMain.CalendarListRefresh();
             tempMain.RefreshAlarm();
@@ -158,7 +158,7 @@ namespace CalendarWinForm
         }
 
         // data settings.
-        public void dataSettings(){
+        public void DataSettings(){
             for (int count = 0; count < listView_allDatalist.Items.Count; count++)
                 if (listView_allDatalist.Items[count].Selected){
 
@@ -177,7 +177,7 @@ namespace CalendarWinForm
         }
 
         // select "Modift mode"     
-        public void modifyMode(){
+        public void ModifyMode(){
 
             string sql;
             string[] date = past_day.ToString("yyyy-M-d").Split('-');
@@ -227,14 +227,14 @@ namespace CalendarWinForm
             }
 
             // refresh data 
-            refreshData();
+            RefreshData();
             tempMain.ChangeCalendar();
             tempMain.CalendarListRefresh();
             tempMain.RefreshAlarm();
         }
 
 
-        public void refreshData() {
+        public void RefreshData() {
             listView_allDatalist.Items.Clear();
             groupBox_mode.Text = "Unselected";
 
@@ -258,12 +258,12 @@ namespace CalendarWinForm
 
             button_modify.Enabled = false;
             button_delete.Enabled = false;
-            buttonClickDisableChanged();
+            ButtonClickDisableChanged();
         }
 
 
         // Edit enable method. 
-        private void buttonClickEnableChanged() {
+        private void ButtonClickEnableChanged() {
             this.checkBox_isMulti.Enabled = true;
             this.numericUpDown_hour.Enabled = true;
             this.numericUpDown_minute.Enabled = true;
@@ -275,7 +275,7 @@ namespace CalendarWinForm
         }
 
         // Edit disable method. 
-        private void buttonClickDisableChanged() {
+        private void ButtonClickDisableChanged() {
             this.checkBox_isMulti.Enabled = false;      this.checkBox_isMulti.Checked = false;
             this.numericUpDown_hour.Enabled = false;    this.numericUpDown_hour.Value = 0;
             this.numericUpDown_minute.Enabled = false;  this.numericUpDown_minute.Value = 0;
@@ -289,7 +289,7 @@ namespace CalendarWinForm
         }
 
 
-        private void deleteMessage() {
+        private void DeleteMessage() {
             if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes) {
                 for(int count = listView_allDatalist.Items.Count - 1; count >= 0; count = count - 1) {
                     if (listView_allDatalist.Items[count].Selected == true) {
@@ -306,7 +306,7 @@ namespace CalendarWinForm
                     }
                 }
 
-                refreshData();
+                RefreshData();
                 tempMain.ChangeCalendar();
                 tempMain.CalendarListRefresh();
                 tempMain.RefreshAlarm();

@@ -74,7 +74,7 @@
             this.button_modify.TabIndex = 0;
             this.button_modify.Text = "modify";
             this.button_modify.UseVisualStyleBackColor = true;
-            this.button_modify.Click += new System.EventHandler(this.button_modify_Click);
+            this.button_modify.Click += new System.EventHandler(this.Button_modify_Click);
             // 
             // button_delete
             // 
@@ -86,7 +86,7 @@
             this.button_delete.TabIndex = 1;
             this.button_delete.Text = "delete";
             this.button_delete.UseVisualStyleBackColor = true;
-            this.button_delete.Click += new System.EventHandler(this.button_delete_Click);
+            this.button_delete.Click += new System.EventHandler(this.Button_delete_Click);
             // 
             // listView_allDatalist
             // 
@@ -105,7 +105,7 @@
             this.listView_allDatalist.TabIndex = 2;
             this.listView_allDatalist.UseCompatibleStateImageBehavior = false;
             this.listView_allDatalist.View = System.Windows.Forms.View.Details;
-            this.listView_allDatalist.SelectedIndexChanged += new System.EventHandler(this.listView_allDatalist_SelectedIndexChanged);
+            this.listView_allDatalist.SelectedIndexChanged += new System.EventHandler(this.ListView_allDatalist_SelectedIndexChanged);
             // 
             // col_date
             // 
@@ -135,7 +135,7 @@
             this.button_refresh.TabIndex = 3;
             this.button_refresh.Text = "Refresh";
             this.button_refresh.UseVisualStyleBackColor = true;
-            this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
+            this.button_refresh.Click += new System.EventHandler(this.Button_refresh_Click);
             // 
             // button_add
             // 
@@ -146,7 +146,7 @@
             this.button_add.TabIndex = 4;
             this.button_add.Text = "Add";
             this.button_add.UseVisualStyleBackColor = true;
-            this.button_add.Click += new System.EventHandler(this.button_add_Click);
+            this.button_add.Click += new System.EventHandler(this.Button_add_Click);
             // 
             // label_date
             // 
@@ -294,7 +294,7 @@
             this.button_done.TabIndex = 18;
             this.button_done.Text = "Done";
             this.button_done.UseVisualStyleBackColor = true;
-            this.button_done.Click += new System.EventHandler(this.button_done_Click);
+            this.button_done.Click += new System.EventHandler(this.Button_done_Click);
             // 
             // groupBox_mode
             // 

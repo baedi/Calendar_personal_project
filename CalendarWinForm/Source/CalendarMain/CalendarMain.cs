@@ -27,6 +27,7 @@ namespace CalendarWinForm
         private readonly string dbFileName = @"\calendar.db";
         private readonly string dbFileName2 = @"\todayAlarm.db";
 
+
         // main method.                                         
         public CalendarMain()
         {
@@ -90,8 +91,8 @@ namespace CalendarWinForm
 
 
         // calendar diary set Method.                           
-        private void SettingCalendar()
-        {
+        private void SettingCalendar(){
+
             int maxDays = int.Parse(DateTime.DaysInMonth((int)selectCalendarDay[0], (int)selectCalendarDay[1]).ToString());
             int blankCount, tempCt;
             DateTime dOfMonth = new DateTime();
@@ -168,7 +169,7 @@ namespace CalendarWinForm
 
             gbox_index = (int)selectCalendarDay[2] + tempCt;
             gbox[gbox_index].BackColor = System.Drawing.Color.FromArgb(255, 255, 192);
-            if (dataview != null) dataview.refreshData();
+            if (dataview != null) dataview.RefreshData();
         }
 
 
@@ -208,7 +209,7 @@ namespace CalendarWinForm
             button_modifySch.Enabled = false;
             button_deleteSch.Enabled = false;
 
-            if(dataview != null)dataview.refreshData();
+            if(dataview != null)dataview.RefreshData();
         }
 
         // database(today) current day calendar import.
@@ -409,7 +410,7 @@ namespace CalendarWinForm
         {
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, false);
-                addForm.gboxSetting(gbox[gbox_index]);
+                addForm.GboxSetting(gbox[gbox_index]);
                 addForm.setDbConnect(appManager.Connect_calendar);
                 addForm.Show();
             }
@@ -435,9 +436,9 @@ namespace CalendarWinForm
 
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, true);
-                addForm.gboxSetting(gbox[gbox_index]);
+                addForm.GboxSetting(gbox[gbox_index]);
                 addForm.setDbConnect(appManager.Connect_calendar);
-                addForm.setSelectData(datalist, text, actCheck);
+                addForm.SetSelectData(datalist, text, actCheck);
                 addForm.Show();
             }
         }
@@ -507,13 +508,12 @@ namespace CalendarWinForm
             else { e.Cancel = true; Visible = false; }
         }
 
-        // data view mode. 
-        private void Button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
-
         // get, set Method. 
         public void RefreshAlarm() { tManager.nextAlarmReadyRefresh(); }
         public void SetAlarmOnCheck(bool temp) { alarm_onCheck = temp; }
 
+        // data view mode. 
+        private void Button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
 
         // trayicon Event. 
         private void Trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }

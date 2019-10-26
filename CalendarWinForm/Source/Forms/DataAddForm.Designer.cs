@@ -146,7 +146,7 @@
             this.checkBox_multiMode.TabIndex = 9;
             this.checkBox_multiMode.Text = "Multi set active";
             this.checkBox_multiMode.UseVisualStyleBackColor = true;
-            this.checkBox_multiMode.CheckedChanged += new System.EventHandler(this.checkBox_multiMode_CheckedChanged);
+            this.checkBox_multiMode.CheckedChanged += new System.EventHandler(this.CheckBox_multiMode_CheckedChanged);
             // 
             // dateTimePicker_end
             // 
