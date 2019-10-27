@@ -17,7 +17,7 @@ namespace CalendarWinForm {
             if((alaItem.Checked == false && mode == STRIP_CLICK) || mode == BC_TRUE) {
                 alaItem.Checked = true;
                 alaItem.Text = "Alarm : ON";
-                tmanager.alarmOnOff_check(true);
+                tmanager.AlarmOnOff_check(true);
                 AppManager.GetInstance().S_Main.SetAlarmOnCheck(true);
                 alaButton.Text = "ON";
             }
@@ -25,7 +25,7 @@ namespace CalendarWinForm {
             else if((alaItem.Checked == true && mode == STRIP_CLICK) || mode == BC_FALSE) {
                 alaItem.Checked = false;
                 alaItem.Text = "Alarm : OFF";
-                tmanager.alarmOnOff_check(false);
+                tmanager.AlarmOnOff_check(false);
                 AppManager.GetInstance().S_Main.SetAlarmOnCheck(false);
                 alaButton.Text = "OFF";
             }

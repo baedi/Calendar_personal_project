@@ -74,13 +74,12 @@ namespace CalendarWinForm
         // select "Add mode"        
         public void AddMode(){
 
-            string sql_str;
             string[] date = (this.dateTimePicker_start.Value.ToString("yyyy-M-d")).Split('-');
             decimal[] dateYMD = { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
             decimal[] dateHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
             // duplicate check.     
-            sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
+            string sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, dateHM);
 
             tempConnect.Open();
             SQLiteCommand command = new SQLiteCommand(sql_str, tempConnect);

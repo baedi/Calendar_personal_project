@@ -45,7 +45,7 @@ namespace CalendarWinForm
             // Database setting. 
             appManager.Connect_calendar = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
             appManager.Connect_today = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
-            addForm.setDbConnect(appManager.Connect_calendar);      addForm.Close();
+            addForm.SetDbConnect(appManager.Connect_calendar);      addForm.Close();
             addForm_today.setDbConnect(appManager.Connect_today);   addForm_today.Close();
 
             if (!File.Exists(path + dbFileName)) {
@@ -411,7 +411,7 @@ namespace CalendarWinForm
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, false);
                 addForm.GboxSetting(gbox[gbox_index]);
-                addForm.setDbConnect(appManager.Connect_calendar);
+                addForm.SetDbConnect(appManager.Connect_calendar);
                 addForm.Show();
             }
         }
@@ -437,7 +437,7 @@ namespace CalendarWinForm
             if (addForm.IsDisposed) {
                 addForm = new DataAddForm(label_DateTemp, this, true);
                 addForm.GboxSetting(gbox[gbox_index]);
-                addForm.setDbConnect(appManager.Connect_calendar);
+                addForm.SetDbConnect(appManager.Connect_calendar);
                 addForm.SetSelectData(datalist, text, actCheck);
                 addForm.Show();
             }
@@ -499,8 +499,8 @@ namespace CalendarWinForm
             if (real_exit) {
                 try
                 {
-                    tManager.setThreadEnable(false);
-                    if (tManager.getThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.getThreadManager().Join();
+                    tManager.SetThreadEnable(false);
+                    if (tManager.GetThreadManager().ThreadState != System.Threading.ThreadState.Stopped) tManager.GetThreadManager().Join();
                 }
                 catch (NullReferenceException) { }
             }
@@ -509,7 +509,7 @@ namespace CalendarWinForm
         }
 
         // get, set Method. 
-        public void RefreshAlarm() { tManager.nextAlarmReadyRefresh(); }
+        public void RefreshAlarm() { tManager.NextAlarmReadyRefresh(); }
         public void SetAlarmOnCheck(bool temp) { alarm_onCheck = temp; }
 
         // data view mode. 

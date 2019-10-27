@@ -3,26 +3,21 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Data.SQLite;
 
-namespace CalendarWinForm
-{
-    class ThreadManager
-    {
+namespace CalendarWinForm {
+    class ThreadManager {
         private readonly AppManager appManager;
-        private Thread manage;
-        private Label timeLabel;
-        private bool threadEnable;
-
-        private SQLiteDataReader reader;
-        private string sql;
+        private readonly Thread manage;
+        private readonly Label timeLabel;
+        private readonly AlarmMessage alarm_form;
 
         private DateTime alarm;
         private string alarm_text;
-        private AlarmMessage alarm_form;
+        private bool threadEnable;
         private bool isAlarmExist;
 
 
         // Constructor. 
-        public ThreadManager(Label label/*, SQLiteConnection conn, SQLiteConnection conn2*/) {
+        public ThreadManager(Label label) {
 
             appManager = AppManager.GetInstance();
 
@@ -31,11 +26,8 @@ namespace CalendarWinForm
             alarm_form = new AlarmMessage();
 
             threadEnable = true;
-            //dbconnect = conn;
-            //dbconnect2 = conn2;
-            nextAlarmReadyRefresh();
+            NextAlarmReadyRefresh();
             manage.Start();
-
 
             alarm_form.Show();
             alarm_form.Visible = false;
@@ -43,16 +35,16 @@ namespace CalendarWinForm
 
 
         // time refresh. 
-        public void nextAlarmReadyRefresh() {
+        public void NextAlarmReadyRefresh() {
             try {
                 isAlarmExist = false;
                 decimal[] dateYMD = { decimal.Parse(DateTime.Now.ToString("yyyy")), decimal.Parse(DateTime.Now.ToString("MM")), decimal.Parse(DateTime.Now.ToString("dd")) };
 
-                sql = new ListSqlQuery().sqlNextAlarmCheck(dateYMD);
+                string sql = new ListSqlQuery().sqlNextAlarmCheck(dateYMD);
 
                 appManager.Connect_calendar.Open();
                 appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_calendar);
-                reader = appManager.Command_calendar.ExecuteReader();
+                SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
 
                 while (reader.Read()) {
                     alarm = new DateTime();
@@ -81,21 +73,21 @@ namespace CalendarWinForm
                 reader.Close();
                 appManager.Connect_calendar.Close();
 
-                todayAlarmChecked();
+                TodayAlarmChecked();
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
         }
 
         // today alarm check. 
-        public void todayAlarmChecked() {
+        public void TodayAlarmChecked() {
             DateTime today = new DateTime();
             DateTime current = DateTime.Now;
             bool findToday = false;
 
             try {
-                sql = new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.ALARM_MODE, null);
+                string sql = new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.ALARM_MODE, null);
                 appManager.Connect_today.Open();
                 appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_today);
-                reader = appManager.Command_calendar.ExecuteReader();
+                SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
 
                 // Today alarm confirm.     
                 while (reader.Read()){
@@ -160,7 +152,7 @@ namespace CalendarWinForm
                     alarm_form.Visible = true;
                     alarm_form.doubleBuffer();
                     alarm_form.soundPlay();
-                    nextAlarmReadyRefresh();
+                    NextAlarmReadyRefresh();
                 }
 
                 Thread.Sleep(100);
@@ -168,10 +160,10 @@ namespace CalendarWinForm
         }
 
 
-        public void alarmOnOff_check(bool temp){ alarm_form.setSoundOnOff(temp); }
+        public void AlarmOnOff_check(bool temp){ alarm_form.setSoundOnOff(temp); }
 
         // get, set Method. 
-        public Thread getThreadManager() { return manage; }
-        public void setThreadEnable(bool tf) { threadEnable = tf; }
+        public Thread GetThreadManager() { return manage; }
+        public void SetThreadEnable(bool tf) { threadEnable = tf; }
     }
 }
