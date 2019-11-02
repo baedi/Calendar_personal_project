@@ -138,6 +138,9 @@
  - 코드 정리 작업 (Code cleanup)
  + (19-10-27) 인터페이스 추가 (new Interface : IDataControl)
 
+ #### 36 (19-11-02)
+ - 코드 정리 작업 (Code cleanup)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

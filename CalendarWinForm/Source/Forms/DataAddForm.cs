@@ -9,14 +9,11 @@ namespace CalendarWinForm
     {
         // Instance variable.       
         private readonly CalendarMain calendar;
-        private SQLiteConnection tempConnect;
-
         private readonly Label date;
-        //private readonly bool modifyMode;
+        private SQLiteConnection tempConnect;
 
         private decimal[] DateYMD;       
         private decimal[] originalHM;
-        //private string original_text;
 
         private ListBox selectBox;
         private readonly DateTime startDateTemp;
@@ -39,26 +36,7 @@ namespace CalendarWinForm
             groupBox_curdatecheck.Text = DateYMD[0] + "." + DateYMD[1] + "." + DateYMD[2];
         }
 
-        // Setting Method            
-        public void GboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
-
-
-        // button Event.            
-        private void Button_ok_Click(object sender, EventArgs e) {
-
-            int length;
-            length = Encoding.Default.GetBytes(textBox_calendarText.Text).Length;
-
-
-            if (length <= 20 && length > 0) {
-                    if (this.Text.Equals("Add schedule")) AddMode();
-                    else if(this.Text.Equals("Modify schedule")) ModifyMode();
-            }
-
-            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); }
-        }
-
-
+        // Impliment Method.        
         public void AddMode() {
 
             decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
@@ -131,7 +109,6 @@ namespace CalendarWinForm
             }
         }
 
-
         public void ModifyMode() {
             decimal[] DateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
             string sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, DateYMD, DateHM);
@@ -194,20 +171,8 @@ namespace CalendarWinForm
                 Close();
                 return;
             }
-
-
         }
 
-
-        // multi range check Event. 
-        private void CheckBox_multiMode_CheckedChanged(object sender, EventArgs e) {
-            if (checkBox_multiMode.Checked == false) dateTimePicker_end.Enabled = false;
-            else if(checkBox_multiMode.Checked == true) dateTimePicker_end.Enabled = true;
-        }
-
-
-
-        // overlap alarm check Method. 
         private bool OverlapCheck(string sql, bool modifyMode) {
             SQLiteCommand command;
 
@@ -234,8 +199,6 @@ namespace CalendarWinForm
             return true;
         }
 
-
-        // insert, modify data Method. 
         private void QueryActive(string sql) {
 
             tempConnect.Open();
@@ -263,8 +226,30 @@ namespace CalendarWinForm
         }
 
 
+        // EVENT Method.            
+        private void Button_ok_Click(object sender, EventArgs e) {
+
+            int length;
+            length = Encoding.Default.GetBytes(textBox_calendarText.Text).Length;
+
+
+            if (length <= 20 && length > 0) {
+                    if (this.Text.Equals("Add schedule")) AddMode();
+                    else if(this.Text.Equals("Modify schedule")) ModifyMode();
+            }
+
+            else { MessageBox.Show("Invalid input.\nPlease select the correct date."); }
+        }
+
+        private void CheckBox_multiMode_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_multiMode.Checked == false) dateTimePicker_end.Enabled = false;
+            else if(checkBox_multiMode.Checked == true) dateTimePicker_end.Enabled = true;
+        }
+
+
         // get, set Method. 
         public void SetDbConnect(SQLiteConnection conn) { tempConnect = conn; }
+        public void GboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
         public void SetSelectData(string[] temp, string text, bool act) {
             originalHM = new decimal[2] { decimal.Parse(temp[0]), decimal.Parse(temp[1]) };
 
