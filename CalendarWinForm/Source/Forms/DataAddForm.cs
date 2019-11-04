@@ -9,20 +9,22 @@ namespace CalendarWinForm
     {
         // Instance variable.       
         private readonly CalendarMain calendar;
-        private readonly Label date;
         private SQLiteConnection tempConnect;
+        private readonly Label date;
 
         private decimal[] DateYMD;       
         private decimal[] originalHM;
+        private SQLiteCommand command;
 
         private ListBox selectBox;
         private readonly DateTime startDateTemp;
 
         // Constructor.             
-        public DataAddForm(Label date, CalendarMain calendar, bool isModifyMode) {
+        public DataAddForm(Label date, CalendarMain calendar, SQLiteConnection connect, bool isModifyMode) {
             InitializeComponent();
             this.date = date;
             this.calendar = calendar;
+            tempConnect = connect;
 
             if (!isModifyMode) this.Text = "Add schedule";
             else this.Text = "Modify schedule";
@@ -71,7 +73,7 @@ namespace CalendarWinForm
                         sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, setDateHM);
 
                         tempConnect.Open();
-                        SQLiteCommand command = new SQLiteCommand(sql_str, tempConnect);
+                        command = new SQLiteCommand(sql_str, tempConnect);
                         SQLiteDataReader reader = command.ExecuteReader();
 
                         // data is already exist. 
@@ -102,7 +104,6 @@ namespace CalendarWinForm
                     calendar.CalendarListRefresh();
                     calendar.RefreshAlarm();
                     Close();
-                    return;
                 }
 
                 else { MessageBox.Show("Invalid input.\nPlease select the correct date."); return; }
@@ -142,7 +143,7 @@ namespace CalendarWinForm
                         sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, curDate, originalHM);
 
                         tempConnect.Open();
-                        SQLiteCommand command = new SQLiteCommand(sql, tempConnect);
+                        command = new SQLiteCommand(sql, tempConnect);
                         SQLiteDataReader reader = command.ExecuteReader();
 
                         // data is already exist. 
@@ -169,12 +170,10 @@ namespace CalendarWinForm
                 calendar.CalendarListRefresh();
                 calendar.RefreshAlarm();
                 Close();
-                return;
             }
         }
 
         private bool OverlapCheck(string sql, bool modifyMode) {
-            SQLiteCommand command;
 
             tempConnect.Open();
             command = new SQLiteCommand(sql, tempConnect);
@@ -202,7 +201,7 @@ namespace CalendarWinForm
         private void QueryActive(string sql) {
 
             tempConnect.Open();
-            SQLiteCommand command = new SQLiteCommand(sql, tempConnect);
+            command = new SQLiteCommand(sql, tempConnect);
             command.ExecuteNonQuery();
             tempConnect.Close();
 

@@ -35,7 +35,6 @@ namespace CalendarWinForm
 
             alarm_onCheck = true;
             gbox = new ListBox[42];
-            addForm = new DataAddForm(label_DateTemp, this, false);
             addForm_today = new TodayDataAddForm(this, false);
 
             // singleton Instance. 
@@ -45,7 +44,6 @@ namespace CalendarWinForm
             // Database setting. 
             appManager.Connect_calendar = new SQLiteConnection("Data Source=" + path + dbFileName + ";Version=3;");
             appManager.Connect_today = new SQLiteConnection("Data Source=" + path + dbFileName2 + ";Version=3;");
-            addForm.SetDbConnect(appManager.Connect_calendar);      addForm.Close();
             addForm_today.setDbConnect(appManager.Connect_today);   addForm_today.Close();
 
             if (!File.Exists(path + dbFileName)) {
@@ -408,10 +406,11 @@ namespace CalendarWinForm
         // "ADD" button click Event.                            
         private void Button_addSch_Click(object sender, EventArgs e)
         {
-            if (addForm.IsDisposed) {
-                addForm = new DataAddForm(label_DateTemp, this, false);
+            if (addForm != null && addForm.IsDisposed) addForm = null;
+
+            if (addForm == null) {
+                addForm = new DataAddForm(label_DateTemp, this, appManager.Connect_calendar, false);
                 addForm.GboxSetting(gbox[gbox_index]);
-                addForm.SetDbConnect(appManager.Connect_calendar);
                 addForm.Show();
             }
         }
@@ -430,14 +429,15 @@ namespace CalendarWinForm
         // "Modify" button click Event.                         
         private void Button_modifySch_Click(object sender, EventArgs e)
         {
-            string text = listView_Schedule.SelectedItems[0].SubItems[1].Text.ToString();
-            bool actCheck = listView_Schedule.SelectedItems[0].SubItems[2].Text == "Y" ? true : false;
-            string[] datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
+            if (addForm != null && addForm.IsDisposed) addForm = null;
 
-            if (addForm.IsDisposed) {
-                addForm = new DataAddForm(label_DateTemp, this, true);
+            if (addForm == null) {
+                string text = listView_Schedule.SelectedItems[0].SubItems[1].Text.ToString();
+                bool actCheck = listView_Schedule.SelectedItems[0].SubItems[2].Text == "Y" ? true : false;
+                string[] datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
+
+                addForm = new DataAddForm(label_DateTemp, this, appManager.Connect_calendar, true);
                 addForm.GboxSetting(gbox[gbox_index]);
-                addForm.SetDbConnect(appManager.Connect_calendar);
                 addForm.SetSelectData(datalist, text, actCheck);
                 addForm.Show();
             }
@@ -459,17 +459,20 @@ namespace CalendarWinForm
         // "Delete" button click Event.                         
         private void Button_deleteSch_Click(object sender, EventArgs e)
         {
-            if (!addForm.IsDisposed) return;
-            if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (addForm != null && addForm.IsDisposed) addForm = null;
+            if (addForm == null)
             {
-                for (int count = listView_Schedule.Items.Count - 1; count >= 0; count = count - 1)
-                    if (listView_Schedule.Items[count].Selected == true) DeleteDBdata(count);
+                if (MessageBox.Show($"Are you sure you want to delete the data?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    for (int count = listView_Schedule.Items.Count - 1; count >= 0; count = count - 1)
+                        if (listView_Schedule.Items[count].Selected == true) DeleteDBdata(count);
 
-                DataManage dManage = new DataManage(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]);
-                SelectBoxDataRefresh(gbox[gbox_index], dManage.YearMonthDay);
-                CalendarListRefresh();
+                    DataManage dManage = new DataManage(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]);
+                    SelectBoxDataRefresh(gbox[gbox_index], dManage.YearMonthDay);
+                    CalendarListRefresh();
 
-                RefreshAlarm();
+                    RefreshAlarm();
+                }
             }
         }
 
@@ -513,7 +516,7 @@ namespace CalendarWinForm
         public void SetAlarmOnCheck(bool temp) { alarm_onCheck = temp; }
 
         // data view mode. 
-        private void Button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView();    dataview.Show();}
+        private void Button_dataview_Click(object sender, EventArgs e) { if(dataview == null) dataview = new DataView(this, appManager.Connect_calendar);   dataview.Show();}
 
         // trayicon Event. 
         private void Trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
