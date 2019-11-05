@@ -9,15 +9,15 @@ namespace CalendarWinForm
     {
         // Instance variable.       
         private readonly CalendarMain calendar;
-        private SQLiteConnection tempConnect;
         private readonly Label date;
-
-        private decimal[] DateYMD;       
-        private decimal[] originalHM;
+        private ListBox selectBox;
+        private SQLiteConnection tempConnect;
         private SQLiteCommand command;
 
-        private ListBox selectBox;
         private readonly DateTime startDateTemp;
+        private decimal[] DateYMD;       
+        private decimal[] originalHM;
+
 
         // Constructor.             
         public DataAddForm(Label date, CalendarMain calendar, SQLiteConnection connect, bool isModifyMode) {

@@ -345,7 +345,6 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "DataView";
             this.Text = "DataView";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataView_FormClosing);
             this.Load += new System.EventHandler(this.DataView_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_hour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_minute)).EndInit();

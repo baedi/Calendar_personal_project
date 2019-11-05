@@ -133,10 +133,7 @@ namespace CalendarWinForm
 
                 for(int count = 0; count <= dayCount; count++, temp_checkDay = temp_checkDay.AddDays(1)) {
                     date = temp_checkDay.ToString("yyyy-M-d").Split('-');
-                    pastDateYMD[0] = decimal.Parse(date[0]);
-                    pastDateYMD[1] = decimal.Parse(date[1]);
-                    pastDateYMD[2] = decimal.Parse(date[2]);
-
+                    pastDateYMD = new decimal[3] { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
                     sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
 
                     QueryActive(sql);
@@ -300,8 +297,6 @@ namespace CalendarWinForm
                 RefreshCalendar();
             }
         }
-
-        private void DataView_FormClosing(object sender, FormClosingEventArgs e) { e.Cancel = true; this.Visible = false;   }
 
     }
 }

@@ -138,9 +138,10 @@
  - 코드 정리 작업 (Code cleanup)
  + (19-10-27) 인터페이스 추가 (new Interface : IDataControl)
 
- #### 36 (19-11-02 ~ 19-11-04)
+ #### 36 (19-11-02 ~ 19-11-05)
  - 코드 정리 작업 (Code cleanup)
  - (19-11-04) DataAddForm 객체 생성 방식 수정
+ - (19-11-05) 데이터 삭제 메소드 통합 (Integration of data erasure method.)
 
 ---------------------------------------
 
