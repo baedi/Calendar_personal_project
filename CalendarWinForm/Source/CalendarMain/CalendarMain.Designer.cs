@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalendarMain));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
@@ -241,9 +241,9 @@
             this.columnHeader_data,
             this.columnHeader_active});
             this.listView_Schedule.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem3});
             this.listView_Schedule.Location = new System.Drawing.Point(964, 415);
             this.listView_Schedule.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Schedule.Name = "listView_Schedule";
@@ -279,7 +279,7 @@
             this.button_addSch.TabIndex = 10;
             this.button_addSch.Text = "Add";
             this.button_addSch.UseVisualStyleBackColor = false;
-            this.button_addSch.Click += new System.EventHandler(this.Button_addSch_Click);
+            this.button_addSch.Click += new System.EventHandler(this.AddButtonClickEvent);
             // 
             // button_modifySch
             // 
@@ -291,7 +291,7 @@
             this.button_modifySch.TabIndex = 11;
             this.button_modifySch.Text = "Modify";
             this.button_modifySch.UseVisualStyleBackColor = false;
-            this.button_modifySch.Click += new System.EventHandler(this.Button_modifySch_Click);
+            this.button_modifySch.Click += new System.EventHandler(this.ModifyButtonEvent);
             // 
             // button_deleteSch
             // 
@@ -303,7 +303,7 @@
             this.button_deleteSch.TabIndex = 12;
             this.button_deleteSch.Text = "Delete";
             this.button_deleteSch.UseVisualStyleBackColor = false;
-            this.button_deleteSch.Click += new System.EventHandler(this.Button_deleteSch_Click);
+            this.button_deleteSch.Click += new System.EventHandler(this.DeleteButtonEvent);
             // 
             // label_YearMonth
             // 
@@ -388,8 +388,9 @@
             this.listView_todayList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ch_today_time,
             this.ch_today_data});
+            this.listView_todayList.HideSelection = false;
             this.listView_todayList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem4});
             this.listView_todayList.Location = new System.Drawing.Point(964, 279);
             this.listView_todayList.Name = "listView_todayList";
             this.listView_todayList.Size = new System.Drawing.Size(251, 129);
@@ -416,7 +417,7 @@
             this.button_today_add.TabIndex = 18;
             this.button_today_add.Text = "+";
             this.button_today_add.UseVisualStyleBackColor = true;
-            this.button_today_add.Click += new System.EventHandler(this.Button_today_add_Click);
+            this.button_today_add.Click += new System.EventHandler(this.AddButtonClickEvent);
             // 
             // button_today_modify
             // 
@@ -426,7 +427,7 @@
             this.button_today_modify.TabIndex = 19;
             this.button_today_modify.Text = "R";
             this.button_today_modify.UseVisualStyleBackColor = true;
-            this.button_today_modify.Click += new System.EventHandler(this.Button_today_modify_Click);
+            this.button_today_modify.Click += new System.EventHandler(this.ModifyButtonEvent);
             // 
             // button_today_delete
             // 
@@ -436,7 +437,7 @@
             this.button_today_delete.TabIndex = 20;
             this.button_today_delete.Text = "-";
             this.button_today_delete.UseVisualStyleBackColor = true;
-            this.button_today_delete.Click += new System.EventHandler(this.Button_today_delete_Click);
+            this.button_today_delete.Click += new System.EventHandler(this.DeleteButtonEvent);
             // 
             // CalendarMain
             // 
