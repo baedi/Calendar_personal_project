@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CalendarMain));
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem(new string[] {
             "00 : 00",
             "test",
             "O"}, -1);
@@ -105,8 +105,6 @@
             this.panel_MonthList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.05409F));
             this.panel_MonthList.Size = new System.Drawing.Size(918, 669);
             this.panel_MonthList.TabIndex = 1;
-            this.panel_MonthList.DoubleClick += new System.EventHandler(this.Panel_MonthList_DoubleClick);
-            this.panel_MonthList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Panel_MonthList_MouseDown);
             // 
             // label1
             // 
@@ -241,9 +239,9 @@
             this.columnHeader_data,
             this.columnHeader_active});
             this.listView_Schedule.HideSelection = false;
-            listViewItem3.StateImageIndex = 0;
+            listViewItem9.StateImageIndex = 0;
             this.listView_Schedule.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3});
+            listViewItem9});
             this.listView_Schedule.Location = new System.Drawing.Point(964, 415);
             this.listView_Schedule.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Schedule.Name = "listView_Schedule";
@@ -390,7 +388,7 @@
             this.ch_today_data});
             this.listView_todayList.HideSelection = false;
             this.listView_todayList.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem4});
+            listViewItem10});
             this.listView_todayList.Location = new System.Drawing.Point(964, 279);
             this.listView_todayList.Name = "listView_todayList";
             this.listView_todayList.Size = new System.Drawing.Size(251, 129);

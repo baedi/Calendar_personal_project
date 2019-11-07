@@ -144,6 +144,9 @@
  - (19-11-05) 데이터 삭제 메소드 통합 (Integration of data erasure method.)
  - (19-11-06) 2가지 추가 이벤트, 수정 이벤트, 삭제 이벤트 메소드를 각각 하나로 통합 (Consolidate 2 additional events, modification events, and deletion event methods into one)
 
+ #### 37 (19-11-07)
+ - 날짜 선택 관련 이벤트 최적화 (Optimize date selection related events)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)

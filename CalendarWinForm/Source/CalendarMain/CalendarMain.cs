@@ -16,7 +16,6 @@ namespace CalendarWinForm
         private int gbox_index;
         private bool alarm_onCheck;
         private bool real_exit;
-        private bool isSelectedDate;
 
         private readonly AppManager appManager;
         private readonly ThreadManager tManager;
@@ -68,8 +67,12 @@ namespace CalendarWinForm
 
 
             // Panel setting.                                   
-            for (int count = 0; count < gbox.Length; count++) gbox[count] = new ListBox();
-
+            for (int count = 0; count < gbox.Length; count++) {
+                gbox[count] = new ListBox();
+                gbox[count].SelectionMode = SelectionMode.None;
+                gbox[count].MouseDown += new MouseEventHandler(CalendarMouseDown);
+                gbox[count].MouseDoubleClick += new MouseEventHandler(CalendarMouseDoubleClick);
+            }
             // Current date setting. 
             DateTime curTime = new DateTime(DateTime.Now.Ticks);
             string[] ymd = curTime.ToString("yyyy-MM-dd").Split('-');
@@ -115,7 +118,7 @@ namespace CalendarWinForm
 
                     if (blankCount > 0 || dayCount > maxDays) {
                         gbox[boxCount].BackColor = System.Drawing.SystemColors.InactiveCaptionText;
-                        gbox[boxCount].TabStop = false;
+                        gbox[boxCount].Enabled = false;
                         blankCount = blankCount - 1;
                     }
 
@@ -131,6 +134,8 @@ namespace CalendarWinForm
                             gbox[boxCount].BackColor = System.Drawing.Color.FromArgb(192, 192, 255);
 
                         else gbox[boxCount].BackColor = System.Drawing.SystemColors.Window;
+
+                        //gbox[boxCount].MouseDown += new MouseEventHandler(CalendarMouseDown);
 
 
                         // database setting. 
@@ -151,12 +156,11 @@ namespace CalendarWinForm
 
                         reader.Close();
 
-                        gbox[boxCount].TabStop = true;
+                        gbox[boxCount].Enabled = true;
                         dayCount = dayCount + 1;
                         dOfMonth = dOfMonth.AddDays(1);
                     }
 
-                    gbox[boxCount].Enabled = false;
                     boxCount = boxCount + 1;
 
                 }
@@ -340,30 +344,14 @@ namespace CalendarWinForm
         }
 
 
-        // click location check Event. (main calender click)    
-        private void Panel_MonthList_MouseDown(object sender, MouseEventArgs e)
-        {
-            for (int count = 0; count < gbox.Length; count++)
-            {
-                if (gbox[count].Location.X <= e.X &&
-                    gbox[count].Location.Y <= e.Y &&
-                    gbox[count].Location.X + gbox[count].Size.Width > e.X &&
-                    gbox[count].Location.Y + gbox[count].Size.Height > e.Y &&
-                    gbox[count].TabStop == true)
-                {
-
-                    DateTime temp = new DateTime();
-                    monthCalendar1.SetDate(temp.AddYears((int)selectCalendarDay[0] - 1).AddMonths((int)selectCalendarDay[1] - 1).AddDays(int.Parse(gbox[count].Items[0].ToString()) - 1));
-                    isSelectedDate = true;
-                    return;
-                }
-            }
-
-            isSelectedDate = false;
+        // Calendar click event.                                
+        private void CalendarMouseDown(object sender, MouseEventArgs e) {
+            monthCalendar1.SetDate(new DateTime((int)selectCalendarDay[0], (int)selectCalendarDay[1], int.Parse(((ListBox)sender).Items[0].ToString())));
         }
 
+
         // double click event. (open DataAddForm)               
-        private void Panel_MonthList_DoubleClick(object sender, EventArgs e){   if (isSelectedDate) this.AddButtonClickEvent(button_addSch, null); }
+        private void CalendarMouseDoubleClick(object sender, MouseEventArgs e) { this.AddButtonClickEvent(button_addSch, null); }
 
 
         // datetime label text changed Event.                   
@@ -512,6 +500,5 @@ namespace CalendarWinForm
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
         private void DataViewToolStripMenuItem_Click(object sender, EventArgs e) { Button_dataview_Click(null, null); }
         private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(alarmONToolStripMenuItem, button_alarmon, tManager, AlarmStatusChange.STRIP_CLICK); }
-
     }
 }
