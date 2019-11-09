@@ -147,8 +147,12 @@
  #### 37 (19-11-07)
  - 날짜 선택 관련 이벤트 최적화 (Optimize date selection related events)
 
- #### 38 (19-11-08 ~ )
+ #### 38 (19-11-08)
  - 추가, 수정, 삭제 버튼 이벤트 삭제 및 변경 (Delete and change events on the Add, Modify, Delete buttons)
+
+ #### 39 (19-11-09)
+ - 코드 정리 작업 (Code cleanup)
+ - AppManager 삭제 (Delete AppManager.class)
 
 ---------------------------------------
 

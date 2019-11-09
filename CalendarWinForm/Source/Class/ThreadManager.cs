@@ -5,10 +5,12 @@ using System.Data.SQLite;
 
 namespace CalendarWinForm {
     class ThreadManager {
-        private readonly AppManager appManager;
+        //private readonly AppManager appManager;
         private readonly Thread manage;
         private readonly Label timeLabel;
         private readonly AlarmMessage alarm_form;
+        private SQLiteConnection[] connect;
+        private SQLiteCommand command;
 
         private DateTime alarm;
         private string alarm_text;
@@ -17,9 +19,10 @@ namespace CalendarWinForm {
 
 
         // Constructor. 
-        public ThreadManager(Label label) {
+        public ThreadManager(Label label, SQLiteConnection[] conn) {
 
-            appManager = AppManager.GetInstance();
+            //appManager = AppManager.GetInstance();
+            connect = conn;
 
             timeLabel = label;
             manage = new Thread(new ThreadStart(WorkingThread));
@@ -42,9 +45,9 @@ namespace CalendarWinForm {
 
                 string sql = new ListSqlQuery().sqlNextAlarmCheck(dateYMD);
 
-                appManager.Connect_calendar.Open();
-                appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_calendar);
-                SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
+                connect[0].Open();
+                command = new SQLiteCommand(sql, connect[0]);
+                SQLiteDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) {
                     alarm = new DateTime();
@@ -71,7 +74,7 @@ namespace CalendarWinForm {
                 }
 
                 reader.Close();
-                appManager.Connect_calendar.Close();
+                connect[0].Close();
 
                 TodayAlarmChecked();
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
@@ -85,9 +88,9 @@ namespace CalendarWinForm {
 
             try {
                 string sql = new ListSqlQuery().sqlListViewRefresh(ListSqlQuery.ALARM_MODE, null);
-                appManager.Connect_today.Open();
-                appManager.Command_calendar = new SQLiteCommand(sql, appManager.Connect_today);
-                SQLiteDataReader reader = appManager.Command_calendar.ExecuteReader();
+                connect[1].Open();
+                command = new SQLiteCommand(sql, connect[1]);
+                SQLiteDataReader reader = command.ExecuteReader();
 
                 // Today alarm confirm.     
                 while (reader.Read()){
@@ -113,7 +116,7 @@ namespace CalendarWinForm {
 
                 // Next day confirm.        
                 if (!findToday) {
-                    reader = appManager.Command_calendar.ExecuteReader();
+                    reader = command.ExecuteReader();
 
                     if (reader.Read())
                     {
@@ -135,7 +138,7 @@ namespace CalendarWinForm {
                     reader.Close();
                 }
 
-                appManager.Connect_today.Close();
+                connect[1].Close();
 
                 MessageBox.Show("alarm : " + alarm.Year + "." + alarm.Month + "." + alarm.Day + " " + alarm.Hour + ":" + alarm.Minute);
             } catch(Exception exc) { MessageBox.Show(exc.Message); }
