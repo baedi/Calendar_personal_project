@@ -12,7 +12,7 @@ namespace CalendarWinForm {
         public const int BC_TRUE = 1;
         public const int STRIP_CLICK = 3;
 
-        public static void alarmStatusChange(CalendarMain main, ToolStripMenuItem alaItem, Button alaButton, ThreadManager tmanager, int mode) {
+        public AlarmStatusChange(CalendarMain main, ToolStripMenuItem alaItem, Button alaButton, ThreadManager tmanager, int mode) {
 
             if((alaItem.Checked == false && mode == STRIP_CLICK) || mode == BC_TRUE) {
                 alaItem.Checked = true;

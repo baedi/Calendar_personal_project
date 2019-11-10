@@ -53,13 +53,7 @@ namespace CalendarWinForm {
                     alarm = new DateTime();
 
                     if ((bool)reader["active"] == true) {
-
-                        alarm = alarm.AddYears((int)reader["year"] - 1).
-                                      AddMonths((int)reader["month"] - 1).
-                                      AddDays((int)reader["day"] - 1).
-                                      AddHours((int)reader["sethour"]).
-                                      AddMinutes((int)reader["setminute"]);
-                        
+                        alarm = new DateTime((int)reader["year"], (int)reader["month"], (int)reader["day"], (int)reader["sethour"], (int)reader["setminute"], 0);
                         if (alarm < DateTime.Now) continue;
                         isAlarmExist = true;
                         alarm_text = reader["text"].ToString();

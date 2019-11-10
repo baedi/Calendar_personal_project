@@ -341,7 +341,7 @@ namespace CalendarWinForm
 
 
         // double click event. (open DataAddForm)               
-        private void CalendarMouseDoubleClick(object sender, MouseEventArgs e) { this.AddFormDisposedCheckEvent(button_addSch, null); }
+        private void CalendarMouseDoubleClick(object sender, MouseEventArgs e) { AddFormDisposedCheckEvent(button_addSch, null); }
 
 
         // datetime label text changed Event.                   
@@ -456,7 +456,7 @@ namespace CalendarWinForm
 
 
         // "Alarm ON button click Event.                        
-        private void Button_alarmon_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(this, alarmONToolStripMenuItem, button_alarmon, tManager, alarm_onCheck ? AlarmStatusChange.BC_FALSE : AlarmStatusChange.BC_TRUE); }
+        private void Button_alarmon_Click(object sender, EventArgs e) { new AlarmStatusChange(this, alarmONToolStripMenuItem, button_alarmon, tManager, alarm_onCheck ? AlarmStatusChange.BC_FALSE : AlarmStatusChange.BC_TRUE); }
 
 
         // program close Event.                                 
@@ -490,6 +490,6 @@ namespace CalendarWinForm
         private void Trayicon_MouseDoubleClick(object sender, MouseEventArgs e) { Visible = true; }
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e) { real_exit = true; Close(); }
         private void DataViewToolStripMenuItem_Click(object sender, EventArgs e) { Button_dataview_Click(null, null); }
-        private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e) { AlarmStatusChange.alarmStatusChange(this, alarmONToolStripMenuItem, button_alarmon, tManager, AlarmStatusChange.STRIP_CLICK); }
+        private void AlarmONToolStripMenuItem_Click(object sender, EventArgs e) { new AlarmStatusChange(this, alarmONToolStripMenuItem, button_alarmon, tManager, AlarmStatusChange.STRIP_CLICK); }
     }
 }
