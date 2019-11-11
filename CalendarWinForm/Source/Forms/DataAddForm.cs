@@ -33,9 +33,8 @@ namespace CalendarWinForm
             DateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
 
             startDateTemp = new DateTime((int)DateYMD[0], (int)DateYMD[1], (int)DateYMD[2]);
+            dateTimePicker_start.Value = new DateTime(startDateTemp.Ticks);
             dateTimePicker_end.Value = new DateTime(startDateTemp.Ticks).AddDays(2);
-
-            groupBox_curdatecheck.Text = DateYMD[0] + "." + DateYMD[1] + "." + DateYMD[2];
         }
 
         // Impliment Method.        

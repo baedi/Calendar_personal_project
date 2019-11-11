@@ -344,28 +344,28 @@
             this.exitToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
             this.contextMenuStrip.ShowCheckMargin = true;
-            this.contextMenuStrip.Size = new System.Drawing.Size(177, 82);
+            this.contextMenuStrip.Size = new System.Drawing.Size(233, 110);
             // 
             // alarmONToolStripMenuItem
             // 
             this.alarmONToolStripMenuItem.Checked = true;
             this.alarmONToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.alarmONToolStripMenuItem.Name = "alarmONToolStripMenuItem";
-            this.alarmONToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.alarmONToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
             this.alarmONToolStripMenuItem.Text = "Alarm : ON";
             this.alarmONToolStripMenuItem.Click += new System.EventHandler(this.AlarmONToolStripMenuItem_Click);
             // 
             // dataViewToolStripMenuItem
             // 
             this.dataViewToolStripMenuItem.Name = "dataViewToolStripMenuItem";
-            this.dataViewToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.dataViewToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
             this.dataViewToolStripMenuItem.Text = "Data view";
             this.dataViewToolStripMenuItem.Click += new System.EventHandler(this.DataViewToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(232, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 

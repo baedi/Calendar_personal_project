@@ -150,9 +150,10 @@
  #### 38 (19-11-08)
  - 추가, 수정, 삭제 버튼 이벤트 삭제 및 변경 (Delete and change events on the Add, Modify, Delete buttons)
 
- #### 39 (19-11-09 ~ 19-11-10)
+ #### 39 (19-11-09 ~ 19-11-11)
  - 코드 정리 작업 (Code cleanup)
- - AppManager 삭제 (Delete AppManager.class)
+ - (11.09) AppManager 삭제 (Delete AppManager.class)
+ - (11.11) DataAddForm 디자인 변경 (DataAddForm design changes.)
 
 ---------------------------------------
 

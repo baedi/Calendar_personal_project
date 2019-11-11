@@ -9,7 +9,7 @@ namespace CalendarWinForm {
         private readonly Thread manage;
         private readonly Label timeLabel;
         private readonly AlarmMessage alarm_form;
-        private SQLiteConnection[] connect;
+        private readonly SQLiteConnection[] connect;
         private SQLiteCommand command;
 
         private DateTime alarm;
@@ -21,7 +21,6 @@ namespace CalendarWinForm {
         // Constructor. 
         public ThreadManager(Label label, SQLiteConnection[] conn) {
 
-            //appManager = AppManager.GetInstance();
             connect = conn;
 
             timeLabel = label;
@@ -76,7 +75,6 @@ namespace CalendarWinForm {
 
         // today alarm check. 
         public void TodayAlarmChecked() {
-            DateTime today = new DateTime();
             DateTime current = DateTime.Now;
             bool findToday = false;
 
@@ -88,10 +86,7 @@ namespace CalendarWinForm {
 
                 // Today alarm confirm.     
                 while (reader.Read()){
-                    today = new DateTime();
-
-                    today = today.AddYears(current.Year - 1).AddMonths(current.Month - 1).AddDays(current.Day - 1).
-                        AddHours((int)reader["sethour"]).AddMinutes((int)reader["setminute"]);
+                    DateTime today = new DateTime(current.Year, current.Month, current.Day, (int)reader["sethour"], (int)reader["setminute"], 0);
 
                     if (today <= current) continue;
                     else if(today > current){
@@ -114,19 +109,13 @@ namespace CalendarWinForm {
 
                     if (reader.Read())
                     {
-                        today = new DateTime();
+                        DateTime today = new DateTime(current.Year, current.Month, current.Day + 1, (int)reader["sethour"], (int)reader["setminute"], 0);
 
-                        today = today.AddYears(current.Year - 1).AddMonths(current.Month - 1).AddDays(current.Day).
-                            AddHours((int)reader["sethour"]).AddMinutes((int)reader["setminute"]);
-
-                        if (today <= current) { }
-                        else if (today > current) {
-                            if (today >= alarm) { }
-                            else if (today < alarm) {
-                                alarm = today;
-                                alarm_text = reader["text"].ToString();
-                            }
+                        if(today > current && today < alarm) {
+                            alarm = today;
+                            alarm_text = reader["text"].ToString();
                         }
+
                     }
 
                     reader.Close();
