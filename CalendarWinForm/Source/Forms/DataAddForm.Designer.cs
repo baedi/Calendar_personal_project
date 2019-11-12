@@ -35,14 +35,14 @@
             this.checkBox_multiMode = new System.Windows.Forms.CheckBox();
             this.dateTimePicker_end = new System.Windows.Forms.DateTimePicker();
             this.groupBox_range = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker_start = new System.Windows.Forms.DateTimePicker();
-            this.label_setMinute = new System.Windows.Forms.Label();
-            this.checkBox_checkAlarm = new System.Windows.Forms.CheckBox();
-            this.textBox_calendarText = new System.Windows.Forms.TextBox();
-            this.label_calText = new System.Windows.Forms.Label();
-            this.label_setHour = new System.Windows.Forms.Label();
-            this.numericUpDown_setMinute = new System.Windows.Forms.NumericUpDown();
             this.label_range = new System.Windows.Forms.Label();
+            this.numericUpDown_setMinute = new System.Windows.Forms.NumericUpDown();
+            this.label_setHour = new System.Windows.Forms.Label();
+            this.dateTimePicker_start = new System.Windows.Forms.DateTimePicker();
+            this.label_calText = new System.Windows.Forms.Label();
+            this.label_setMinute = new System.Windows.Forms.Label();
+            this.textBox_calendarText = new System.Windows.Forms.TextBox();
+            this.checkBox_checkAlarm = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_setHour)).BeginInit();
             this.groupBox_range.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_setMinute)).BeginInit();
@@ -125,61 +125,14 @@
             this.groupBox_range.TabStop = false;
             this.groupBox_range.Text = "Date";
             // 
-            // dateTimePicker_start
+            // label_range
             // 
-            this.dateTimePicker_start.Enabled = false;
-            this.dateTimePicker_start.Location = new System.Drawing.Point(13, 28);
-            this.dateTimePicker_start.Name = "dateTimePicker_start";
-            this.dateTimePicker_start.Size = new System.Drawing.Size(249, 25);
-            this.dateTimePicker_start.TabIndex = 12;
-            // 
-            // label_setMinute
-            // 
-            this.label_setMinute.AutoSize = true;
-            this.label_setMinute.Location = new System.Drawing.Point(226, 138);
-            this.label_setMinute.Name = "label_setMinute";
-            this.label_setMinute.Size = new System.Drawing.Size(50, 15);
-            this.label_setMinute.TabIndex = 4;
-            this.label_setMinute.Text = "Minute";
-            // 
-            // checkBox_checkAlarm
-            // 
-            this.checkBox_checkAlarm.AutoSize = true;
-            this.checkBox_checkAlarm.Checked = true;
-            this.checkBox_checkAlarm.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_checkAlarm.Location = new System.Drawing.Point(186, 194);
-            this.checkBox_checkAlarm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.checkBox_checkAlarm.Name = "checkBox_checkAlarm";
-            this.checkBox_checkAlarm.Size = new System.Drawing.Size(90, 19);
-            this.checkBox_checkAlarm.TabIndex = 7;
-            this.checkBox_checkAlarm.Text = "Alarm ON";
-            this.checkBox_checkAlarm.UseVisualStyleBackColor = true;
-            // 
-            // textBox_calendarText
-            // 
-            this.textBox_calendarText.Location = new System.Drawing.Point(59, 161);
-            this.textBox_calendarText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox_calendarText.Name = "textBox_calendarText";
-            this.textBox_calendarText.Size = new System.Drawing.Size(217, 25);
-            this.textBox_calendarText.TabIndex = 6;
-            // 
-            // label_calText
-            // 
-            this.label_calText.AutoSize = true;
-            this.label_calText.Location = new System.Drawing.Point(11, 164);
-            this.label_calText.Name = "label_calText";
-            this.label_calText.Size = new System.Drawing.Size(36, 15);
-            this.label_calText.TabIndex = 5;
-            this.label_calText.Text = "Text";
-            // 
-            // label_setHour
-            // 
-            this.label_setHour.AutoSize = true;
-            this.label_setHour.Location = new System.Drawing.Point(116, 138);
-            this.label_setHour.Name = "label_setHour";
-            this.label_setHour.Size = new System.Drawing.Size(38, 15);
-            this.label_setHour.TabIndex = 3;
-            this.label_setHour.Text = "Hour";
+            this.label_range.AutoSize = true;
+            this.label_range.Location = new System.Drawing.Point(268, 35);
+            this.label_range.Name = "label_range";
+            this.label_range.Size = new System.Drawing.Size(18, 15);
+            this.label_range.TabIndex = 13;
+            this.label_range.Text = "~";
             // 
             // numericUpDown_setMinute
             // 
@@ -194,14 +147,61 @@
             this.numericUpDown_setMinute.Size = new System.Drawing.Size(55, 25);
             this.numericUpDown_setMinute.TabIndex = 1;
             // 
-            // label_range
+            // label_setHour
             // 
-            this.label_range.AutoSize = true;
-            this.label_range.Location = new System.Drawing.Point(268, 35);
-            this.label_range.Name = "label_range";
-            this.label_range.Size = new System.Drawing.Size(18, 15);
-            this.label_range.TabIndex = 13;
-            this.label_range.Text = "~";
+            this.label_setHour.AutoSize = true;
+            this.label_setHour.Location = new System.Drawing.Point(116, 138);
+            this.label_setHour.Name = "label_setHour";
+            this.label_setHour.Size = new System.Drawing.Size(38, 15);
+            this.label_setHour.TabIndex = 3;
+            this.label_setHour.Text = "Hour";
+            // 
+            // dateTimePicker_start
+            // 
+            this.dateTimePicker_start.Location = new System.Drawing.Point(13, 28);
+            this.dateTimePicker_start.Name = "dateTimePicker_start";
+            this.dateTimePicker_start.Size = new System.Drawing.Size(249, 25);
+            this.dateTimePicker_start.TabIndex = 12;
+            this.dateTimePicker_start.ValueChanged += new System.EventHandler(this.DateTimePicker_start_ValueChanged);
+            // 
+            // label_calText
+            // 
+            this.label_calText.AutoSize = true;
+            this.label_calText.Location = new System.Drawing.Point(11, 164);
+            this.label_calText.Name = "label_calText";
+            this.label_calText.Size = new System.Drawing.Size(36, 15);
+            this.label_calText.TabIndex = 5;
+            this.label_calText.Text = "Text";
+            // 
+            // label_setMinute
+            // 
+            this.label_setMinute.AutoSize = true;
+            this.label_setMinute.Location = new System.Drawing.Point(226, 138);
+            this.label_setMinute.Name = "label_setMinute";
+            this.label_setMinute.Size = new System.Drawing.Size(50, 15);
+            this.label_setMinute.TabIndex = 4;
+            this.label_setMinute.Text = "Minute";
+            // 
+            // textBox_calendarText
+            // 
+            this.textBox_calendarText.Location = new System.Drawing.Point(59, 161);
+            this.textBox_calendarText.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox_calendarText.Name = "textBox_calendarText";
+            this.textBox_calendarText.Size = new System.Drawing.Size(217, 25);
+            this.textBox_calendarText.TabIndex = 6;
+            // 
+            // checkBox_checkAlarm
+            // 
+            this.checkBox_checkAlarm.AutoSize = true;
+            this.checkBox_checkAlarm.Checked = true;
+            this.checkBox_checkAlarm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox_checkAlarm.Location = new System.Drawing.Point(186, 194);
+            this.checkBox_checkAlarm.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.checkBox_checkAlarm.Name = "checkBox_checkAlarm";
+            this.checkBox_checkAlarm.Size = new System.Drawing.Size(90, 19);
+            this.checkBox_checkAlarm.TabIndex = 7;
+            this.checkBox_checkAlarm.Text = "Alarm ON";
+            this.checkBox_checkAlarm.UseVisualStyleBackColor = true;
             // 
             // DataAddForm
             // 

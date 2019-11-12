@@ -10,12 +10,11 @@ namespace CalendarWinForm
         // Instance variable.       
         private readonly CalendarMain calendar;
         private readonly Label date;
-        private ListBox selectBox;
         private SQLiteConnection tempConnect;
         private SQLiteCommand command;
 
         private readonly DateTime startDateTemp;
-        private decimal[] DateYMD;       
+        private decimal[] dateYMD;       
         private decimal[] originalHM;
 
 
@@ -30,9 +29,9 @@ namespace CalendarWinForm
             else this.Text = "Modify schedule";
 
             string[] tempString = date.Text.Split('.');
-            DateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
+            dateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
 
-            startDateTemp = new DateTime((int)DateYMD[0], (int)DateYMD[1], (int)DateYMD[2]);
+            startDateTemp = new DateTime((int)dateYMD[0], (int)dateYMD[1], (int)dateYMD[2]);
             dateTimePicker_start.Value = new DateTime(startDateTemp.Ticks);
             dateTimePicker_end.Value = new DateTime(startDateTemp.Ticks).AddDays(2);
         }
@@ -43,13 +42,13 @@ namespace CalendarWinForm
             decimal[] setDateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
             
             // overlap alarm check. 
-            string sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, DateYMD, setDateHM);
+            string sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, setDateHM);
             if (!OverlapCheck(sql_str, false)) return;
 
             // insert data. (normal)        
             if (!checkBox_multiMode.Checked)
             {
-                sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, DateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                 QueryActive(sql_str);
             }
 
@@ -111,7 +110,7 @@ namespace CalendarWinForm
 
         public void ModifyMode() {
             decimal[] DateHM = { numericUpDown_setHour.Value, numericUpDown_setMinute.Value };
-            string sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, DateYMD, DateHM);
+            string sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, dateYMD, DateHM);
 
             // overlap alarm check. 
             if (!OverlapCheck(sql, true)) return;
@@ -119,7 +118,7 @@ namespace CalendarWinForm
             // update data. (normal)        
             if (!checkBox_multiMode.Checked)
             {
-                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, DateYMD, originalHM, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, dateYMD, originalHM, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                 QueryActive(sql);
             }
 
@@ -206,19 +205,12 @@ namespace CalendarWinForm
 
 
             // select calendar year, month change check 
-            decimal y_temp = DateYMD[0];
-            decimal m_temp = DateYMD[1];
+            string[] selectCalDate = date.Text.Split('.');
+            decimal[] selectCalDate2 = new decimal[3] { decimal.Parse(selectCalDate[0]), decimal.Parse(selectCalDate[1]), decimal.Parse(selectCalDate[2]) };
 
-            string[] tempString = date.Text.Split('.');
-            DateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
-
-            if (y_temp == DateYMD[0] && m_temp == DateYMD[1]){
-                calendar.SelectBoxDataRefresh(selectBox, DateYMD);
-                calendar.CalendarListRefresh();
-            }
-
-            else calendar.ChangeCalendar();
-
+            if (selectCalDate2[0] == dateYMD[0] && selectCalDate2[1] == dateYMD[1])
+                calendar.ChangeCalendar();
+            
             calendar.RefreshAlarm();
             Close();
         }
@@ -247,7 +239,6 @@ namespace CalendarWinForm
 
         // get, set Method. 
         public void SetDbConnect(SQLiteConnection conn) { tempConnect = conn; }
-        public void GboxSetting(ListBox selectBox) { this.selectBox = selectBox; }
         public void SetSelectData(string[] temp, string text, bool act) {
             originalHM = new decimal[2] { decimal.Parse(temp[0]), decimal.Parse(temp[1]) };
 
@@ -257,6 +248,9 @@ namespace CalendarWinForm
             checkBox_checkAlarm.Checked = act;
         }
 
-
+        private void DateTimePicker_start_ValueChanged(object sender, EventArgs e) {
+            string[] tempStr = dateTimePicker_start.Value.ToString("yyyy-MM-dd").Split('-');
+            dateYMD = new decimal[3] { decimal.Parse(tempStr[0]), decimal.Parse(tempStr[1]), decimal.Parse(tempStr[2]) };
+        }
     }
 }

@@ -227,29 +227,6 @@ namespace CalendarWinForm
         }
 
 
-        // select box data refresh. 
-        public void SelectBoxDataRefresh(ListBox selectBox, decimal[] dateYMD)
-        {
-            int dayItem = (int)selectBox.Items[0];
-            selectBox.Items.Clear();
-            selectBox.Items.Insert(0, dayItem);
-
-            connect[0].Open();
-            SQLiteCommand command = new SQLiteCommand(new ListSqlQuery().sqlListboxRefresh(dateYMD), connect[0]);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            int moreCount = 0;
-            for (int count = 1; reader.Read(); count = count + 1) {
-                if (count >= 4) moreCount = moreCount + 1;
-                else selectBox.Items.Insert(count, reader["text"].ToString());
-            }
-
-            if (moreCount > 0) selectBox.Items.Insert(4, "(...more " + moreCount + ")");
-            reader.Close();
-            connect[0].Close();
-        }
-
-
         // delete select database.                              
         private void DeleteDBdata_(int index, bool isCalendarMode) {
             ListView listview               = isCalendarMode == true ? listView_Schedule : listView_todayList;
@@ -396,7 +373,6 @@ namespace CalendarWinForm
         private void AddButtonClickProcess(bool isCalendar) {
             if (isCalendar) {
                 addForm = new DataAddForm(label_DateTemp, this, connect[0], false);
-                addForm.GboxSetting(gbox[gbox_index]);
                 addForm.Show();
             }
 
@@ -414,7 +390,6 @@ namespace CalendarWinForm
                 string text = listView_Schedule.SelectedItems[0].SubItems[1].Text.ToString();
                 string[] datalist = listView_Schedule.SelectedItems[0].SubItems[0].Text.Split(':');
                 addForm = new DataAddForm(label_DateTemp, this, connect[0], true);
-                addForm.GboxSetting(gbox[gbox_index]);
                 addForm.SetSelectData(datalist, text, actCheck);
                 addForm.Show();
             }
@@ -436,7 +411,7 @@ namespace CalendarWinForm
                         if (listView_Schedule.Items[count].Selected == true) DeleteDBdata_(count, true);
 
                     DataManage dManage = new DataManage(selectCalendarDay[0], selectCalendarDay[1], selectCalendarDay[2]);
-                    SelectBoxDataRefresh(gbox[gbox_index], dManage.YearMonthDay);
+                    ChangeCalendar();
                     CalendarListRefresh();
                     RefreshAlarm();
                 }

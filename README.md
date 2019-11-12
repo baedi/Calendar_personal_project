@@ -154,6 +154,7 @@
  - 코드 정리 작업 (Code cleanup)
  - (11.09) AppManager 삭제 (Delete AppManager.class)
  - (11.11) DataAddForm 디자인 변경 (DataAddForm design changes.)
+ - (11.12) 데이터 추가시 날짜 선택 가능하도록 변경 (Implementing date selection during schedule addition)
 
 ---------------------------------------
 
