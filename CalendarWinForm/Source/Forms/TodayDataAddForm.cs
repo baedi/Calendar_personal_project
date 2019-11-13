@@ -73,7 +73,7 @@ namespace CalendarWinForm {
 
                     // add mode
                     if (isAddMode)  sql = new ListSqlQuery().sqlInsertValues(ListSqlQuery.ALARM_MODE, null, time, textBox_today_text.Text, true);
-                    else            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.ALARM_MODE, null, originalHM, time, textBox_today_text.Text, true);
+                    else            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.ALARM_MODE, null, originalHM, null, time, textBox_today_text.Text, true);
 
                     QueryActive(sql);
                 }

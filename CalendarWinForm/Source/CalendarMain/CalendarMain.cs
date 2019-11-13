@@ -257,7 +257,7 @@ namespace CalendarWinForm
                 cval = (int)selectCalendarDay[2] - cval;
                 if (cval == 0) return;
 
-                int[] sat_index = { 13, 20, 27, 34, 41 };
+                int[] sat_index = { 6, 13, 20, 27, 34, 41 };
                 int[] sun_index = { 7, 14, 21, 28, 35, 42 };
                 bool correct_sat_sun_index = false;
 

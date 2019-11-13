@@ -42,8 +42,8 @@ namespace CalendarWinForm {
         }
 
         // UPDATE SQL               
-        public string sqlUpdateData(int mode, decimal[] pastDate, decimal[] pastTime, decimal[] setTime, string text, bool alarmEnable) {
-            if (mode == CALENDAR_MODE) return $"UPDATE calendarlist SET (sethour, setminute, text, active) = ({setTime[0]}, {setTime[1]}, '{text}', {alarmEnable}) " +
+        public string sqlUpdateData(int mode, decimal[] pastDate, decimal[] pastTime, decimal[] setDate, decimal[] setTime, string text, bool alarmEnable) {
+            if (mode == CALENDAR_MODE) return $"UPDATE calendarlist SET (year, month, day, sethour, setminute, text, active) = ({setDate[0]}, {setDate[1]}, {setDate[2]}, {setTime[0]}, {setTime[1]}, '{text}', {alarmEnable}) " +
                                               $"WHERE year = {pastDate[0]} AND month = {pastDate[1]} AND day = {pastDate[2]} AND sethour = {pastTime[0]} AND setminute = {pastTime[1]};";
 
             else if (mode == ALARM_MODE) return $"UPDATE t_alarmlist SET (sethour, setminute, text) = ({setTime[0]}, {setTime[1]}, '{text}') " +

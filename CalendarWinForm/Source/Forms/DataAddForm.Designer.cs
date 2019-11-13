@@ -101,6 +101,7 @@
             this.dateTimePicker_end.Name = "dateTimePicker_end";
             this.dateTimePicker_end.Size = new System.Drawing.Size(249, 25);
             this.dateTimePicker_end.TabIndex = 11;
+            this.dateTimePicker_end.ValueChanged += new System.EventHandler(this.DateTimePicker_end_ValueChanged);
             // 
             // groupBox_range
             // 

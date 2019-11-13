@@ -150,11 +150,15 @@
  #### 38 (19-11-08)
  - 추가, 수정, 삭제 버튼 이벤트 삭제 및 변경 (Delete and change events on the Add, Modify, Delete buttons)
 
- #### 39 (19-11-09 ~ 19-11-11)
+ #### 39 (19-11-09 ~ 19-11-12)
  - 코드 정리 작업 (Code cleanup)
  - (11.09) AppManager 삭제 (Delete AppManager.class)
  - (11.11) DataAddForm 디자인 변경 (DataAddForm design changes.)
  - (11.12) 데이터 추가시 날짜 선택 가능하도록 변경 (Implementing date selection during schedule addition)
+
+ #### 40 (19-11-13)
+ - 날짜 변경 기능 추가 (일정 수정 시) (Add date change (when rescheduled))
+ - 토요일 첫번째 칸 표기 오류 수정 (Correcting the error of the first square on Saturday)
 
 ---------------------------------------
 

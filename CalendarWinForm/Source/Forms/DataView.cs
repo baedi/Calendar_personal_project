@@ -104,7 +104,9 @@ namespace CalendarWinForm
 
             string sql;
             string[] date = past_day.ToString("yyyy-M-d").Split('-');
+            string[] date2 = dateTimePicker_start.Value.ToString("yyyy-M-d").Split('-');
             decimal[] pastDateYMD = { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
+            decimal[] dateYMD = { decimal.Parse(date2[0]), decimal.Parse(date2[1]), decimal.Parse(date2[2]) };
             decimal[] setTimeHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
             sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM);
@@ -121,7 +123,7 @@ namespace CalendarWinForm
 
             // single alarm mode. 
             if(checkBox_isMulti.Checked == false) {
-                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
+                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM, dateYMD, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
                 QueryActive(sql);
 
             }
@@ -134,7 +136,7 @@ namespace CalendarWinForm
                 for(int count = 0; count <= dayCount; count++, temp_checkDay = temp_checkDay.AddDays(1)) {
                     date = temp_checkDay.ToString("yyyy-M-d").Split('-');
                     pastDateYMD = new decimal[3] { decimal.Parse(date[0]), decimal.Parse(date[1]), decimal.Parse(date[2]) };
-                    sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
+                    sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM, pastDateYMD, setTimeHM, textBox_text.Text, checkBox_alarm.Checked);
 
                     QueryActive(sql);
                 }

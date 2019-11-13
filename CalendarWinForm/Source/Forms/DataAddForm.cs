@@ -14,7 +14,8 @@ namespace CalendarWinForm
         private SQLiteCommand command;
 
         private readonly DateTime startDateTemp;
-        private decimal[] dateYMD;       
+        private decimal[] dateYMD;
+        private decimal[] originalYMD;
         private decimal[] originalHM;
 
 
@@ -29,7 +30,7 @@ namespace CalendarWinForm
             else this.Text = "Modify schedule";
 
             string[] tempString = date.Text.Split('.');
-            dateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
+            originalYMD = dateYMD = new decimal[3] { decimal.Parse(tempString[0]), decimal.Parse(tempString[1]), decimal.Parse(tempString[2]) };
 
             startDateTemp = new DateTime((int)dateYMD[0], (int)dateYMD[1], (int)dateYMD[2]);
             dateTimePicker_start.Value = new DateTime(startDateTemp.Ticks);
@@ -118,7 +119,7 @@ namespace CalendarWinForm
             // update data. (normal)        
             if (!checkBox_multiMode.Checked)
             {
-                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, dateYMD, originalHM, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, originalYMD, originalHM, dateYMD, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
                 QueryActive(sql);
             }
 
@@ -150,7 +151,7 @@ namespace CalendarWinForm
                             reader.Close();
                             tempConnect.Close();
 
-                            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, curDate, originalHM, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
+                            sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, curDate, originalHM, curDate, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
 
                             tempConnect.Open();
                             command = new SQLiteCommand(sql, tempConnect);
@@ -208,9 +209,11 @@ namespace CalendarWinForm
             string[] selectCalDate = date.Text.Split('.');
             decimal[] selectCalDate2 = new decimal[3] { decimal.Parse(selectCalDate[0]), decimal.Parse(selectCalDate[1]), decimal.Parse(selectCalDate[2]) };
 
-            if (selectCalDate2[0] == dateYMD[0] && selectCalDate2[1] == dateYMD[1])
+            if (selectCalDate2[0] == dateYMD[0] && selectCalDate2[1] == dateYMD[1]){
                 calendar.ChangeCalendar();
-            
+                calendar.CalendarListRefresh();
+            }
+
             calendar.RefreshAlarm();
             Close();
         }
@@ -251,6 +254,14 @@ namespace CalendarWinForm
         private void DateTimePicker_start_ValueChanged(object sender, EventArgs e) {
             string[] tempStr = dateTimePicker_start.Value.ToString("yyyy-MM-dd").Split('-');
             dateYMD = new decimal[3] { decimal.Parse(tempStr[0]), decimal.Parse(tempStr[1]), decimal.Parse(tempStr[2]) };
+            dateTimePicker_end.Value = dateTimePicker_start.Value.AddDays(2);
+        }
+
+        private void DateTimePicker_end_ValueChanged(object sender, EventArgs e)
+        {
+            if (dateTimePicker_start.Value >= dateTimePicker_end.Value) {
+                dateTimePicker_end.Value = dateTimePicker_start.Value.AddDays(2);
+            }
         }
     }
 }
