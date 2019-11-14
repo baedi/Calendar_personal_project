@@ -107,15 +107,13 @@ namespace CalendarWinForm {
                 if (!findToday) {
                     reader = command.ExecuteReader();
 
-                    if (reader.Read())
-                    {
+                    if (reader.Read()) {
                         DateTime today = new DateTime(current.Year, current.Month, current.Day + 1, (int)reader["sethour"], (int)reader["setminute"], 0);
 
                         if(today > current && today < alarm) {
                             alarm = today;
                             alarm_text = reader["text"].ToString();
                         }
-
                     }
 
                     reader.Close();

@@ -313,6 +313,7 @@ namespace CalendarWinForm
 
         // Calendar click event.                                
         private void CalendarMouseDown(object sender, MouseEventArgs e) {
+            //int gBoxIndex = ((ListBox)sender).TabIndex;
             monthCalendar1.SetDate(new DateTime((int)selectCalendarDay[0], (int)selectCalendarDay[1], int.Parse(((ListBox)sender).Items[0].ToString())));
         }
 

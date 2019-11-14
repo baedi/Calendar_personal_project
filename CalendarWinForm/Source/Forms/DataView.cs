@@ -35,18 +35,7 @@ namespace CalendarWinForm
 
             // duplicate check.     
             string sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute);
-
-            tempConnect.Open();
-            command = new SQLiteCommand(sql_str, tempConnect);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            if (reader.Read()) {
-                MessageBox.Show("Duplicate alarm time.");
-                reader.Close(); tempConnect.Close(); return;
-            }
-
-            reader.Close(); tempConnect.Close();
-
+            if (!OverlapCheck(sql_str, false)) return;
 
             /* normal mode */
             if (multiMod == false) {
@@ -74,7 +63,7 @@ namespace CalendarWinForm
 
                     tempConnect.Open();
                     command = new SQLiteCommand(sql_str, tempConnect);
-                    reader = command.ExecuteReader();
+                    SQLiteDataReader reader = command.ExecuteReader();
 
 
                     // data is already exist.      
@@ -110,16 +99,7 @@ namespace CalendarWinForm
             decimal[] setTimeHM = { numericUpDown_hour.Value, numericUpDown_minute.Value };
 
             sql = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, pastDateYMD, originalHM);
-
-            tempConnect.Open();
-            command = new SQLiteCommand(sql, tempConnect);
-            SQLiteDataReader reader = command.ExecuteReader();
-
-            bool isRead = reader.Read();
-            reader.Close(); tempConnect.Close();
-
-            if (!isRead) { MessageBox.Show("Can't Find past data."); return; }
-
+            if (!OverlapCheck(sql, true)) return;
 
             // single alarm mode. 
             if(checkBox_isMulti.Checked == false) {
@@ -149,9 +129,30 @@ namespace CalendarWinForm
 
         private bool OverlapCheck(string sql, bool modifyMode)
         {
+            tempConnect.Open();
+            command = new SQLiteCommand(sql, tempConnect);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if (int.Parse(reader["sethour"].ToString()) == numericUpDown_hour.Value &&
+                     int.Parse(reader["setminute"].ToString()) == numericUpDown_minute.Value)
+                {
 
+                    if (modifyMode)
+                        if (numericUpDown_hour.Value == originalHM[0] && numericUpDown_minute.Value == originalHM[1])
+                            continue;
+
+                    MessageBox.Show("Duplicate alarm time.");
+                    reader.Close();
+                    tempConnect.Close();
+                    return false;
+                }
+            }
+
+            tempConnect.Close();
             return true;
         }
+
 
         private void QueryActive(string sql)
         {

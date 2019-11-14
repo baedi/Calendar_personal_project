@@ -50,7 +50,7 @@ namespace CalendarWinForm
             if (!checkBox_multiMode.Checked)
             {
                 sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, dateYMD, setDateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-                QueryActive(sql_str);
+                QueryActive(sql_str, false);
             }
 
             // insert data. (multi)         
@@ -120,7 +120,7 @@ namespace CalendarWinForm
             if (!checkBox_multiMode.Checked)
             {
                 sql = new ListSqlQuery().sqlUpdateData(ListSqlQuery.CALENDAR_MODE, originalYMD, originalHM, dateYMD, DateHM, textBox_calendarText.Text, checkBox_checkAlarm.Checked);
-                QueryActive(sql);
+                QueryActive(sql, true);
             }
 
             // update data. (multi)         
@@ -197,7 +197,7 @@ namespace CalendarWinForm
             return true;
         }
 
-        private void QueryActive(string sql) {
+        private void QueryActive(string sql, bool isModifyMode) {
 
             tempConnect.Open();
             command = new SQLiteCommand(sql, tempConnect);
@@ -209,7 +209,7 @@ namespace CalendarWinForm
             string[] selectCalDate = date.Text.Split('.');
             decimal[] selectCalDate2 = new decimal[3] { decimal.Parse(selectCalDate[0]), decimal.Parse(selectCalDate[1]), decimal.Parse(selectCalDate[2]) };
 
-            if (selectCalDate2[0] == dateYMD[0] && selectCalDate2[1] == dateYMD[1]){
+            if (selectCalDate2[0] == dateYMD[0] && selectCalDate2[1] == dateYMD[1] || isModifyMode){
                 calendar.ChangeCalendar();
                 calendar.CalendarListRefresh();
             }

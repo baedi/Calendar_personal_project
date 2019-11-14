@@ -160,6 +160,9 @@
  - 날짜 변경 기능 추가 (일정 수정 시) (Add date change (when rescheduled))
  - 토요일 첫번째 칸 표기 오류 수정 (Correcting the error of the first square on Saturday)
 
+ #### 41 (19-11-14)
+ - DataAddFrom에 OverlapCheck( ) 추가 (Add OverlapCheck( ) to DataAddFrom)
+
 ---------------------------------------
 
 ## Helpful data (도움이 된 자료들)
