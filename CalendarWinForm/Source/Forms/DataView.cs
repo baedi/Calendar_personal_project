@@ -38,9 +38,7 @@ namespace CalendarWinForm
             if (!OverlapCheck(sql_str, false)) return;
 
             /* normal mode */
-            if (multiMod == false) {
-
-                // input data.          
+            if (!multiMod) {
                 sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute, setData.Text, setData.Active);
                 QueryActive(sql_str);
 
@@ -55,31 +53,35 @@ namespace CalendarWinForm
                 bool oncemessage = true;
 
                 // input data (multi).          
-                for (int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1)) {
-                    tempDate = temp_nextday.ToString("yyyy-M-d").Split('-');
+                    for (int count = 0; count <= dayTemp; count++, temp_nextday = temp_nextday.AddDays(1))
+                    {
+                        tempDate = temp_nextday.ToString("yyyy-M-d").Split('-');
 
-                    setData.YearMonthDay = new decimal[] { decimal.Parse(tempDate[0]), decimal.Parse(tempDate[1]), decimal.Parse(tempDate[2]) };
-                    sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute);
+                        setData.YearMonthDay = new decimal[] { decimal.Parse(tempDate[0]), decimal.Parse(tempDate[1]), decimal.Parse(tempDate[2]) };
+                        sql_str = new ListSqlQuery().sqlOverlapCheck(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute);
 
-                    tempConnect.Open();
-                    command = new SQLiteCommand(sql_str, tempConnect);
-                    SQLiteDataReader reader = command.ExecuteReader();
+                        tempConnect.Open();
+                        command = new SQLiteCommand(sql_str, tempConnect);
+                        SQLiteDataReader reader = command.ExecuteReader();
 
 
-                    // data is already exist.      
-                    if (reader.Read()) {
-                        reader.Close(); tempConnect.Close();
-                        if (oncemessage) { MessageBox.Show("Existing data was maintained due to overlapping schedules."); oncemessage = false; }
+                        // data is already exist.      
+                        if (reader.Read())
+                        {
+                            reader.Close(); tempConnect.Close();
+                            if (oncemessage) { MessageBox.Show("Existing data was maintained due to overlapping schedules."); oncemessage = false; }
+                        }
+
+                        // data is not already exist.  
+                        else
+                        {
+                            reader.Close(); tempConnect.Close();
+                            sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute, textBox_text.Text, checkBox_alarm.Checked);
+                            QueryActive(sql_str);
+                        }
+
                     }
-
-                    // data is not already exist.  
-                    else {
-                        reader.Close(); tempConnect.Close();
-                        sql_str = new ListSqlQuery().sqlInsertValues(ListSqlQuery.CALENDAR_MODE, setData.YearMonthDay, setData.HourMinute, textBox_text.Text, checkBox_alarm.Checked);
-                        QueryActive(sql_str);
-                    }
-
-                }
+                
 
             }
 
