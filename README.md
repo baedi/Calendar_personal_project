@@ -6,6 +6,7 @@
 ![calendar_main](./preview_image/calendar_main.PNG)
 
 
+
 ---------------------------------------
 
 ## Features (특징)
@@ -17,10 +18,11 @@
 	- Clean GUI Interface Configuration (깔끔한 GUI 인터페이스 구성)
 
 
+
 ---------------------------------------
 
 ## Commit Log (커밋 로그)
- - [Link](https://github.com/baedi/Calendar_personal_project/CommitLog.md)
+ - [Commit Log (Link)](https://github.com/baedi/Calendar_personal_project/blob/master/CommitLog.md)
  
 
 ---------------------------------------
@@ -57,6 +59,7 @@
  - (ListView 항목 복수 선택) https://wwwi.tistory.com/324
  - (트레이 아이콘) https://www.youtube.com/watch?v=TgDKcdC7X3E
  - (단일 프로세스 실행) http://egloos.zum.com/metashower/v/9468289
+
 
 
 ---------------------------------------
